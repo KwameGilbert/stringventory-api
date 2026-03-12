@@ -31,15 +31,8 @@ RUN if [ -f composer.json ]; then composer install --no-dev --optimize-autoloade
 # Copy application files (public, src, cron)
 COPY public/ ./public/
 COPY src/ ./src/
-COPY ussd/ ./ussd/
 COPY cron.php ./cron.php
 COPY .htaccess ./.htaccess
-
-# Install composer dependencies for ussd
-WORKDIR /var/www/html/ussd
-RUN if [ -f composer.json ]; then composer install --no-dev --optimize-autoloader; fi
-RUN composer dump-autoload --optimize
-WORKDIR /var/www/html
 
 # Create persistent storage directory for all logs
 RUN mkdir -p /var/www/html/storage/logs/cron \
@@ -64,8 +57,6 @@ RUN chown -R www-data:www-data /var/www/html/public && \
     chmod -R 775 /var/www/html/public && \
     chown -R www-data:www-data /var/www/html/src && \
     chmod -R 775 /var/www/html/src && \
-    chown -R www-data:www-data /var/www/html/ussd && \
-    chmod -R 775 /var/www/html/ussd && \
     chown -R www-data:www-data /var/www/html && \
     chmod -R 775 /var/www/html && \
     chown -R www-data:www-data /var/www/html/.htaccess && \
