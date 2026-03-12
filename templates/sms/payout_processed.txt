@@ -1,0 +1,1 @@
+Payout processed: GH₵{{amount}} sent to your account. Check email for receipt.

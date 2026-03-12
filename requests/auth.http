@@ -1,0 +1,216 @@
+### ============================================================
+### AUTHENTICATION API REQUESTS
+### Base URL: http://localhost:8000/v1/auth
+### ============================================================
+
+### Variables (copy your actual token here after login)
+@baseUrl = http://localhost:8000/v1
+@authToken = YOUR_JWT_TOKEN_HERE
+
+### ============================================================
+### PUBLIC ROUTES (No Authentication Required)
+### ============================================================
+
+### Register a new user (attendee)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "email": "newuser@example.com",
+    "password": "password123",
+    "password_confirmation": "password123",
+    "name": "John Doe",
+    "phone": "+233249973054",
+    "role": "attendee"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Registration successful",
+#     "data": {
+#         "user": {
+#             "id": 1,
+#             "name": "John Doe",
+#             "email": "newuser@example.com",
+#             "phone": "+233249973054",
+#             "role": "attendee",
+#             "status": "active",
+#             "created_at": "2025-12-25T12:00:00.000000Z"
+#         },
+#         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+#     }
+# }
+
+###
+
+### Register a new organizer
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "email": "organizer@example.com",
+    "password": "password123",
+    "password_confirmation": "password123",
+    "name": "Event Organizer",
+    "phone": "+233249973054",
+    "role": "organizer",
+    "business_name": "Amazing Events GH",
+    "business_type": "Events Company"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Registration successful",
+#     "data": {
+#         "user": {...},
+#         "organizer": {
+#             "id": 1,
+#             "business_name": "Amazing Events GH",
+#             "business_type": "Events Company"
+#         },
+#         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+#     }
+# }
+
+###
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "password123"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Login successful",
+#     "data": {
+#         "user": {
+#             "id": 1,
+#             "name": "John Doe",
+#             "email": "user@example.com",
+#             "role": "attendee",
+#             "status": "active"
+#         },
+#         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+#     }
+# }
+
+###
+
+### Refresh Token
+POST {{baseUrl}}/auth/refresh
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Token refreshed",
+#     "data": {
+#         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+#     }
+# }
+
+###
+
+### Request Password Reset
+POST {{baseUrl}}/auth/password/forgot
+Content-Type: application/json
+
+{
+    "email": "user@example.com"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Password reset link sent to your email"
+# }
+
+###
+
+### Reset Password (with token from email)
+POST {{baseUrl}}/auth/password/reset
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "token": "RESET_TOKEN_FROM_EMAIL",
+    "password": "newpassword123",
+    "password_confirmation": "newpassword123"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Password reset successful"
+# }
+
+###
+
+### ============================================================
+### PROTECTED ROUTES (Authentication Required)
+### ============================================================
+
+### Get Current User Profile
+GET {{baseUrl}}/auth/me
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "User profile fetched successfully",
+#     "data": {
+#         "user": {
+#             "id": 1,
+#             "name": "John Doe",
+#             "email": "user@example.com",
+#             "phone": "+233249973054",
+#             "role": "attendee",
+#             "status": "active",
+#             "email_verified_at": "2025-12-25T12:00:00.000000Z",
+#             "created_at": "2025-12-25T12:00:00.000000Z"
+#         }
+#     }
+# }
+
+###
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Logged out successfully"
+# }
+
+###
+
+### Change Password
+POST {{baseUrl}}/auth/password/change
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "current_password": "password123",
+    "password": "newpassword123",
+    "password_confirmation": "newpassword123"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Password changed successfully"
+# }
+
+###

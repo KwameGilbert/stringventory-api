@@ -1,0 +1,4 @@
+{
+    "subject": "Order Cancelled - #{{order_id}}",
+    "body": "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>body{font-family:Arial,sans-serif;line-height:1.6;color:#333;max-width:600px;margin:0 auto;padding:20px}.header{background:#6b7280;color:white;padding:30px;text-align:center}.content{padding:30px}</style></head><body><div class=\"header\"><h1>Order Cancelled</h1></div><div class=\"content\"><p>Hi {{customer_name}},</p><p>Your order #{{order_id}} has been cancelled successfully.</p><p>If you paid for this order, your refund will be processed within 5-7 business days.</p><p>If you have any questions, please contact our support team.</p></div></body></html>"
+}

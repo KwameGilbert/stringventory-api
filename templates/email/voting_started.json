@@ -1,0 +1,4 @@
+{
+    "subject": "\ud83d\uddf3\ufe0f Voting is Open - {{event_name}}",
+    "body": "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>body{font-family:Arial,sans-serif;line-height:1.6;color:#333;max-width:600px;margin:0 auto;padding:20px}.header{background:#4F46E5;color:white;padding:30px;text-align:center}.button{background:#4F46E5;color:white;padding:12px 30px;text-decoration:none;border-radius:4px;display:inline-block;margin:15px 0}</style></head><body><div class=\"header\"><h1>Voting is Open!</h1></div><div style=\"padding:30px\"><p>Voting is now open for <strong>{{event_name}}</strong> awards!</p><p>Cast your votes now to support your favorite nominees.</p><p style=\"text-align:center\"><a href=\"{{vote_link}}\" class=\"button\">Vote Now</a></p><p><strong>Voting ends:</strong> {{voting_ends_at}}</p></div></body></html>"
+}

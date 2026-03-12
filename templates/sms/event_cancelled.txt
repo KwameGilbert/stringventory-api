@@ -1,0 +1,1 @@
+IMPORTANT: {{event_name}} on {{date}} has been cancelled. Full refund processing. Check email.

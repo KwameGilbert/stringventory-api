@@ -1,0 +1,1 @@
+You're assigned as scanner for {{event_name}} on {{event_date}}. Download app: {{app_link}}

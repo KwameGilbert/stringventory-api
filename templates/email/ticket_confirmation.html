@@ -1,0 +1,93 @@
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+        <td align="center" style="padding-bottom: 30px;">
+            <div
+                style="width: 80px; height: 80px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: inline-block; line-height: 80px;">
+                <span style="font-size: 40px;">🎟️</span>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <h1 style="margin: 0 0 16px 0; font-size: 28px; font-weight: 700; color: #111827;">
+                Your Tickets Are Confirmed!
+            </h1>
+            <p style="margin: 0 0 8px 0; font-size: 16px; color: #6b7280; line-height: 24px;">
+                Hi <strong style="color: #111827;">{{user_name}}</strong>,
+            </p>
+            <p style="margin: 0 0 32px 0; font-size: 16px; color: #6b7280; line-height: 24px;">
+                Great news! Your payment was successful and your tickets are ready.
+            </p>
+        </td>
+    </tr>
+
+    <!-- Order Summary Card -->
+    <tr>
+        <td style="padding: 24px; background-color: #f9fafb; border-radius: 12px; margin-bottom: 24px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td colspan="2" style="padding-bottom: 16px; border-bottom: 1px solid #e5e7eb;">
+                        <p style="margin: 0; font-size: 14px; color: #6b7280;">Order Reference</p>
+                        <p style="margin: 4px 0 0 0; font-size: 18px; font-weight: 600; color: #111827;">
+                            {{order_reference}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-top: 16px; width: 50%;">
+                        <p style="margin: 0; font-size: 14px; color: #6b7280;">Total Paid</p>
+                        <p style="margin: 4px 0 0 0; font-size: 18px; font-weight: 600; color: #10b981;">{{currency}}
+                            {{total_amount}}</p>
+                    </td>
+                    <td style="padding-top: 16px; width: 50%; text-align: right;">
+                        <p style="margin: 0; font-size: 14px; color: #6b7280;">Tickets</p>
+                        <p style="margin: 4px 0 0 0; font-size: 18px; font-weight: 600; color: #111827;">
+                            {{total_tickets}}</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <!-- Tickets List -->
+    <tr>
+        <td style="padding-top: 24px;">
+            <h2 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #111827;">
+                Your Tickets
+            </h2>
+            {{tickets_list}}
+        </td>
+    </tr>
+
+    <!-- View Tickets Button -->
+    <tr>
+        <td align="center" style="padding-top: 32px; padding-bottom: 32px;">
+            <a href="{{tickets_url}}"
+                style="display: inline-block; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);">
+                🎫 View My Tickets
+            </a>
+        </td>
+    </tr>
+
+    <!-- Important Info -->
+    <tr>
+        <td style="padding: 20px; background-color: #fef3c7; border-radius: 12px; border-left: 4px solid #f59e0b;">
+            <p style="margin: 0; font-size: 14px; color: #92400e;">
+                <strong>📱 Important:</strong><br>
+                • Your tickets are available in your Eventic account<br>
+                • Show your ticket QR code at the venue entrance<br>
+                • You can download or share your tickets from the app<br>
+                • Each ticket can only be used once
+            </p>
+        </td>
+    </tr>
+
+    <!-- Help Section -->
+    <tr>
+        <td align="center" style="padding-top: 24px;">
+            <p style="margin: 0; font-size: 14px; color: #6b7280;">
+                Questions about your order? <a href="mailto:{{support_email}}"
+                    style="color: #dc2626; text-decoration: none; font-weight: 500;">Contact Support</a>
+            </p>
+        </td>
+    </tr>
+</table>

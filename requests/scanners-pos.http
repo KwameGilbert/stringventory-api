@@ -1,0 +1,149 @@
+### ============================================================
+### SCANNER & POS API REQUESTS
+### URLs: /v1/scanners, /v1/pos
+### All routes require authentication
+### ============================================================
+
+### Variables
+@baseUrl = http://localhost:8000/v1
+@authToken = YOUR_ORGANIZER_JWT_TOKEN_HERE
+@scannerId = 1
+@posId = 1
+
+### ============================================================
+### SCANNER ROUTES
+### For creating and managing ticket scanners
+### ============================================================
+
+### Create Scanner User
+POST {{baseUrl}}/scanners
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Scanner Device 1",
+    "email": "scanner1@myevent.com",
+    "password": "scanner123",
+    "event_id": 1
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Scanner user created successfully",
+#     "data": {
+#         "scanner": {
+#             "id": 1,
+#             "user_id": 50,
+#             "name": "Scanner Device 1",
+#             "email": "scanner1@myevent.com",
+#             "event_id": 1,
+#             "created_at": "2025-12-25T12:00:00Z"
+#         },
+#         "credentials": {
+#             "email": "scanner1@myevent.com",
+#             "password": "scanner123"
+#         }
+#     }
+# }
+
+###
+
+### Assign Scanner to Event
+POST {{baseUrl}}/scanners/assign
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "scanner_id": 1,
+    "event_id": 2
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Scanner assigned to event successfully"
+# }
+
+###
+
+### Delete Scanner
+DELETE {{baseUrl}}/scanners/{{scannerId}}
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Scanner deleted successfully"
+# }
+
+###
+
+### ============================================================
+### POS (POINT OF SALE) ROUTES
+### For creating and managing POS users who can sell tickets
+### ============================================================
+
+### Create POS User
+POST {{baseUrl}}/pos
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "POS Terminal 1",
+    "email": "pos1@myevent.com",
+    "password": "pos123",
+    "event_id": 1
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "POS user created successfully",
+#     "data": {
+#         "pos": {
+#             "id": 1,
+#             "user_id": 51,
+#             "name": "POS Terminal 1",
+#             "email": "pos1@myevent.com",
+#             "event_id": 1,
+#             "created_at": "2025-12-25T12:00:00Z"
+#         },
+#         "credentials": {
+#             "email": "pos1@myevent.com",
+#             "password": "pos123"
+#         }
+#     }
+# }
+
+###
+
+### Assign POS to Event
+POST {{baseUrl}}/pos/assign
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "pos_id": 1,
+    "event_id": 2
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "POS user assigned to event successfully"
+# }
+
+###
+
+### Delete POS User
+DELETE {{baseUrl}}/pos/{{posId}}
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "POS user deleted successfully"
+# }
+
+###

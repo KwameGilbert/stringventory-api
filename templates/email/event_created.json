@@ -1,0 +1,4 @@
+{
+    "subject": "Your Event is Live! \ud83c\udf89",
+    "body": "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>body{font-family:Arial,sans-serif;line-height:1.6;color:#333;max-width:600px;margin:0 auto;padding:20px}.header{background:#4F46E5;color:white;padding:30px;text-align:center}.button{background:#4F46E5;color:white;padding:12px 30px;text-decoration:none;border-radius:4px;display:inline-block;margin:15px 0}</style></head><body><div class=\"header\"><h1>Event Published!</h1></div><div style=\"padding:30px\"><p>Hi {{organizer_name}},</p><p>Congratulations! Your event <strong>{{event_name}}</strong> is now live!</p><p style=\"text-align:center\"><a href=\"{{event_url}}\" class=\"button\">View Event</a> <a href=\"{{dashboard_link}}\" class=\"button\">Dashboard</a></p><p>Share your event to start selling tickets!</p></div></body></html>"
+}

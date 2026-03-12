@@ -1,0 +1,285 @@
+name: PHP Application CI
+
+on:
+  push:
+    branches: [main, development, gilbert]
+    paths:
+      - "/**"
+      - ".github/workflows/php.yml"
+  pull_request:
+    branches: [main, development, gilbert]
+    paths:
+      - "/**"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, intl, pdo, pdo_mysql, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate composer.json and composer.lock
+        working-directory: ./
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        working-directory: ./
+        run: composer install --prefer-dist --no-progress
+
+      - name: Check PHP syntax
+        working-directory: ./
+        run: find . -name "*.php" -not -path "./vendor/*" -print0 | xargs -0 -n1 php -l
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: validate
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, intl, pdo, pdo_mysql, zip
+          coverage: xdebug
+          tools: composer:v2, phpunit
+
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        working-directory: ./
+        run: composer install --prefer-dist --no-progress
+
+      - name: Create environment file
+        working-directory: ./
+        run: |
+          cp .env.example .env
+          sed -i 's/DB_HOST=localhost/DB_HOST=127.0.0.1/g' .env
+          sed -i 's/DB_DATABASE=ngo_help/DB_DATABASE=ngo_help_test/g' .env
+          sed -i 's/DB_USERNAME=root/DB_USERNAME=root/g' .env
+          sed -i 's/DB_PASSWORD=/DB_PASSWORD=root/g' .env
+          sed -i 's/ENVIRONMENT=production/ENVIRONMENT=testing/g' .env
+
+      - name: Create log directory
+        working-directory: ./
+        run: mkdir -p src/logs/app src/logs/http src/logs/error
+
+      - name: Run test suite
+        working-directory: ./
+        run: |
+          if [ -f vendor/bin/phpunit ]; then
+            vendor/bin/phpunit --coverage-text
+          elif [ -f phpunit.xml ] || [ -f phpunit.xml.dist ]; then
+            phpunit --coverage-text
+          else
+            echo "No PHPUnit configuration found, skipping tests"
+          fi
+
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    needs: validate
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, intl, zip
+          tools: composer:v2, php-cs-fixer, phpstan
+
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: ./vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        working-directory: ./
+        run: composer install --prefer-dist --no-progress
+
+      - name: Check code style
+        working-directory: ./
+        continue-on-error: true
+        run: |
+          if [ -f vendor/bin/php-cs-fixer ]; then
+            vendor/bin/php-cs-fixer fix --dry-run --diff
+          elif command -v php-cs-fixer &> /dev/null; then
+            php-cs-fixer fix --dry-run --diff
+          else
+            echo "php-cs-fixer not installed, skipping code style check"
+          fi
+
+      - name: Run static analysis
+        working-directory: ./
+        continue-on-error: true
+        run: |
+          if [ -f vendor/bin/phpstan ]; then
+            vendor/bin/phpstan analyse src --level=5
+          elif command -v phpstan &> /dev/null; then
+            phpstan analyse src --level=5
+          else
+            echo "PHPStan not installed, skipping static analysis"
+          fi
+
+  docker-build:
+    name: Test Docker Build
+    runs-on: ubuntu-latest
+    needs: validate
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: false
+          tags: ngo-help:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  application-bootstrap:
+    name: Test Application Bootstrap
+    runs-on: ubuntu-latest
+    needs: validate
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, intl, pdo, pdo_mysql, zip
+          tools: composer:v2
+
+      - name: Install dependencies
+        working-directory: ./
+        run: composer install --prefer-dist --no-progress
+
+      - name: Create environment file
+        working-directory: ./
+        run: |
+          cp .env.example .env
+          sed -i 's/DB_HOST=localhost/DB_HOST=127.0.0.1/g' .env
+          sed -i 's/DB_DATABASE=ngo_help/DB_DATABASE=ngo_help_test/g' .env
+          sed -i 's/DB_USERNAME=root/DB_USERNAME=root/g' .env
+          sed -i 's/DB_PASSWORD=/DB_PASSWORD=root/g' .env
+          sed -i 's/ENVIRONMENT=development/ENVIRONMENT=testing/g' .env
+
+      - name: Create log directory
+        working-directory: ./
+        run: mkdir -p src/logs/app src/logs/http src/logs/error
+
+      - name: Test application bootstrap
+        working-directory: ./
+        run: |
+          # Start PHP built-in server in the background
+          php -S localhost:8080 -t public &
+          SERVER_PID=$!
+
+          # Wait for server to start
+          sleep 3
+
+          # Make a request to test the API
+          RESPONSE=$(curl -s http://localhost:8080/)
+          echo "API Response: $RESPONSE"
+
+          # Check if response contains "running"
+          if echo "$RESPONSE" | grep -q "running"; then
+            echo "✅ Application bootstrap test passed"
+          else
+            echo "❌ Application bootstrap test failed"
+            exit 1
+          fi
+
+          # Clean up - kill the PHP server
+          kill $SERVER_PID
+
+  security:
+    name: Security Check
+    runs-on: ubuntu-latest
+    needs: validate
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: composer:v2, composer-normalize, composer-require-checker
+
+      - name: Install dependencies
+        working-directory: ./
+        run: composer install --prefer-dist --no-progress
+
+      - name: Security check for vulnerable dependencies
+        uses: symfonycorp/security-checker-action@v4
+        with:
+          lock: ./composer.lock
+
+      - name: Check composer packages
+        working-directory: ./
+        continue-on-error: true
+        run: |
+          if command -v composer-require-checker &> /dev/null; then
+            composer-require-checker check
+          else
+            echo "composer-require-checker not installed, skipping check"
+          fi

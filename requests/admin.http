@@ -1,0 +1,489 @@
+### ============================================================
+### ADMIN API REQUESTS
+### Base URL: http://localhost:8000/v1/admin
+### All routes require admin authentication
+### ============================================================
+
+### Variables
+@baseUrl = http://localhost:8000/v1
+@adminToken = YOUR_ADMIN_JWT_TOKEN_HERE
+
+### ============================================================
+### DASHBOARD
+### ============================================================
+
+### Get Admin Dashboard Overview
+GET {{baseUrl}}/admin/dashboard
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Dashboard data fetched successfully",
+#     "data": {
+#         "stats": {
+#             "total_users": 150,
+#             "total_organizers": 25,
+#             "total_attendees": 120,
+#             "total_events": 45,
+#             "total_awards": 12,
+#             "pending_events": 5,
+#             "pending_awards": 2
+#         },
+#         "recent_activity": [...]
+#     }
+# }
+
+###
+
+### ============================================================
+### USER MANAGEMENT
+### ============================================================
+
+### Get All Users
+# Query Params: ?role=organizer|attendee|admin&search=query&page=1&per_page=20
+GET {{baseUrl}}/admin/users?role=organizer&page=1&per_page=20
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Users fetched successfully",
+#     "data": {
+#         "users": [
+#             {
+#                 "id": 1,
+#                 "name": "John Doe",
+#                 "email": "john@example.com",
+#                 "role": "organizer",
+#                 "status": "active",
+#                 "created_at": "2025-12-25T12:00:00.000000Z"
+#             }
+#         ],
+#         "pagination": {
+#             "current_page": 1,
+#             "total_pages": 5,
+#             "total": 100
+#         }
+#     }
+# }
+
+###
+
+### Get User Details (Comprehensive - includes role-specific data)
+GET {{baseUrl}}/admin/users/1
+Authorization: Bearer {{adminToken}}
+
+### Expected Response (for Organizer):
+# {
+#     "success": true,
+#     "data": {
+#         "user": {
+#             "id": 1,
+#             "name": "John Organizer",
+#             "email": "john@example.com",
+#             "role": "organizer",
+#             "status": "active"
+#         },
+#         "role_data": {
+#             "organizer": {
+#                 "business_name": "Amazing Events",
+#                 "verification_status": "verified"
+#             },
+#             "events": [...],
+#             "awards": [...],
+#             "payouts": [...],
+#             "balance": {
+#                 "available_balance": 5000.00,
+#                 "pending_balance": 1500.00,
+#                 "total_earned": 15000.00,
+#                 "total_withdrawn": 8500.00
+#             }
+#         },
+#         "stats": {
+#             "total_events": 10,
+#             "total_awards": 3,
+#             "total_revenue": 15000.00
+#         }
+#     }
+# }
+
+###
+
+### Update User Status
+PUT {{baseUrl}}/admin/users/1/status
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "status": "suspended"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "User status updated successfully"
+# }
+
+###
+
+### Reset User Password
+POST {{baseUrl}}/admin/users/1/reset-password
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "password": "newpassword123"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Password reset successfully"
+# }
+
+###
+
+### Update User Role
+PUT {{baseUrl}}/admin/users/1/role
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "role": "organizer"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "User role updated successfully"
+# }
+
+###
+
+### Delete User
+DELETE {{baseUrl}}/admin/users/1
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "User deleted successfully"
+# }
+
+###
+
+### ============================================================
+### EVENT MANAGEMENT
+### ============================================================
+
+### Get All Events (Admin)
+# Query Params: ?status=pending|published|draft&search=query&page=1&per_page=20
+GET {{baseUrl}}/admin/events?status=pending&page=1
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "events": [
+#             {
+#                 "id": 1,
+#                 "title": "Summer Music Festival",
+#                 "status": "pending",
+#                 "organizer": {...},
+#                 "start_time": "2025-06-15T18:00:00Z"
+#             }
+#         ]
+#     }
+# }
+
+###
+
+### Get Event Details (Admin)
+GET {{baseUrl}}/admin/events/1
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "event": {
+#             "id": 1,
+#             "title": "Summer Music Festival",
+#             "description": "...",
+#             "status": "published",
+#             "organizer": {...},
+#             "ticket_types": [...],
+#             "stats": {
+#                 "tickets_sold": 150,
+#                 "revenue": 7500.00
+#             }
+#         }
+#     }
+# }
+
+###
+
+### Update Event (Full Admin Edit)
+PUT {{baseUrl}}/admin/events/1
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "title": "Updated Event Title",
+    "description": "Updated description",
+    "status": "published",
+    "is_featured": true
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Event updated successfully"
+# }
+
+###
+
+### Update Event Status
+PUT {{baseUrl}}/admin/events/1/status
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "status": "cancelled"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Event status updated successfully"
+# }
+
+###
+
+### Toggle Event Featured
+PUT {{baseUrl}}/admin/events/1/feature
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "is_featured": true
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Event featured status updated"
+# }
+
+###
+
+### Approve Event
+PUT {{baseUrl}}/admin/events/1/approve
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Event approved successfully"
+# }
+
+###
+
+### Reject Event
+PUT {{baseUrl}}/admin/events/1/reject
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "reason": "Event description does not meet guidelines"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Event rejected"
+# }
+
+###
+
+### Delete Event
+DELETE {{baseUrl}}/admin/events/1
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Event deleted successfully"
+# }
+
+###
+
+### ============================================================
+### AWARD MANAGEMENT
+### ============================================================
+
+### Get All Awards (Admin)
+# Query Params: ?status=pending|published|draft&search=query
+GET {{baseUrl}}/admin/awards?status=pending
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "awards": [
+#             {
+#                 "id": 1,
+#                 "title": "Ghana Music Awards",
+#                 "status": "pending",
+#                 "organizer": {...}
+#             }
+#         ]
+#     }
+# }
+
+###
+
+### Get Award Details (Admin)
+GET {{baseUrl}}/admin/awards/1
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "award": {
+#             "id": 1,
+#             "title": "Ghana Music Awards",
+#             "categories": [...],
+#             "stats": {
+#                 "total_votes": 5000,
+#                 "revenue": 25000.00
+#             }
+#         }
+#     }
+# }
+
+###
+
+### Update Award (Full Admin Edit)
+PUT {{baseUrl}}/admin/awards/1
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "title": "Updated Award Title",
+    "status": "published",
+    "is_featured": true
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Award updated successfully"
+# }
+
+###
+
+### Update Award Status
+PUT {{baseUrl}}/admin/awards/1/status
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "status": "completed"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Award status updated successfully"
+# }
+
+###
+
+### Toggle Award Featured
+PUT {{baseUrl}}/admin/awards/1/feature
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "is_featured": true
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Award featured status updated"
+# }
+
+###
+
+### Approve Award
+PUT {{baseUrl}}/admin/awards/1/approve
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Award approved successfully"
+# }
+
+###
+
+### Reject Award
+PUT {{baseUrl}}/admin/awards/1/reject
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "reason": "Content violates platform guidelines"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Award rejected"
+# }
+
+###
+
+### Delete Award
+DELETE {{baseUrl}}/admin/awards/1
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Award deleted successfully"
+# }
+
+###
+
+### ============================================================
+### FINANCE OVERVIEW
+### ============================================================
+
+### Get Finance Overview
+GET {{baseUrl}}/admin/finance
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "total_revenue": 150000.00,
+#         "platform_fees": 15000.00,
+#         "organizer_earnings": 135000.00,
+#         "events_revenue": 100000.00,
+#         "awards_revenue": 50000.00,
+#         "monthly_trend": [
+#             {"month": "Jan", "revenue": 12000},
+#             {"month": "Feb", "revenue": 15000}
+#         ]
+#     }
+# }
+
+###

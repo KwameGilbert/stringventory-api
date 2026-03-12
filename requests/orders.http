@@ -1,0 +1,255 @@
+### ============================================================
+### ORDERS API REQUESTS
+### Base URL: http://localhost:8000/v1/orders
+### All routes require authentication
+### ============================================================
+
+### Variables
+@baseUrl = http://localhost:8000/v1
+@authToken = YOUR_JWT_TOKEN_HERE
+@orderId = 1
+
+### ============================================================
+### PROTECTED ROUTES (Authentication Required)
+### ============================================================
+
+### Create Order (Purchase Tickets)
+POST {{baseUrl}}/orders
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "event_id": 1,
+    "customer_name": "John Doe",
+    "customer_email": "john@example.com",
+    "customer_phone": "+233249973054",
+    "items": [
+        {
+            "ticket_type_id": 1,
+            "quantity": 2
+        },
+        {
+            "ticket_type_id": 2,
+            "quantity": 1
+        }
+    ]
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Order created successfully",
+#     "data": {
+#         "order": {
+#             "id": 10,
+#             "order_number": "ORD-ABC123XYZ",
+#             "status": "pending",
+#             "customer_name": "John Doe",
+#             "customer_email": "john@example.com",
+#             "items": [
+#                 {
+#                     "ticket_type": "Regular",
+#                     "quantity": 2,
+#                     "unit_price": 50.00,
+#                     "total_price": 100.00
+#                 },
+#                 {
+#                     "ticket_type": "VIP",
+#                     "quantity": 1,
+#                     "unit_price": 150.00,
+#                     "total_price": 150.00
+#                 }
+#             ],
+#             "subtotal": 250.00,
+#             "service_fee": 25.00,
+#             "total_amount": 275.00,
+#             "created_at": "2025-12-25T12:00:00Z"
+#         }
+#     }
+# }
+
+###
+
+### Get All Orders (User's Orders)
+GET {{baseUrl}}/orders
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "orders": [
+#             {
+#                 "id": 10,
+#                 "order_number": "ORD-ABC123XYZ",
+#                 "status": "paid",
+#                 "total_amount": 275.00,
+#                 "event": {
+#                     "id": 1,
+#                     "title": "Summer Music Festival",
+#                     "start_time": "2025-06-15T18:00:00Z"
+#                 },
+#                 "items_count": 3,
+#                 "created_at": "2025-12-25T12:00:00Z"
+#             }
+#         ]
+#     }
+# }
+
+###
+
+### Get Single Order Details
+GET {{baseUrl}}/orders/{{orderId}}
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "order": {
+#             "id": 10,
+#             "order_number": "ORD-ABC123XYZ",
+#             "status": "paid",
+#             "customer_name": "John Doe",
+#             "customer_email": "john@example.com",
+#             "customer_phone": "+233249973054",
+#             "payment_method": "paystack",
+#             "payment_reference": "PAY-XYZ789",
+#             "subtotal": 250.00,
+#             "service_fee": 25.00,
+#             "total_amount": 275.00,
+#             "event": {
+#                 "id": 1,
+#                 "title": "Summer Music Festival",
+#                 "cover_image": "https://...",
+#                 "start_time": "2025-06-15T18:00:00Z",
+#                 "venue_name": "National Theatre"
+#             },
+#             "items": [
+#                 {
+#                     "id": 1,
+#                     "ticket_type": {
+#                         "id": 1,
+#                         "name": "Regular"
+#                     },
+#                     "quantity": 2,
+#                     "unit_price": 50.00,
+#                     "total_price": 100.00
+#                 }
+#             ],
+#             "tickets": [
+#                 {
+#                     "id": 1,
+#                     "ticket_code": "TKT-ABC123",
+#                     "status": "valid",
+#                     "ticket_type": "Regular"
+#                 },
+#                 {
+#                     "id": 2,
+#                     "ticket_code": "TKT-ABC124",
+#                     "status": "valid",
+#                     "ticket_type": "Regular"
+#                 }
+#             ],
+#             "created_at": "2025-12-25T12:00:00Z",
+#             "paid_at": "2025-12-25T12:05:00Z"
+#         }
+#     }
+# }
+
+###
+
+### Initialize Payment (Get Paystack Payment URL)
+POST {{baseUrl}}/orders/{{orderId}}/pay
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "callback_url": "https://yourapp.com/payment/callback"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Payment initialized",
+#     "data": {
+#         "authorization_url": "https://checkout.paystack.com/xyz123",
+#         "access_code": "abc123xyz",
+#         "reference": "PAY-ORD-ABC123XYZ"
+#     }
+# }
+
+###
+
+### Verify Payment
+GET {{baseUrl}}/orders/{{orderId}}/verify
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Payment verified successfully",
+#     "data": {
+#         "order": {
+#             "id": 10,
+#             "status": "paid",
+#             "payment_verified": true
+#         },
+#         "tickets": [
+#             {
+#                 "id": 1,
+#                 "ticket_code": "TKT-ABC123",
+#                 "qr_code": "data:image/png;base64,..."
+#             }
+#         ]
+#     }
+# }
+
+###
+
+### Cancel Order
+POST {{baseUrl}}/orders/{{orderId}}/cancel
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "reason": "Changed my mind"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Order cancelled successfully"
+# }
+
+###
+
+### ============================================================
+### WEBHOOK (No Authentication - Verified by Signature)
+### ============================================================
+
+### Paystack Webhook (called by Paystack)
+POST {{baseUrl}}/payment/webhook
+Content-Type: application/json
+X-Paystack-Signature: PAYSTACK_SIGNATURE_HASH
+
+{
+    "event": "charge.success",
+    "data": {
+        "reference": "PAY-ORD-ABC123XYZ",
+        "status": "success",
+        "amount": 27500,
+        "currency": "GHS",
+        "paid_at": "2025-12-25T12:05:00.000Z",
+        "channel": "card",
+        "customer": {
+            "email": "john@example.com"
+        }
+    }
+}
+
+### Expected Response:
+# HTTP 200 OK
+# (Webhook acknowledgment)
+
+###

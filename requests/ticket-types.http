@@ -1,0 +1,159 @@
+### ============================================================
+### TICKET TYPES API REQUESTS
+### Base URL: http://localhost:8000/v1/ticket-types
+### ============================================================
+
+### Variables
+@baseUrl = http://localhost:8000/v1
+@authToken = YOUR_JWT_TOKEN_HERE
+@ticketTypeId = 1
+@eventId = 1
+
+### ============================================================
+### PUBLIC ROUTES (No Authentication Required)
+### ============================================================
+
+### Get Ticket Types for an Event
+# Query Params: ?event_id={id}
+GET {{baseUrl}}/ticket-types?event_id={{eventId}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "ticket_types": [
+#             {
+#                 "id": 1,
+#                 "name": "Regular",
+#                 "description": "General admission ticket",
+#                 "price": 50.00,
+#                 "quantity": 500,
+#                 "quantity_sold": 150,
+#                 "quantity_available": 350,
+#                 "sale_start": "2025-01-01T00:00:00Z",
+#                 "sale_end": "2025-06-15T17:00:00Z",
+#                 "is_available": true
+#             },
+#             {
+#                 "id": 2,
+#                 "name": "VIP",
+#                 "description": "VIP access with premium seating and backstage pass",
+#                 "price": 150.00,
+#                 "quantity": 100,
+#                 "quantity_sold": 45,
+#                 "quantity_available": 55,
+#                 "sale_start": "2025-01-01T00:00:00Z",
+#                 "sale_end": "2025-06-15T17:00:00Z",
+#                 "is_available": true
+#             }
+#         ]
+#     }
+# }
+
+###
+
+### Get Single Ticket Type
+GET {{baseUrl}}/ticket-types/{{ticketTypeId}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "ticket_type": {
+#             "id": 1,
+#             "event_id": 1,
+#             "name": "Regular",
+#             "description": "General admission ticket",
+#             "price": 50.00,
+#             "quantity": 500,
+#             "quantity_sold": 150,
+#             "quantity_available": 350,
+#             "sale_start": "2025-01-01T00:00:00Z",
+#             "sale_end": "2025-06-15T17:00:00Z",
+#             "min_per_order": 1,
+#             "max_per_order": 10,
+#             "is_available": true,
+#             "event": {
+#                 "id": 1,
+#                 "title": "Summer Music Festival"
+#             }
+#         }
+#     }
+# }
+
+###
+
+### ============================================================
+### PROTECTED ROUTES (Authentication Required - Organizer)
+### ============================================================
+
+### Create Ticket Type
+POST {{baseUrl}}/ticket-types
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "event_id": 1,
+    "name": "Early Bird",
+    "description": "Discounted early bird ticket - limited availability",
+    "price": 35.00,
+    "quantity": 200,
+    "sale_start": "2025-01-01T00:00:00",
+    "sale_end": "2025-03-31T23:59:59",
+    "min_per_order": 1,
+    "max_per_order": 5
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Ticket type created successfully",
+#     "data": {
+#         "ticket_type": {
+#             "id": 5,
+#             "event_id": 1,
+#             "name": "Early Bird",
+#             "price": 35.00,
+#             "quantity": 200,
+#             "quantity_sold": 0
+#         }
+#     }
+# }
+
+###
+
+### Update Ticket Type
+PUT {{baseUrl}}/ticket-types/{{ticketTypeId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "Updated Ticket Name",
+    "description": "Updated description",
+    "price": 60.00,
+    "quantity": 600,
+    "sale_end": "2025-06-14T23:59:59"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Ticket type updated successfully",
+#     "data": {
+#         "ticket_type": {...}
+#     }
+# }
+
+###
+
+### Delete Ticket Type
+DELETE {{baseUrl}}/ticket-types/{{ticketTypeId}}
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Ticket type deleted successfully"
+# }
+
+###

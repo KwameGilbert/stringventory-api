@@ -1,0 +1,6 @@
+{
+    "name": "email_verification",
+    "subject": "Verify Your Email Address - Eventic",
+    "preheader": "Please verify your email address to activate your Eventic account.",
+    "content_file": "email_verification.html"
+}

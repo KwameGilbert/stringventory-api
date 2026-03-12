@@ -1,0 +1,1 @@
+Payment confirmed! GH₵{{amount_paid}} for {{event_name}}. Check email for tickets.

@@ -1,0 +1,188 @@
+### ============================================================
+### ATTENDEES API REQUESTS
+### Base URL: http://localhost:8000/v1/attendees
+### All routes require authentication
+### ============================================================
+
+### Variables
+@baseUrl = http://localhost:8000/v1
+@authToken = YOUR_JWT_TOKEN_HERE
+@attendeeId = 1
+
+### ============================================================
+### PROTECTED ROUTES (Authentication Required)
+### ============================================================
+
+### Get My Profile (Current User's Attendee Profile)
+GET {{baseUrl}}/attendees/me
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "attendee": {
+#             "id": 1,
+#             "user_id": 5,
+#             "date_of_birth": "1990-05-15",
+#             "gender": "male",
+#             "interests": ["music", "sports", "technology"],
+#             "profile_image": "https://...",
+#             "user": {
+#                 "name": "John Doe",
+#                 "email": "john@example.com",
+#                 "phone": "+233249973054"
+#             },
+#             "created_at": "2025-06-01T12:00:00Z"
+#         }
+#     }
+# }
+
+###
+
+### Update My Profile
+PUT {{baseUrl}}/attendees/me
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "date_of_birth": "1990-05-15",
+    "gender": "male",
+    "interests": ["music", "sports", "technology", "art"]
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Profile updated successfully",
+#     "data": {
+#         "attendee": {...}
+#     }
+# }
+
+###
+
+### Upload Profile Image
+# Note: Use multipart/form-data
+# POST {{baseUrl}}/attendees/me/image
+# Content-Type: multipart/form-data
+# Authorization: Bearer {{authToken}}
+#
+# image=@/path/to/profile-image.jpg
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Profile image uploaded successfully",
+#     "data": {
+#         "image_url": "https://storage.example.com/profiles/user-5.jpg"
+#     }
+# }
+
+###
+
+### ============================================================
+### CRUD OPERATIONS (Admin/Organizer Access)
+### ============================================================
+
+### Get All Attendees
+GET {{baseUrl}}/attendees
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "attendees": [
+#             {
+#                 "id": 1,
+#                 "user": {
+#                     "name": "John Doe",
+#                     "email": "john@example.com"
+#                 },
+#                 "gender": "male",
+#                 "interests": ["music"]
+#             }
+#         ]
+#     }
+# }
+
+###
+
+### Get Single Attendee
+GET {{baseUrl}}/attendees/{{attendeeId}}
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "attendee": {
+#             "id": 1,
+#             "user_id": 5,
+#             "date_of_birth": "1990-05-15",
+#             "gender": "male",
+#             "interests": ["music", "sports"],
+#             "user": {
+#                 "name": "John Doe",
+#                 "email": "john@example.com",
+#                 "phone": "+233249973054"
+#             }
+#         }
+#     }
+# }
+
+###
+
+### Create Attendee Profile
+POST {{baseUrl}}/attendees
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "user_id": 10,
+    "date_of_birth": "1995-08-20",
+    "gender": "female",
+    "interests": ["music", "fashion"]
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Attendee profile created successfully",
+#     "data": {
+#         "attendee": {...}
+#     }
+# }
+
+###
+
+### Update Attendee Profile
+PUT {{baseUrl}}/attendees/{{attendeeId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "gender": "female",
+    "interests": ["music", "fashion", "art"]
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Attendee profile updated successfully"
+# }
+
+###
+
+### Delete Attendee Profile
+DELETE {{baseUrl}}/attendees/{{attendeeId}}
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Attendee deleted successfully"
+# }
+
+###

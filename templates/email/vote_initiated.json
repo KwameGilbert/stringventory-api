@@ -1,0 +1,4 @@
+{
+    "subject": "Complete Your Vote - {{nominee_name}}",
+    "body": "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>body{font-family:Arial,sans-serif;line-height:1.6;color:#333;max-width:600px;margin:0 auto;padding:20px}.header{background:#4F46E5;color:white;padding:30px;text-align:center}.button{background:#4F46E5;color:white;padding:12px 30px;text-decoration:none;border-radius:4px;display:inline-block;margin:15px 0}</style></head><body><div class=\"header\"><h1>Complete Your Vote</h1></div><div style=\"padding:30px\"><p>Hi {{voter_name}},</p><p>Complete your payment to vote for <strong>{{nominee_name}}</strong>!</p><p><strong>Votes:</strong> {{votes}}</p><p><strong>Amount:</strong> GH\u20b5{{total_amount}}</p><p style=\"text-align:center\"><a href=\"{{payment_link}}\" class=\"button\">Pay Now</a></p><p style=\"color:#6b7280;font-size:14px\">Payment expires at {{expires_at}}</p></div></body></html>"
+}

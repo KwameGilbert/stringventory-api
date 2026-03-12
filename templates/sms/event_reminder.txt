@@ -1,0 +1,1 @@
+Reminder: {{event_name}} starts tomorrow at {{event_time}}. Location: {{location}}. See you!

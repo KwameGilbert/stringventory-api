@@ -1,0 +1,4 @@
+{
+    "subject": "Important Update - {{event_name}}",
+    "body": "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>body{font-family:Arial,sans-serif;line-height:1.6;color:#333;max-width:600px;margin:0 auto;padding:20px}.header{background:#F59E0B;color:white;padding:30px;text-align:center}</style></head><body><div class=\"header\"><h1>Event Update</h1></div><div style=\"padding:30px\"><p>Hi {{attendee_name}},</p><p>Important update for <strong>{{event_name}}</strong>:</p><p><strong>What Changed:</strong> {{changes}}</p><p>All other details remain the same. See you at the event!</p></div></body></html>"
+}

@@ -1,0 +1,313 @@
+### ============================================================
+### PAYOUTS API REQUESTS
+### Base URL: http://localhost:8000/v1
+### ============================================================
+
+### Variables
+@baseUrl = http://localhost:8000/v1
+@organizerToken = YOUR_ORGANIZER_JWT_TOKEN_HERE
+@adminToken = YOUR_ADMIN_JWT_TOKEN_HERE
+@eventId = 1
+@awardId = 1
+@payoutId = 1
+
+### ============================================================
+### ORGANIZER PAYOUT ROUTES
+### ============================================================
+
+### Get Organizer Balance
+GET {{baseUrl}}/organizers/finance/balance
+Authorization: Bearer {{organizerToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "balance": {
+#             "available_balance": 5000.00,
+#             "pending_balance": 1500.00,
+#             "pending_payouts": 1000.00,
+#             "net_available_balance": 4000.00,
+#             "total_earned": 15000.00,
+#             "total_withdrawn": 8500.00,
+#             "last_payout_at": "2025-12-20T12:00:00Z"
+#         },
+#         "can_request_payout": true,
+#         "minimum_payout": 100.00
+#     }
+# }
+
+###
+
+### Get Organizer Payout History
+GET {{baseUrl}}/organizers/finance/payouts
+Authorization: Bearer {{organizerToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "payouts": [
+#             {
+#                 "id": 1,
+#                 "amount": 1000.00,
+#                 "status": "completed",
+#                 "payment_method": "mobile_money",
+#                 "payout_type": "event",
+#                 "source": "Summer Music Festival",
+#                 "date": "Dec 20, 2025",
+#                 "method": "Mobile Money",
+#                 "accountEnding": "3054",
+#                 "events": ["Summer Music Festival"],
+#                 "created_at": "2025-12-20T12:00:00Z",
+#                 "processed_at": "2025-12-21T10:00:00Z"
+#             }
+#         ]
+#     }
+# }
+
+###
+
+### Request Event Payout
+POST {{baseUrl}}/organizers/finance/payouts/events/{{eventId}}
+Content-Type: application/json
+Authorization: Bearer {{organizerToken}}
+
+{
+    "amount": 500.00,
+    "payment_method": "mobile_money",
+    "account_details": {
+        "network": "MTN",
+        "phone": "+233249973054",
+        "name": "John Doe"
+    }
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Payout request submitted successfully",
+#     "data": {
+#         "payout": {
+#             "id": 10,
+#             "amount": 500.00,
+#             "status": "pending",
+#             "payment_method": "mobile_money",
+#             "payout_type": "event",
+#             "event": {
+#                 "id": 1,
+#                 "title": "Summer Music Festival"
+#             },
+#             "created_at": "2025-12-25T12:00:00Z"
+#         }
+#     }
+# }
+
+###
+
+### Request Event Payout (Bank Transfer)
+POST {{baseUrl}}/organizers/finance/payouts/events/{{eventId}}
+Content-Type: application/json
+Authorization: Bearer {{organizerToken}}
+
+{
+    "amount": 2000.00,
+    "payment_method": "bank_transfer",
+    "account_details": {
+        "bank_name": "Ghana Commercial Bank",
+        "account_number": "1234567890",
+        "account_name": "John Doe",
+        "branch": "Accra Main"
+    }
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Payout request submitted successfully",
+#     "data": {
+#         "payout": {...}
+#     }
+# }
+
+###
+
+### Request Award Payout
+POST {{baseUrl}}/organizers/finance/payouts/awards/{{awardId}}
+Content-Type: application/json
+Authorization: Bearer {{organizerToken}}
+
+{
+    "amount": 1000.00,
+    "payment_method": "mobile_money",
+    "account_details": {
+        "network": "Vodafone",
+        "phone": "+233209973054",
+        "name": "John Doe"
+    }
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Payout request submitted successfully",
+#     "data": {
+#         "payout": {
+#             "id": 11,
+#             "amount": 1000.00,
+#             "status": "pending",
+#             "payment_method": "mobile_money",
+#             "payout_type": "award",
+#             "award": {
+#                 "id": 1,
+#                 "title": "Ghana Music Awards"
+#             }
+#         }
+#     }
+# }
+
+###
+
+### Cancel Payout Request
+POST {{baseUrl}}/organizers/finance/payouts/{{payoutId}}/cancel
+Authorization: Bearer {{organizerToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Payout request cancelled successfully"
+# }
+
+###
+
+### ============================================================
+### ADMIN PAYOUT ROUTES
+### ============================================================
+
+### Get All Payouts (Admin)
+# Query Params: ?status=pending|processing|completed|rejected&page=1&per_page=20
+GET {{baseUrl}}/admin/payouts?status=pending&page=1
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "payouts": [
+#             {
+#                 "id": 1,
+#                 "amount": 1000.00,
+#                 "status": "pending",
+#                 "payment_method": "mobile_money",
+#                 "payout_type": "event",
+#                 "organizer": {
+#                     "id": 1,
+#                     "business_name": "Amazing Events",
+#                     "user_name": "John Organizer"
+#                 },
+#                 "source": "Summer Music Festival",
+#                 "account_details": {
+#                     "network": "MTN",
+#                     "phone": "+233249973054"
+#                 },
+#                 "created_at": "2025-12-25T12:00:00Z"
+#             }
+#         ],
+#         "pagination": {...}
+#     }
+# }
+
+###
+
+### Get Payout Summary (Admin)
+GET {{baseUrl}}/admin/payouts/summary
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "summary": {
+#             "pending_count": 5,
+#             "pending_amount": 5000.00,
+#             "processing_count": 2,
+#             "processing_amount": 3000.00,
+#             "completed_today": 3,
+#             "completed_today_amount": 2500.00,
+#             "completed_this_month": 50,
+#             "completed_this_month_amount": 75000.00,
+#             "rejected_this_month": 2,
+#             "rejected_this_month_amount": 500.00
+#         }
+#     }
+# }
+
+###
+
+### Approve Payout (Admin)
+POST {{baseUrl}}/admin/payouts/{{payoutId}}/approve
+Authorization: Bearer {{adminToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Payout approved and processing",
+#     "data": {
+#         "payout": {
+#             "id": 1,
+#             "status": "processing"
+#         }
+#     }
+# }
+
+###
+
+### Reject Payout (Admin)
+POST {{baseUrl}}/admin/payouts/{{payoutId}}/reject
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "reason": "Invalid account details provided"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Payout rejected",
+#     "data": {
+#         "payout": {
+#             "id": 1,
+#             "status": "rejected",
+#             "rejection_reason": "Invalid account details provided"
+#         }
+#     }
+# }
+
+###
+
+### Complete Payout (Admin)
+POST {{baseUrl}}/admin/payouts/{{payoutId}}/complete
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "transaction_reference": "TXN-ABC123XYZ",
+    "notes": "Payment sent via MTN Mobile Money"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Payout completed successfully",
+#     "data": {
+#         "payout": {
+#             "id": 1,
+#             "status": "completed",
+#             "transaction_reference": "TXN-ABC123XYZ",
+#             "processed_at": "2025-12-25T14:00:00Z"
+#         }
+#     }
+# }
+
+###

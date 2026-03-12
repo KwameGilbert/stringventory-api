@@ -1,0 +1,1 @@
+Voting is now open for {{event_name}} awards! Vote now: {{vote_link}}

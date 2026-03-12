@@ -1,0 +1,4 @@
+{
+    "subject": "\u23f0 Last Chance to Vote - {{event_name}}",
+    "body": "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>body{font-family:Arial,sans-serif;line-height:1.6;color:#333;max-width:600px;margin:0 auto;padding:20px}.header{background:#F59E0B;color:white;padding:30px;text-align:center}.button{background:#F59E0B;color:white;padding:12px 30px;text-decoration:none;border-radius:4px;display:inline-block;margin:15px 0}</style></head><body><div class=\"header\"><h1>Last Chance to Vote!</h1></div><div style=\"padding:30px\"><p>Voting for <strong>{{event_name}}</strong> awards ends in 24 hours!</p><p>Cast your votes now before it's too late!</p><p style=\"text-align:center\"><a href=\"{{vote_link}}\" class=\"button\">Vote Now</a></p><p><strong>Voting ends:</strong> {{ends_at}}</p></div></body></html>"
+}

@@ -1,0 +1,277 @@
+### ============================================================
+### AWARD VOTES API REQUESTS
+### Base URL: http://localhost:8000/v1/votes
+### ============================================================
+
+### Variables
+@baseUrl = http://localhost:8000/v1
+@authToken = YOUR_JWT_TOKEN_HERE
+@nomineeId = 1
+@categoryId = 1
+@awardId = 1
+
+### ============================================================
+### PUBLIC ROUTES (No Authentication Required)
+### Voting is open to everyone - no auth needed
+### ============================================================
+
+### Initiate a Vote (Create pending vote)
+POST {{baseUrl}}/votes/nominees/{{nomineeId}}
+Content-Type: application/json
+
+{
+    "number_of_votes": 10,
+    "voter_name": "John Doe",
+    "voter_email": "john@example.com",
+    "voter_phone": "+233249973054"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Vote initiated. Please complete payment.",
+#     "data": {
+#         "vote": {
+#             "id": 100,
+#             "reference": "VT-ABC123XYZ",
+#             "nominee_id": 1,
+#             "nominee_name": "Artist Name",
+#             "category_name": "Best Artist",
+#             "award_title": "Ghana Music Awards",
+#             "number_of_votes": 10,
+#             "vote_cost": 1.00,
+#             "gross_amount": 10.00,
+#             "net_amount": 9.50,
+#             "platform_fee": 0.50,
+#             "status": "pending"
+#         },
+#         "payment": {
+#             "authorization_url": "https://paystack.com/pay/xyz123",
+#             "access_code": "abc123",
+#             "reference": "VT-ABC123XYZ"
+#         }
+#     }
+# }
+
+###
+
+### Confirm Vote Payment (Paystack callback)
+POST {{baseUrl}}/votes/confirm
+Content-Type: application/json
+
+{
+    "reference": "VT-ABC123XYZ"
+}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "message": "Vote confirmed successfully",
+#     "data": {
+#         "vote": {
+#             "id": 100,
+#             "reference": "VT-ABC123XYZ",
+#             "status": "paid",
+#             "number_of_votes": 10,
+#             "nominee": {
+#                 "id": 1,
+#                 "name": "Artist Name",
+#                 "total_votes": 1510
+#             }
+#         }
+#     }
+# }
+
+###
+
+### Get Vote Details by Reference
+GET {{baseUrl}}/votes/reference/VT-ABC123XYZ
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "vote": {
+#             "id": 100,
+#             "reference": "VT-ABC123XYZ",
+#             "status": "paid",
+#             "number_of_votes": 10,
+#             "gross_amount": 10.00,
+#             "voter_name": "John Doe",
+#             "voter_email": "john@example.com",
+#             "nominee": {
+#                 "id": 1,
+#                 "name": "Artist Name"
+#             },
+#             "category": {
+#                 "id": 1,
+#                 "name": "Best Artist"
+#             },
+#             "award": {
+#                 "id": 1,
+#                 "title": "Ghana Music Awards"
+#             },
+#             "created_at": "2025-12-25T12:00:00Z"
+#         }
+#     }
+# }
+
+###
+
+### Get Votes for a Nominee
+# Query Params: ?status=pending|paid
+GET {{baseUrl}}/votes/nominees/{{nomineeId}}?status=paid
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "votes": [
+#             {
+#                 "id": 100,
+#                 "reference": "VT-ABC123XYZ",
+#                 "number_of_votes": 10,
+#                 "voter_name": "John Doe",
+#                 "status": "paid",
+#                 "created_at": "2025-12-25T12:00:00Z"
+#             }
+#         ],
+#         "summary": {
+#             "total_votes": 1500,
+#             "total_transactions": 150
+#         }
+#     }
+# }
+
+###
+
+### Get Votes for a Category
+# Query Params: ?status=pending|paid
+GET {{baseUrl}}/votes/award-categories/{{categoryId}}?status=paid
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "votes": [...],
+#         "summary": {
+#             "total_votes": 5000,
+#             "total_revenue": 5000.00
+#         }
+#     }
+# }
+
+###
+
+### Get Category Leaderboard (Public Display)
+GET {{baseUrl}}/votes/award-categories/{{categoryId}}/leaderboard
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "leaderboard": [
+#             {
+#                 "rank": 1,
+#                 "nominee_id": 1,
+#                 "nominee_name": "Artist A",
+#                 "nominee_image": "https://...",
+#                 "total_votes": 1500,
+#                 "percentage": 30.0
+#             },
+#             {
+#                 "rank": 2,
+#                 "nominee_id": 2,
+#                 "nominee_name": "Artist B",
+#                 "total_votes": 1200,
+#                 "percentage": 24.0
+#             }
+#         ],
+#         "category": {
+#             "id": 1,
+#             "name": "Best Artist of the Year",
+#             "total_votes": 5000
+#         }
+#     }
+# }
+
+###
+
+### ============================================================
+### PROTECTED ROUTES (Authentication Required - Organizer/Admin)
+### ============================================================
+
+### Get All Votes for an Award
+# Query Params: ?status=pending|paid
+GET {{baseUrl}}/votes/awards/{{awardId}}?status=paid
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "votes": [
+#             {
+#                 "id": 100,
+#                 "reference": "VT-ABC123XYZ",
+#                 "number_of_votes": 10,
+#                 "gross_amount": 10.00,
+#                 "voter_name": "John Doe",
+#                 "voter_email": "john@example.com",
+#                 "nominee_name": "Artist A",
+#                 "category_name": "Best Artist",
+#                 "status": "paid",
+#                 "created_at": "2025-12-25T12:00:00Z"
+#             }
+#         ],
+#         "summary": {
+#             "total_votes": 50000,
+#             "total_revenue": 50000.00,
+#             "total_transactions": 5000
+#         }
+#     }
+# }
+
+###
+
+### Get Comprehensive Award Vote Statistics
+GET {{baseUrl}}/votes/awards/{{awardId}}/stats
+Authorization: Bearer {{authToken}}
+
+### Expected Response:
+# {
+#     "success": true,
+#     "data": {
+#         "award": {
+#             "id": 1,
+#             "title": "Ghana Music Awards"
+#         },
+#         "stats": {
+#             "total_votes": 50000,
+#             "total_revenue": 50000.00,
+#             "net_revenue": 47500.00,
+#             "platform_fees": 2500.00,
+#             "total_transactions": 5000,
+#             "average_votes_per_transaction": 10
+#         },
+#         "categories": [
+#             {
+#                 "id": 1,
+#                 "name": "Best Artist",
+#                 "total_votes": 5000,
+#                 "revenue": 5000.00,
+#                 "top_nominee": {
+#                     "id": 1,
+#                     "name": "Artist A",
+#                     "votes": 1500
+#                 }
+#             }
+#         ],
+#         "daily_trend": [
+#             {"date": "2025-12-20", "votes": 1000, "revenue": 1000.00},
+#             {"date": "2025-12-21", "votes": 1500, "revenue": 1500.00}
+#         ]
+#     }
+# }
+
+###

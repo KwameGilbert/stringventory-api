@@ -1,0 +1,6 @@
+{
+    "name": "ticket_confirmation",
+    "subject": "Your Tickets Are Confirmed! 🎟️ - Eventic",
+    "preheader": "Great news! Your tickets have been confirmed. View your tickets and event details inside.",
+    "content_file": "ticket_confirmation.html"
+}

@@ -1,0 +1,1 @@
+Order #{{order_id}} confirmed for {{event_name}}. Complete payment: {{payment_link}}

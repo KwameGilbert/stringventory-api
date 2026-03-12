@@ -1,0 +1,1 @@
+Your {{total_tickets}} tickets for {{event_name}} are ready! Check email for QR codes.

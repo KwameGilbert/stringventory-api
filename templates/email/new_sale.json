@@ -1,0 +1,4 @@
+{
+    "subject": "\ud83d\udcb0 New Sale - {{event_name}}",
+    "body": "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>body{font-family:Arial,sans-serif;line-height:1.6;color:#333;max-width:600px;margin:0 auto;padding:20px}.header{background:#10B981;color:white;padding:30px;text-align:center}.content{padding:30px}.amount{font-size:28px;color:#10B981;font-weight:bold}</style></head><body><div class=\"header\"><h1>New Ticket Sale!</h1></div><div class=\"content\"><p>Hi {{organizer_name}},</p><p>You just made a sale for <strong>{{event_name}}</strong>!</p><div class=\"amount\">GH\u20b5 {{amount}}</div><p><strong>Customer:</strong> {{customer_name}}</p><p><strong>Tickets Sold:</strong> {{tickets_sold}}</p><p><strong>Order ID:</strong> #{{order_id}}</p></div></body></html>"
+}
