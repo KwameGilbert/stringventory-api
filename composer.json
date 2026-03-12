@@ -6,12 +6,12 @@
   "scripts": {
     "start": "php -S localhost:8080 -t public",
     "test": "phpunit",
-    "phinx-create-migration": "phinx create",
-    "phinx-migrate": "phinx migrate",
-    "phinx-create-seed": "phinx seed:create",
-    "phinx-status": "phinx status",
-    "phinx-seed": "phinx seed:run",
-    "phinx-rollback": "phinx rollback"
+    "phinx:create-migration": "phinx create",
+    "phinx:migrate": "phinx migrate",
+    "phinx:create-seed": "phinx seed:create",
+    "phinx:status": "phinx status",
+    "phinx:seed": "phinx seed:run",
+    "phinx:rollback": "phinx rollback"
   },
   "autoload": {
     "psr-4": {
@@ -21,7 +21,8 @@
       "App\\Services\\": "src/services/",
       "App\\Helper\\": "src/helpers/",
       "App\\Middleware\\": "src/middleware/",
-      "App\\Routes\\": "src/routes/"
+      "App\\Routes\\": "src/routes/",
+      "App\\Config\\": "src/config"
     }
   },
   "require": {

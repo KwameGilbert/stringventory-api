@@ -6,7 +6,7 @@ use Dotenv\Dotenv;
 
 // Load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+$dotenv->safeLoad();
 
 // Check environment - default to local if not specified
 $env = isset($_ENV['APP_ENV']) ? $_ENV['APP_ENV'] : 'development';
@@ -92,8 +92,8 @@ if ($prodSslMode) {
 
 return [
     'paths' => [
-        'migrations' => '%%PHINX_CONFIG_DIR%%/database/migrations',
-        'seeds' => '%%PHINX_CONFIG_DIR%%/database/seeds'
+        'migrations' => '%%PHINX_CONFIG_DIR%%/src/database/migrations',
+        'seeds' => '%%PHINX_CONFIG_DIR%%/src/database/seeds'
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',
