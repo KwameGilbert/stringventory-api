@@ -26,7 +26,7 @@ return function (App $app) {
 
     // Password reset routes (public)
     $app->post('/v1/auth/password/forgot', [$passwordResetController, 'requestReset']);
-    $app->post('/v1/auth/password/reset', [$passwordResetController, 'resetPassword']);
+    $app->post('/v1/auth/password/reset', [$passwordResetController, 'reset']);
 
     // Email verification routes (public)
     $app->get('/v1/auth/verify-email', [$authController, 'verifyEmail']);

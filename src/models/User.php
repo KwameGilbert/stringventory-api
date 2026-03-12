@@ -9,208 +9,79 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * User Model
  * 
- * Represents a user in the system.
- * Merges functionality for authentication, relationships, and status checks.
- *
  * @property int $id
- * @property string $name
+ * @property string $firstName
+ * @property string $lastName
+ * @property string $role
  * @property string $email
  * @property string|null $phone
- * @property string $password
- * @property string|null $remember_token
- * @property string $role
- * @property bool $email_verified
- * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $status
- * @property bool $first_login
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $last_login_at
- * @property string|null $last_login_ip
+ * @property string $passwordHash
+ * @property string|null $profileImage
+ * @property bool $emailVerified
+ * @property \Illuminate\Support\Carbon|null $lastLogin
+ * @property \Illuminate\Support\Carbon|null $createdAt
+ * @property \Illuminate\Support\Carbon|null $updatedAt
  */
 class User extends Model
 {
-    /**
-     * The table associated with the model.
-     * @var string
-     */
     protected $table = 'users';
-
-    /**
-     * The primary key for the model.
-     * @var string
-     */
     protected $primaryKey = 'id';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     * @var bool
-     */
     public $incrementing = true;
+    public $timestamps = false; // Using custom datetime columns
 
-    /**
-     * Indicates if the model should be timestamped.
-     * @var bool
-     */
-    public $timestamps = true;
-
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
+    const CREATED_AT = 'createdAt';
+    const UPDATED_AT = 'updatedAt';
 
     // Roles
-    const ROLE_ADMIN = 'admin';
-    const ROLE_ORGANIZER = 'organizer';
-    const ROLE_ATTENDEE = 'attendee';
-    const ROLE_POS = 'pos';
-    const ROLE_SCANNER = 'scanner';
+    const ROLE_CEO = 'ceo';
+    const ROLE_MANAGER = 'manager';
+    const ROLE_SALESPERSON = 'salesperson';
 
     // Status
     const STATUS_ACTIVE = 'active';
     const STATUS_INACTIVE = 'inactive';
     const STATUS_SUSPENDED = 'suspended';
 
-    /**
-     * The attributes that are mass assignable.
-     * @var array
-     */
     protected $fillable = [
-        'name',
+        'firstName',
+        'lastName',
+        'role',
         'email',
         'phone',
-        'password',
-        'remember_token',
-        'role',
-        'email_verified',
-        'email_verified_at',
         'status',
-        'first_login',
-        'last_login_at',
-        'last_login_ip',
+        'passwordHash',
+        'profileImage',
+        'emailVerified',
+        'lastLogin',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     * @var array
-     */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'passwordHash',
     ];
 
-    /**
-     * The attributes that should be cast.
-     * @var array
-     */
     protected $casts = [
-        'email_verified' => 'boolean',
-        'first_login' => 'boolean',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'email_verified_at' => 'datetime',
-        'last_login_at' => 'datetime',
+        'emailVerified' => 'boolean',
+        'lastLogin' => 'datetime',
+        'createdAt' => 'datetime',
+        'updatedAt' => 'datetime',
     ];
-
-    /* -----------------------------------------------------------------
-     |  Mutators & Accessors
-     | -----------------------------------------------------------------
-     */
 
     /**
      * Auto-hash password with Argon2id on set.
-     * * @param string $value
-     * @return void
      */
-    public function setPasswordAttribute($value)
+    public function setPasswordHashAttribute($value)
     {
-        // Check if value is already hashed (starts with $argon2 or $2y$)
         if (preg_match('/^(\$argon2|\$2y\$)/', $value)) {
-            $this->attributes['password'] = $value;
+            $this->attributes['passwordHash'] = $value;
         } else {
-            // Hash with Argon2id
-            $this->attributes['password'] = password_hash($value, PASSWORD_ARGON2ID, [
-                'memory_cost' => 65536,  // 64 MB
-                'time_cost' => 4,        // 4 iterations
-                'threads' => 2           // 2 parallel threads
-            ]);
+            $this->attributes['passwordHash'] = password_hash($value, PASSWORD_ARGON2ID);
         }
     }
 
-    /* -----------------------------------------------------------------
-     |  Static Search Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Get user by email.
-     * * @param string $email
-     * @return User|null
-     */
-    public static function findByEmail(string $email): ?User
+    public function getFullNameAttribute(): string
     {
-        return static::where('email', $email)->first();
-    }
-
-    /**
-     * Check if email exists.
-     * * @param string $email Email to check
-     * @param int|null $excludeId Optional user ID to exclude (useful for updates)
-     * @return bool
-     */
-    public static function emailExists(string $email, ?int $excludeId = null): bool
-    {
-        $query = static::where('email', $email);
-        
-        if ($excludeId) {
-            $query->where('id', '!=', $excludeId);
-        }
-        
-        return $query->exists();
-    }
-
-    /**
-     * Get all active users.
-     * * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public static function getActiveUsers()
-    {
-        return static::where('status', 'active')->get();
-    }
-
-    /* -----------------------------------------------------------------
-     |  Helper Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Check if email is verified.
-     */
-    public function hasVerifiedEmail(): bool
-    {
-        return !is_null($this->email_verified_at);
-    }
-
-    /**
-     * Check if user is organizer.
-     */
-    public function isOrganizer(): bool
-    {
-        return $this->role === 'organizer';
-    }
-
-    /**
-     * Check if user is admin.
-     */
-    public function isAdmin(): bool
-    {
-        return $this->role === 'admin';
-    }
-
-    /**
-     * Check if user is active.
-     */
-    public function isActive(): bool
-    {
-        return $this->status === 'active';
+        return "{$this->firstName} {$this->lastName}";
     }
 
     /* -----------------------------------------------------------------
@@ -218,23 +89,13 @@ class User extends Model
      | -----------------------------------------------------------------
      */
     
-    public function organizer()
-    {
-        return $this->hasOne(Organizer::class, 'user_id');
-    }
-
-    public function attendee()
-    {
-        return $this->hasOne(Attendee::class, 'user_id');
-    }
-
     public function refreshTokens()
     {
-        return $this->hasMany(RefreshToken::class);
+        return $this->hasMany(RefreshToken::class, 'userId');
     }
 
     public function auditLogs()
     {
-        return $this->hasMany(AuditLog::class);
+        return $this->hasMany(AuditLog::class, 'userId');
     }
 }

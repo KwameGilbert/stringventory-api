@@ -11,44 +11,21 @@ return function ($app): void {
         // Auth & Users
         '/v1/auth' => ROUTE . 'v1/AuthRoute.php',
         '/v1/users' => ROUTE . 'v1/UserRoute.php',
+        '/v1/categories' => ROUTE . 'v1/CategoryRoute.php',
+        '/v1/suppliers' => ROUTE . 'v1/SupplierRoute.php',
+        '/v1/expense-categories' => ROUTE . 'v1/ExpenseCategoryRoute.php',
+        '/v1/discounts' => ROUTE . 'v1/DiscountRoute.php',
+        '/v1/products' => ROUTE . 'v1/ProductRoute.php',
+        '/v1/customers' => ROUTE . 'v1/CustomerRoute.php',
+        '/v1/expenses' => ROUTE . 'v1/ExpenseRoute.php',
+        '/v1/inventory' => ROUTE . 'v1/InventoryRoute.php',
+        '/v1/refunds' => ROUTE . 'v1/RefundRoute.php',
+        '/v1/expense-schedules' => ROUTE . 'v1/ExpenseScheduleRoute.php',
+        '/v1/transactions' => ROUTE . 'v1/TransactionRoute.php',
+        '/v1/audit-logs' => ROUTE . 'v1/AuditLogRoute.php',
+        '/v1/purchases' => ROUTE . 'v1/PurchaseRoute.php',
 
-        // Organizers (specific routes first)
-        '/v1/organizers/finance' => ROUTE . 'v1/PayoutRoute.php',
-        '/v1/organizers' => ROUTE . 'v1/OrganizerRoute.php',
 
-        // Attendees
-        '/v1/attendees' => ROUTE . 'v1/AttendeeRoute.php',
-
-        // Events & related
-        '/v1/event-images' => ROUTE . 'v1/EventImageRoute.php',
-        '/v1/events' => ROUTE . 'v1/EventRoute.php',
-
-        // Tickets
-        '/v1/ticket-types' => ROUTE . 'v1/TicketTypeRoute.php',
-        '/v1/tickets' => ROUTE . 'v1/TicketRoute.php',
-
-        // Orders & Payments
-        '/v1/orders' => ROUTE . 'v1/OrderRoute.php',
-        '/v1/payment' => ROUTE . 'v1/OrderRoute.php', // Paystack webhook
-
-        // Scanners & POS
-        '/v1/scanners' => ROUTE . 'v1/ScannerRoute.php',
-        '/v1/pos' => ROUTE . 'v1/PosRoute.php',
-
-        // Awards & related
-        '/v1/award-categories' => ROUTE . 'v1/AwardCategoryRoute.php',
-        '/v1/awards' => ROUTE . 'v1/AwardRoute.php',
-        '/v1/nominees' => ROUTE . 'v1/AwardNomineeRoute.php',
-        '/v1/votes' => ROUTE . 'v1/AwardVoteRoute.php',
-
-        // Utils
-        '/v1/utils' => ROUTE . 'v1/UtilsRoute.php',
-
-        // Admin (specific routes first)
-        '/v1/admin/payouts' => ROUTE . 'v1/PayoutRoute.php',
-        '/v1/admin/analytics' => ROUTE . 'v1/AdminRoute.php',
-        '/v1/admin/settings' => ROUTE . 'v1/AdminRoute.php',
-        '/v1/admin' => ROUTE . 'v1/AdminRoute.php',
     ];
 
     $loadedFiles = [];

@@ -12,11 +12,7 @@ use Exception;
 /**
  * PasswordResetService
  * 
- * Handles password reset functionality:
- * - Generate reset tokens
- * - Send reset emails
- * - Validate tokens
- * - Reset passwords
+ * Handles password reset functionality for Stringventory.
  */
 class PasswordResetService
 {
@@ -31,50 +27,38 @@ class PasswordResetService
 
     /**
      * Send password reset link to user's email
-     *
-     * @param string $email User email
-     * @param string $ipAddress Request IP
-     * @return bool Success
      */
     public function sendResetLink(string $email, string $ipAddress = 'unknown'): bool
     {
         try {
-            // Find user
             $user = User::where('email', $email)->first();
             
             if (!$user) {
-                // Don't reveal if email exists (security measure)
-                return true;
+                return true; // Honey pots
             }
 
-            // Delete any existing tokens for this email
-            PasswordReset::deleteForEmail($email);
+            PasswordReset::where('email', $email)->delete();
 
-            // Generate new token
             $plainToken = bin2hex(random_bytes(32));
             $tokenHash = hash('sha256', $plainToken);
 
-            // Store hashed token
             PasswordReset::create([
                 'email' => $email,
                 'token' => $tokenHash,
-                'created_at' => date('Y-m-d H:i:s')
+                'createdAt' => date('Y-m-d H:i:s')
             ]);
 
             // Log the request
-            AuditLog::logEvent(
-                $user->id,
-                AuditLog::ACTION_PASSWORD_RESET_REQUESTED,
-                $ipAddress,
-                null,
-                ['email' => $email]
-            );
+            AuditLog::create([
+                'userId' => $user->id,
+                'action' => 'password_reset_requested',
+                'ipAddress' => $ipAddress,
+                'metadata' => ['email' => $email]
+            ]);
 
-            // Send email with plain token
             $this->emailService->sendPasswordResetEmail($user, $plainToken);
 
             return true;
-
         } catch (Exception $e) {
             error_log('Password reset error: ' . $e->getMessage());
             return false;
@@ -82,83 +66,42 @@ class PasswordResetService
     }
 
     /**
-     * Validate reset token
-     *
-     * @param string $email User email
-     * @param string $token Plain text token
-     * @return bool Valid
+     * Validate and reset user password
      */
-    public function validateResetToken(string $email, string $token): bool
+    public function resetPassword(string $email, string $token, string $newPassword, string $ipAddress = 'unknown'): bool
     {
-        $tokenHash = hash('sha256', $token);
-
-        return PasswordReset::where('email', $email)
-            ->where('token', $tokenHash)
-            ->where('created_at', '>', date('Y-m-d H:i:s', time() - $this->tokenExpiry))
-            ->exists();
-    }
-
-    /**
-     * Reset user password
-     *
-     * @param string $email User email
-     * @param string $token Reset token
-     * @param string $newPassword New password
-     * @param string $ipAddress Request IP
-     * @return bool Success
-     */
-    public function resetPassword(
-        string $email,
-        string $token,
-        string $newPassword,
-        string $ipAddress = 'unknown'
-    ): bool {
         try {
-            // Validate token
-            if (!$this->validateResetToken($email, $token)) {
+            $tokenHash = hash('sha256', $token);
+            $resetToken = PasswordReset::where('email', $email)
+                ->where('token', $tokenHash)
+                ->where('createdAt', '>', date('Y-m-d H:i:s', time() - $this->tokenExpiry))
+                ->first();
+
+            if (!$resetToken) {
                 return false;
             }
 
-            // Find user
             $user = User::where('email', $email)->first();
-            
             if (!$user) {
                 return false;
             }
 
-            // Update password (will be auto-hashed by User model)
-            $user->update(['password' => $newPassword]);
+            $user->update(['passwordHash' => $newPassword]);
+            PasswordReset::where('email', $email)->delete();
 
-            // Delete used token
-            PasswordReset::deleteForEmail($email);
+            AuditLog::create([
+                'userId' => $user->id,
+                'action' => 'password_reset_completed',
+                'ipAddress' => $ipAddress,
+                'metadata' => ['email' => $email]
+            ]);
 
-            // Log the password change
-            AuditLog::logEvent(
-                $user->id,
-                AuditLog::ACTION_PASSWORD_RESET_COMPLETED,
-                $ipAddress,
-                null,
-                ['email' => $email]
-            );
-
-            // Send confirmation email
             $this->emailService->sendPasswordChangedEmail($user);
 
             return true;
-
         } catch (Exception $e) {
             error_log('Password reset completion error: ' . $e->getMessage());
             return false;
         }
-    }
-
-    /**
-     * Cleanup expired tokens (run via cron)
-     *
-     * @return int Number of tokens deleted
-     */
-    public function cleanupExpiredTokens(): int
-    {
-        return PasswordReset::cleanupExpired();
     }
 }

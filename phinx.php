@@ -92,8 +92,8 @@ if ($prodSslMode) {
 
 return [
     'paths' => [
-        'migrations' => '%%PHINX_CONFIG_DIR%%/src/database/migrations',
-        'seeds' => '%%PHINX_CONFIG_DIR%%/src/database/seeds'
+        'migrations' => '%%PHINX_CONFIG_DIR%%/database/migrations',
+        'seeds' => '%%PHINX_CONFIG_DIR%%/database/seeds'
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',

@@ -6,6 +6,8 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Helper\ResponseHelper;
+use App\Services\VerificationService;
+use App\Services\UploadService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exception;
@@ -16,6 +18,15 @@ use Exception;
  */
 class UserController
 {
+    private VerificationService $verificationService;
+    private UploadService $uploadService;
+
+    public function __construct(VerificationService $verificationService, UploadService $uploadService)
+    {
+        $this->verificationService = $verificationService;
+        $this->uploadService = $uploadService;
+    }
+
     /**
      * Get all users
      */
@@ -59,20 +70,39 @@ class UserController
     {
         try {
             $data = $request->getParsedBody();
-            
+            $uploadedFiles = $request->getUploadedFiles();
+
             // Validate required fields
-            if (empty($data['name']) || empty($data['email'])) {
-                return ResponseHelper::error($response, 'Name and email are required', 400);
+            if (empty($data['firstName']) || empty($data['lastName']) || empty($data['email'])) {
+                return ResponseHelper::error($response, 'First Name, Last Name and email are required', 400);
             }
             
             // Check if email already exists
-            if (User::emailExists($data['email'])) {
+            if (User::where('email', $data['email'])->exists()) {
                 return ResponseHelper::error($response, 'Email already exists', 409);
+            }
+
+            // Handle profile image upload
+            if (!empty($uploadedFiles['profileImage'])) {
+                $file = $uploadedFiles['profileImage'];
+                if ($file->getError() === UPLOAD_ERR_OK) {
+                    $data['profileImage'] = $this->uploadService->uploadFile($file, 'avatar', 'users');
+                }
+            }
+            
+            // If no password is provided, generate a random one
+            if (empty($data['passwordHash']) && empty($data['password'])) {
+                $data['passwordHash'] = bin2hex(random_bytes(8));
+            } elseif (!empty($data['password'])) {
+                $data['passwordHash'] = $data['password'];
             }
             
             $user = User::create($data);
+
+            // Send verification email
+            $this->verificationService->sendVerificationEmail($user);
             
-            return ResponseHelper::success($response, 'User created successfully', $user->toArray(), 201);
+            return ResponseHelper::success($response, 'User created successfully and verification email sent', $user->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create user', 500, $e->getMessage());
         }
@@ -86,6 +116,7 @@ class UserController
         try {
             $id = $args['id'];
             $data = $request->getParsedBody();
+            $uploadedFiles = $request->getUploadedFiles();
             
             $user = User::find($id);
             
@@ -95,13 +126,21 @@ class UserController
 
             // Authorization: Check if user is admin or the account owner
             $requestUser = $request->getAttribute('user');
-            if ($requestUser->role !== 'admin' && (int)$id !== $requestUser->id) {
+            if ($requestUser->role !== User::ROLE_CEO && (int)$id !== (int)$requestUser->id) {
                 return ResponseHelper::error($response, 'Unauthorized: You can only update your own profile', 403);
             }
             
             // Check email uniqueness if email is being updated
-            if (isset($data['email']) && User::emailExists($data['email'], (int)$id)) {
+            if (isset($data['email']) && User::where('email', $data['email'])->where('id', '!=', $id)->exists()) {
                 return ResponseHelper::error($response, 'Email already exists', 409);
+            }
+
+            // Handle profile image upload
+            if (!empty($uploadedFiles['profileImage'])) {
+                $file = $uploadedFiles['profileImage'];
+                if ($file->getError() === UPLOAD_ERR_OK) {
+                    $data['profileImage'] = $this->uploadService->replaceFile($file, $user->profileImage, 'avatar', 'users');
+                }
             }
             
             $user->update($data);
@@ -127,8 +166,13 @@ class UserController
 
             // Authorization: Check if user is admin or the account owner
             $requestUser = $request->getAttribute('user');
-            if ($requestUser->role !== 'admin' && (int)$id !== $requestUser->id) {
+            if ($requestUser->role !== User::ROLE_CEO && (int)$id !== (int)$requestUser->id) {
                 return ResponseHelper::error($response, 'Unauthorized: You can only delete your own profile', 403);
+            }
+
+            // Delete associated image
+            if ($user->profileImage) {
+                $this->uploadService->deleteFile($user->profileImage);
             }
             
             $user->delete();

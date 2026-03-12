@@ -9,69 +9,44 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * OrderItem Model
  * 
- * Represents a line item in an order.
- *
  * @property int $id
- * @property int $order_id
- * @property int $event_id
- * @property int $ticket_type_id
+ * @property int $orderId
+ * @property int|null $productId
+ * @property float|null $costPrice
+ * @property float|null $sellingPrice
  * @property int $quantity
- * @property float $unit_price
- * @property float $total_price
- * @property float $admin_share_percent
- * @property float $admin_amount
- * @property float $organizer_amount
- * @property float $payment_fee
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property float|null $totalPrice
  */
 class OrderItem extends Model
 {
-    protected $table = 'order_items';
-    protected $primaryKey = 'id';
-    public $incrementing = true;
-    public $timestamps = true;
+    protected $table = 'orderItems';
+    public $timestamps = false; // No timestamps in migration
 
     protected $fillable = [
-        'order_id',
-        'event_id',
-        'ticket_type_id',
+        'orderId',
+        'productId',
+        'costPrice',
+        'sellingPrice',
         'quantity',
-        'unit_price',
-        'total_price',
-        'admin_share_percent',
-        'admin_amount',
-        'organizer_amount',
-        'payment_fee',
+        'totalPrice',
     ];
 
     protected $casts = [
-        'order_id' => 'integer',
-        'event_id' => 'integer',
-        'ticket_type_id' => 'integer',
+        'orderId' => 'integer',
+        'productId' => 'integer',
+        'costPrice' => 'float',
+        'sellingPrice' => 'float',
         'quantity' => 'integer',
-        'unit_price' => 'decimal:2',
-        'total_price' => 'decimal:2',
-        'admin_share_percent' => 'decimal:2',
-        'admin_amount' => 'decimal:2',
-        'organizer_amount' => 'decimal:2',
-        'payment_fee' => 'decimal:2',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'totalPrice' => 'float',
     ];
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'order_id');
+        return $this->belongsTo(Order::class, 'orderId');
     }
 
-    public function event()
+    public function product()
     {
-        return $this->belongsTo(Event::class, 'event_id');
-    }
-
-    public function ticketType()
-    {
-        return $this->belongsTo(TicketType::class, 'ticket_type_id');
+        return $this->belongsTo(Product::class, 'productId');
     }
 }

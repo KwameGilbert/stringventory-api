@@ -1,6 +1,6 @@
 {
     "name": "welcome",
-    "subject": "Welcome to Eventic! 🎉",
-    "preheader": "Welcome to Eventic! Start exploring events and booking tickets today.",
+    "subject": "Welcome to Stringventory! 🎉",
+    "preheader": "Welcome to Stringventory! Manage your inventory with ease.",
     "content_file": "welcome.html"
 }

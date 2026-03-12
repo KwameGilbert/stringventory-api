@@ -11,6 +11,7 @@ use App\Services\SMSService;
 use App\Services\AuthService;
 use App\Services\PasswordResetService;
 use App\Services\VerificationService;
+use App\Services\ExpenseService;
 use App\Controllers\AuthController;
 use App\Controllers\UserController;
 use App\Controllers\OrganizerController;
@@ -27,7 +28,21 @@ use App\Controllers\AwardController;
 use App\Controllers\AwardCategoryController;
 use App\Controllers\AwardNomineeController;
 use App\Controllers\AwardVoteController;
+use App\Controllers\CategoryController;
+use App\Controllers\SupplierController;
+use App\Controllers\ExpenseCategoryController;
+use App\Controllers\DiscountController;
+use App\Controllers\ProductController;
+use App\Controllers\CustomerController;
+use App\Controllers\ExpenseController;
+use App\Controllers\InventoryController;
+use App\Controllers\RefundController;
+use App\Controllers\PurchaseController;
+use App\Controllers\ExpenseScheduleController;
+use App\Controllers\TransactionController;
+use App\Controllers\AuditLogController;
 use App\Middleware\AuthMiddleware;
+use App\Middleware\RoleMiddleware;
 use App\Middleware\RateLimitMiddleware;
 use App\Middleware\JsonBodyParserMiddleware;
 
@@ -80,15 +95,26 @@ return function ($container) {
     $container->set(\Psr\Http\Message\ResponseFactoryInterface::class, function () {
         return new \Slim\Psr7\Factory\ResponseFactory();
     });
+
+    $container->set(ExpenseService::class, function () {
+        return new ExpenseService();
+    });
     
     // ==================== CONTROLLERS ====================
     
     $container->set(AuthController::class, function ($container) {
-        return new AuthController($container->get(AuthService::class));
+        return new AuthController(
+            $container->get(AuthService::class),
+            $container->get(VerificationService::class),
+            $container->get(EmailService::class)
+        );
     });
     
-    $container->set(UserController::class, function () {
-        return new UserController();
+    $container->set(UserController::class, function ($container) {
+        return new UserController(
+            $container->get(VerificationService::class),
+            $container->get(\App\Services\UploadService::class)
+        );
     });
 
     $container->set(OrganizerController::class, function () {
@@ -98,7 +124,7 @@ return function ($container) {
     $container->set(PasswordResetController::class, function ($container) {
         return new PasswordResetController(
             $container->get(AuthService::class),
-            $container->get(EmailService::class)
+            $container->get(PasswordResetService::class)
         );
     });
 
@@ -120,10 +146,8 @@ return function ($container) {
         return new TicketTypeController();
     });
 
-   $container->set(OrderController::class, function ($container) {
-        return new OrderController(
-            $container->get(\App\Services\NotificationService::class)
-        );
+    $container->set(OrderController::class, function () {
+        return new OrderController();
     });
 
     $container->set(TicketController::class, function () {
@@ -138,10 +162,8 @@ return function ($container) {
         return new PosController();
     });
 
-    $container->set(AwardController::class, function ($container) {
-        return new AwardController(
-            $container->get(\App\Services\UploadService::class)
-        );
+    $container->set(AwardController::class, function () {
+        return new AwardController();
     });
 
     $container->set(AwardCategoryController::class, function () {
@@ -156,6 +178,64 @@ return function ($container) {
 
     $container->set(AwardVoteController::class, function () {
         return new AwardVoteController();
+    });
+
+    $container->set(CategoryController::class, function ($container) {
+        return new CategoryController(
+            $container->get(\App\Services\UploadService::class)
+        );
+    });
+
+    $container->set(SupplierController::class, function ($container) {
+        return new SupplierController(
+            $container->get(\App\Services\UploadService::class)
+        );
+    });
+
+    $container->set(ExpenseCategoryController::class, function () {
+        return new ExpenseCategoryController();
+    });
+
+    $container->set(DiscountController::class, function () {
+        return new DiscountController();
+    });
+
+    $container->set(ProductController::class, function ($container) {
+        return new ProductController(
+            $container->get(\App\Services\UploadService::class)
+        );
+    });
+
+    $container->set(CustomerController::class, function () {
+        return new CustomerController();
+    });
+
+    $container->set(ExpenseController::class, function () {
+        return new ExpenseController();
+    });
+
+    $container->set(InventoryController::class, function () {
+        return new InventoryController();
+    });
+
+    $container->set(RefundController::class, function () {
+        return new RefundController();
+    });
+
+    $container->set(PurchaseController::class, function () {
+        return new PurchaseController();
+    });
+
+    $container->set(ExpenseScheduleController::class, function ($container) {
+        return new ExpenseScheduleController($container->get(ExpenseService::class));
+    });
+
+    $container->set(TransactionController::class, function () {
+        return new TransactionController();
+    });
+
+    $container->set(AuditLogController::class, function () {
+        return new AuditLogController();
     });
     
     // ==================== MIDDLEWARES ====================

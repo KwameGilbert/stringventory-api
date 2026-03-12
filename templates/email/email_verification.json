@@ -1,6 +1,6 @@
 {
     "name": "email_verification",
-    "subject": "Verify Your Email Address - Eventic",
-    "preheader": "Please verify your email address to activate your Eventic account.",
+    "subject": "Verify Your Email Address - Stringventory",
+    "preheader": "Please verify your email address to activate your Stringventory account.",
     "content_file": "email_verification.html"
 }

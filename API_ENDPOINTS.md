@@ -26,9 +26,10 @@
 ---
 
 # 🔐 AUTHENTICATION
+Prefix: `/v1/auth`
 
 ## 1. Register User
-- **Endpoint:** `POST /auth/register`
+- **Endpoint:** `POST /v1/auth/register`
 - **Auth Required:** No
 - **Request Body:**
 ```json
@@ -38,34 +39,34 @@
   "email": "john@example.com",
   "phone": "+1234567890",
   "password": "SecurePassword123!",
-  "confirmPassword": "SecurePassword123!",
-  "businessName": "John's Store",
-  "businessType": "retail",
-  "role": "CEO"
+  "role": "ceo"
 }
 ```
 - **Response (201 Created):**
 ```json
 {
   "status": "success",
-  "message": "User registered successfully. Verification email sent.",
+  "message": "User registered successfully. Please verify your email.",
   "data": {
-    "id": "user_12345",
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "john@example.com",
-    "phone": "+1234567890",
-    "status": "pending_verification",
-    "role": "CEO"
-},
-  "token": null
+    "user": {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john@example.com",
+      "role": "ceo"
+    },
+    "access_token": "eyJhbG...",
+    "refresh_token": "eyJhbG...",
+    "token_type": "Bearer",
+    "expires_in": 3600
+  }
 }
 ```
 
 ---
 
 ## 2. Login
-- **Endpoint:** `POST /auth/login`
+- **Endpoint:** `POST /v1/auth/login`
 - **Auth Required:** No
 - **Request Body:**
 ```json
@@ -78,23 +79,19 @@
 ```json
 {
   "status": "success",
-  "message": "User logged in successfully",
+  "message": "Login successful",
   "data": {
-    "id": "user_12345",
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "john@example.com",
-    "phone": "+1234567890",
-    "role": "CEO",
-    "status": "active",
-    "businessId": "business_88234",
-    "subscriptionPlan": "professional",
-    "subscriptionStatus": "active"
-  },
-  "tokens": {
-    "accessToken": "eyJhbGc...",
-    "refreshToken": "eyJhbGc...",
-    "expiresIn": 3600
+    "user": {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john@example.com",
+      "role": "ceo"
+    },
+    "access_token": "eyJhbG...",
+    "refresh_token": "eyJhbG...",
+    "expires_in": 3600,
+    "token_type": "Bearer"
   }
 }
 ```
@@ -102,12 +99,12 @@
 ---
 
 ## 3. Refresh Token
-- **Endpoint:** `POST /auth/refresh-token`
-- **Auth Required:** No (uses refresh token)
+- **Endpoint:** `POST /v1/auth/refresh`
+- **Auth Required:** No
 - **Request Body:**
 ```json
 {
-  "refreshToken": "eyJhbGc..."
+  "refresh_token": "eyJhbG..."
 }
 ```
 - **Response (200 OK):**
@@ -115,37 +112,62 @@
 {
   "status": "success",
   "message": "Token refreshed successfully",
-  "tokens": {
-    "accessToken": "eyJhbGc...",
-    "refreshToken": "eyJhbGc...",
-    "expiresIn": 3600
+  "data": {
+    "access_token": "eyJhbG...",
+    "refresh_token": "eyJhbG...",
+    "expires_in": 3600,
+    "token_type": "Bearer"
   }
 }
 ```
 
 ---
 
-## 4. Logout
-- **Endpoint:** `POST /auth/logout`
+## 4. Get Current User (Me)
+- **Endpoint:** `GET /v1/auth/me`
+- **Auth Required:** Yes (Bearer Token)
+- **Response (200 OK):**
+```json
+{
+  "status": "success",
+  "message": "User details fetched successfully",
+  "data": {
+    "id": 1,
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@example.com",
+    "role": "ceo",
+    "status": "active",
+    "phone": "+1234567890",
+    "emailVerified": true,
+    "createdAt": "2026-03-12 15:47:01"
+  }
+}
+```
+
+---
+
+## 5. Logout
+- **Endpoint:** `POST /v1/auth/logout`
 - **Auth Required:** Yes (Bearer Token)
 - **Request Body:**
 ```json
 {
-  "refreshToken": "eyJhbGc..."
+  "refresh_token": "eyJhbG..."
 }
 ```
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "User logged out successfully"
+  "message": "Logged out successfully"
 }
 ```
 
 ---
 
-## 5. Forgot Password
-- **Endpoint:** `POST /auth/forgot-password`
+## 6. Forgot Password
+- **Endpoint:** `POST /v1/auth/password/forgot`
 - **Auth Required:** No
 - **Request Body:**
 ```json
@@ -157,84 +179,118 @@
 ```json
 {
   "status": "success",
-  "message": "Password reset link sent to your email"
+  "message": "If an account exists with this email, a reset link has been sent."
 }
 ```
 
 ---
 
-## 6. Reset Password
-- **Endpoint:** `POST /auth/reset-password`
+## 7. Reset Password
+- **Endpoint:** `POST /v1/auth/password/reset`
 - **Auth Required:** No
 - **Request Body:**
 ```json
 {
+  "email": "john@example.com",
   "token": "reset_token_from_email",
-  "newPassword": "NewSecurePassword123!",
-  "confirmPassword": "NewSecurePassword123!"
+  "password": "NewSecurePassword123!"
 }
 ```
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "Password reset successfully"
+  "message": "Password has been reset successfully. You can now login with your new password."
 }
 ```
 
 ---
 
-## 7. Verify Email
-- **Endpoint:** `POST /auth/verify-email`
+## 8. Change Password
+- **Endpoint:** `POST /v1/auth/password/change`
+- **Auth Required:** Yes (Bearer Token)
+- **Request Body:**
+```json
+{
+  "current_password": "OldSecurePassword123!",
+  "new_password": "NewSecurePassword123!"
+}
+```
+- **Response (200 OK):**
+```json
+{
+  "status": "success",
+  "message": "Password changed successfully. Please login again with your new password."
+}
+```
+
+---
+
+## 9. Verify Email
+- **Endpoint:** `GET /v1/auth/verify-email?email=user@example.com&token=verification_token`
+- **Auth Required:** No
+- **Response (200 OK):**
+```json
+{
+  "status": "success",
+  "message": "Email verified successfully",
+  "data": {
+    "email_verified": true,
+    "user": {
+      "id": 1,
+      "email": "john@example.com",
+      "role": "ceo"
+    }
+  }
+}
+```
+
+---
+
+## 10. Resend Verification Email
+- **Endpoint:** `POST /v1/auth/resend-verification`
 - **Auth Required:** No
 - **Request Body:**
 ```json
 {
-  "token": "verification_token_from_email"
+  "email": "john@example.com"
 }
 ```
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "Email verified successfully"
+  "message": "Verification email sent successfully."
 }
 ```
 
----
-
-# 👥 USER MANAGEMENT (Admin Required)
+# 👥 USER MANAGEMENT
+Prefix: `/v1/users`
 
 ## 1. Get All Users
-- **Endpoint:** `GET /admin/users`
-- **Auth Required:** Yes
-- **Query Parameters:**
-```
-?page=1&limit=20&search=john&status=active&role=CEO
-```
+- **Endpoint:** `GET /v1/users`
+- **Auth Required:** Yes (CEO or Manager)
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "Users retrieved successfully",
-  "data": [
-    {
-      "id": "user_12345",
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "john@example.com",
-      "phone": "+1234567890",
-      "role": "CEO",
-      "status": "active",
-      "createdAt": "2026-01-15T10:30:00Z",
-      "lastLogin": "2026-02-05T08:15:00Z"
-    }
-  ],
-  "pagination": {
-    "page": 1,
-    "limit": 20,
-    "total": 45,
-    "totalPages": 3
+  "message": "Users fetched successfully",
+  "data": {
+    "users": [
+      {
+        "id": 1,
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john@example.com",
+        "phone": "+1234567890",
+        "role": "ceo",
+        "status": "active",
+        "profileImage": "http://localhost:8000/uploads/avatars/users/avatar_123.jpg",
+        "emailVerified": true,
+        "createdAt": "2026-03-12 15:47:01"
+      }
+    ],
+    "count": 1
   }
 }
 ```
@@ -242,23 +298,21 @@
 ---
 
 ## 2. Get User by ID
-- **Endpoint:** `GET /admin/users/:userId`
-- **Auth Required:** Yes
+- **Endpoint:** `GET /v1/users/:id`
+- **Auth Required:** Yes (Self or CEO/Manager)
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "User retrieved successfully",
+  "message": "User fetched successfully",
   "data": {
-    "id": "user_12345",
+    "id": 1,
     "firstName": "John",
     "lastName": "Doe",
     "email": "john@example.com",
-    "phone": "+1234567890",
-    "role": "CEO",
-    "status": "active",
-    
-    "createdAt": "2026-01-15T10:30:00Z"
+    "role": "ceo",
+    "profileImage": "http://localhost:8000/uploads/avatars/users/avatar_123.jpg",
+    "status": "active"
   }
 }
 ```
@@ -266,41 +320,27 @@
 ---
 
 ## 3. Create User
-- **Endpoint:** `POST /admin/users`
-- **Auth Required:** Yes (Admin)
-- **Role Notes:**
-  - `CEO`: can create `CEO`, `Manager`, and `Sales` users
-  - `Manager`: cannot create users (frontend restriction)
+- **Endpoint:** `POST /v1/users`
+- **Auth Required:** Yes (CEO or Manager)
+- **Content-Type:** `multipart/form-data`
 - **Request Body:**
-```json
-{
-  "firstName": "Jane",
-  "lastName": "Smith",
-  "email": "jane@example.com",
-  "phone": "+1234567891",
-  "password": "pawword@123",
-  "role": "Sales",
-  "roleId": "role_sales",
-  "status": "active",
-  "twoFactorEnabled": false
-}
-```
-- `permissions` is optional for role-based frontend flows.
+  - `firstName` (String) - Required
+  - `lastName` (String) - Required
+  - `email` (String) - Required
+  - `phone` (String)
+  - `password` (String)
+  - `role` (String) - e.g., "salesperson", "manager"
+  - `profileImage` (File) - Optional
 - **Response (201 Created):**
 ```json
 {
   "status": "success",
-  "message": "User created successfully",
+  "message": "User created successfully and verification email sent",
   "data": {
-    "id": "user_12346",
+    "id": 2,
     "firstName": "Jane",
     "lastName": "Smith",
-    "email": "jane@example.com",
-    "phone": "+1234567891",
-    "role": "Sales",
-    "roleId": "role_sales",
-    "status": "active",
-    "createdAt": "2026-02-05T09:00:00Z"
+    "profileImage": "http://localhost:8000/uploads/avatars/users/avatar_456.jpg"
   }
 }
 ```
@@ -308,276 +348,40 @@
 ---
 
 ## 4. Update User
-- **Endpoint:** `PUT /admin/users/:userId`
-- **Auth Required:** Yes (Admin)
-- **Request Body:**
-```json
-{
-  "firstName": "Jane",
-  "lastName": "Smith",
-  "phone": "+1234567891",
-  "role": "Manager",
-  "roleId": "role_manager",
-  "status": "active"
-}
-```
-- `permissions` is optional for role-based frontend flows.
+- **Endpoint:** `PUT /v1/users/:id`
+- **Auth Required:** Yes (Self or CEO)
+- **Content-Type:** `multipart/form-data`
+- **Request Body (Partial update supported):**
+  - `firstName`, `lastName`, `phone`, `status`
+  - `profileImage` (File) - Replaces old image
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "User updated successfully",
-  "data": {
-    "id": "user_12346",
-    "firstName": "Jane",
-    "lastName": "Smith",
-    "email": "jane@example.com",
-    "phone": "+1234567891",
-    "roleId": "role_002",
-    "status": "active",
-    "updatedAt": "2026-02-05T09:15:00Z"
-  }
+  "message": "User updated successfully"
 }
 ```
 
 ---
 
-## 5. Delete User
-- **Endpoint:** `DELETE /admin/users/:userId`
-- **Auth Required:** Yes (Admin)
-- **Response (200 OK):**
-```json
-{
-  "status": "success",
-  "message": "User deleted successfully"
-}
-```
+# 📁 CATEGORIES
+Prefix: `/v1/categories`
 
----
-
-## 7. Resend Verification Email
-- **Endpoint:** `POST /admin/users/:userId/resend-verification`
+## 1. Get All Categories
+- **Endpoint:** `GET /v1/categories`
 - **Auth Required:** Yes
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "Verification email sent successfully"
-}
-```
-
----
-
-# 🏭 PRODUCTS & CATEGORIES
-
-## 1. Get All Products
-- **Endpoint:** `GET /products`
-- **Auth Required:** Yes
-- **Query Parameters:**
-```
-?page=1&limit=20&search=laptop&category=electronics&status=active&sortBy=name&sortOrder=asc
-```
-- **Response (200 OK):**
-```json
-{
-  "status": "success",
-  "message": "Products retrieved successfully",
+  "message": "Categories fetched successfully",
   "data": [
     {
-      "id": "product_001",
-      "name": "Laptop Pro",
-      "sku": "LP-001",
-      "description": "High performance laptop",
-      "categoryId": "category_001",
-      "categoryName": "Electronics",
-      "price": 1299.99,
-      "cost": 900.00,
-      "quantity": 45,
-      "reorderLevel": 10,
-      "status": "active",
-      "image": "https://example.com/images/laptop.jpg",
-      "createdAt": "2026-01-10T10:00:00Z"
-    }
-  ],
-  "pagination": {
-    "page": 1,
-    "limit": 20,
-    "total": 156,
-    "totalPages": 8
-  }
-}
-```
-
----
-
-## 2. Get Product by ID
-- **Endpoint:** `GET /products/:productId`
-- **Auth Required:** Yes
-- **Response (200 OK):**
-```json
-{
-  "status": "success",
-  "message": "Product retrieved successfully",
-  "data": {
-    "id": "product_001",
-    "name": "Laptop Pro",
-    "sku": "LP-001",
-    "description": "High performance laptop with 16GB RAM and 512GB SSD",
-    "categoryId": "category_001",
-    "categoryName": "Electronics",
-    "price": 1299.99,
-    "cost": 900.00,
-    "quantity": 45,
-    "reorderLevel": 10,
-    "reorderQuantity": 20,
-    "unit": "piece",
-    "status": "active",
-    "image": "https://example.com/images/laptop.jpg",
-    "barcode": "1234567890123",
-    "supplierId": "supplier_001",
-    "createdAt": "2026-01-10T10:00:00Z",
-    "updatedAt": "2026-02-05T08:00:00Z"
-  }
-}
-```
-
----
-
-## 3. Create Product
-- **Endpoint:** `POST /products`
-- **Auth Required:** Yes
-- **Request Body:**
-```json
-{
-  "name": "Tablet Plus",
-  "sku": "TP-001",
-  "description": "10-inch display tablet",
-  "categoryId": "category_001",
-  "price": 599.99,
-  "cost": 350.00,
-  "quantity": 30,
-  "reorderLevel": 5,
-  "reorderQuantity": 15,
-  "unit": "piece",
-  "barcode": "9876543210123",
-  "supplierId": "supplier_001",
-  "image": "https://example.com/images/tablet.jpg"
-}pnpm
-```
-- **Response (201 Created):**
-```json
-{
-  "status": "success",
-  "message": "Product created successfully",
-  "data": {
-    "id": "product_002",
-    "name": "Tablet Plus",
-    "sku": "TP-001",
-    "price": 599.99,
-    "quantity": 30,
-    "status": "active",
-    "createdAt": "2026-02-05T09:00:00Z"
-  }
-}
-```
-
----
-
-## 4. Update Product
-- **Endpoint:** `PUT /products/:productId`
-- **Auth Required:** Yes
-- **Request Body:**
-```json
-{
-  "name": "Tablet Plus Ultra",
-  "price": 649.99,
-  "cost": 380.00,
-  "quantity": 28,
-  "reorderLevel": 8,
-  "status": "active"
-}
-```
-- **Response (200 OK):**
-```json
-{
-  "status": "success",
-  "message": "Product updated successfully",
-  "data": {
-    "id": "product_002",
-    "name": "Tablet Plus Ultra",
-    "price": 649.99,
-    "quantity": 28,
-    "updatedAt": "2026-02-05T09:15:00Z"
-  }
-}
-```
-
----
-
-## 5. Delete Product
-- **Endpoint:** `DELETE /products/:productId`
-- **Auth Required:** Yes
-- **Response (200 OK):**
-```json
-{
-  "status": "success",
-  "message": "Product deleted successfully"
-}
-```
-
----
-
-## 6. Get Low Stock Products
-- **Endpoint:** `GET /products/low-stock`
-- **Auth Required:** Yes
-- **Query Parameters:**
-```
-?limit=20
-```
-- **Response (200 OK):**
-```json
-{
-  "status": "success",
-  "message": "Low stock products retrieved successfully",
-  "data": [
-    {
-      "id": "product_001",
-      "name": "Laptop Pro",
-      "sku": "LP-001",
-      "quantity": 8,
-      "reorderLevel": 10,
-      "reorderQuantity": 20,
-      "status": "warning"
-    }
-  ],
-  "pagination": {
-    "total": 5
-  }
-}
-```
-
----
-
-## 7. Get Product Expiring Stock
-- **Endpoint:** `GET /products/expiring`
-- **Auth Required:** Yes
-- **Query Parameters:**
-```
-?days=30
-```
-- **Response (200 OK):**
-```json
-{
-  "status": "success",
-  "message": "Expiring products retrieved successfully",
-  "data": [
-    {
-      "id": "product_003",
-      "name": "Medicine Pack",
-      "sku": "MED-001",
-      "quantity": 15,
-      "expiryDate": "2026-03-05",
-      "daysUntilExpiry": 28
+      "id": 1,
+      "name": "Electronics",
+      "image": "http://localhost:8000/uploads/images/categories/image_789.jpg",
+      "description": "Gadgets and devices",
+      "status": "active"
     }
   ]
 }
@@ -585,101 +389,152 @@
 
 ---
 
-## 8. Get All Categories
-- **Endpoint:** `GET /categories`
-- **Auth Required:** Yes
-- **Query Parameters:**
-```
-?page=1&limit=20&search=electronics
-```
-- **Response (200 OK):**
-```json
-{
-  "status": "success",
-  "message": "Categories retrieved successfully",
-  "data": [
-    {
-      "id": "category_001",
-      "name": "Electronics",
-      "description": "Electronic devices and accessories",
-      "productCount": 45,
-      "status": "active",
-      "createdAt": "2026-01-01T10:00:00Z"
-    }
-  ],
-  "pagination": {
-    "page": 1,
-    "limit": 20,
-    "total": 15,
-    "totalPages": 1
-  }
-}
-```
-
----
-
-## 9. Create Category
-- **Endpoint:** `POST /categories`
-- **Auth Required:** Yes
+## 2. Create Category
+- **Endpoint:** `POST /v1/categories`
+- **Auth Required:** Yes (CEO or Manager)
+- **Content-Type:** `multipart/form-data`
 - **Request Body:**
-```json
-{
-  "name": "Furniture",
-  "description": "Office and home furniture"
-}
-```
+  - `name` (String) - Required
+  - `description` (String)
+  - `image` (File) - Optional
 - **Response (201 Created):**
 ```json
 {
   "status": "success",
   "message": "Category created successfully",
   "data": {
-    "id": "category_016",
-    "name": "Furniture",
-    "description": "Office and home furniture",
-    "productCount": 0,
-    "status": "active",
-    "createdAt": "2026-02-05T09:00:00Z"
+    "id": 1,
+    "name": "Electronics",
+    "image": "http://localhost:8000/uploads/images/categories/image_789.jpg"
   }
 }
 ```
 
 ---
 
-## 10. Update Category
-- **Endpoint:** `PUT /categories/:categoryId`
-- **Auth Required:** Yes
+## 3. Update Category
+- **Endpoint:** `PUT /v1/categories/:id`
+- **Auth Required:** Yes (CEO or Manager)
+- **Content-Type:** `multipart/form-data`
 - **Request Body:**
-```json
-{
-  "name": "Modern Furniture",
-  "description": "Modern office and home furniture"
-}
-```
+  - `name`, `description`
+  - `image` (File) - Replaces old image
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "Category updated successfully",
+  "message": "Category updated successfully"
+}
+```
+
+---
+
+# 🏢 SUPPLIERS
+Prefix: `/v1/suppliers`
+
+## 1. Get All Suppliers
+- **Endpoint:** `GET /v1/suppliers`
+- **Auth Required:** Yes
+- **Response (200 OK):**
+```json
+{
+  "status": "success",
+  "message": "Suppliers fetched successfully",
+  "data": [
+    {
+      "id": 1,
+      "name": "Tech Corp",
+      "image": "http://localhost:8000/uploads/images/suppliers/logo_tech.png",
+      "contactPerson": "Alice",
+      "rating": 5
+    }
+  ]
+}
+```
+
+---
+
+## 2. Create Supplier
+- **Endpoint:** `POST /v1/suppliers`
+- **Auth Required:** Yes (CEO or Manager)
+- **Content-Type:** `multipart/form-data`
+- **Request Body:**
+  - `name` (String) - Required
+  - `email`, `phone`, `address`, `contactPerson`
+  - `image` (File) - Optional (Logo)
+- **Response (201 Created):**
+```json
+{
+  "status": "success",
+  "message": "Supplier created successfully"
+}
+```
+
+---
+
+# 📦 PRODUCTS
+Prefix: `/v1/products`
+
+## 1. Get All Products
+- **Endpoint:** `GET /v1/products`
+- **Auth Required:** Yes
+- **Response (200 OK):**
+```json
+{
+  "status": "success",
+  "message": "Products fetched successfully",
+  "data": [
+    {
+      "id": 1,
+      "name": "iPhone 15",
+      "sellingPrice": 999.99,
+      "image": "http://localhost:8000/uploads/images/products/phone_abc.jpg",
+      "inventory": { "quantity": 50 }
+    }
+  ]
+}
+```
+
+---
+
+## 2. Create Product
+- **Endpoint:** `POST /v1/products`
+- **Auth Required:** Yes (CEO or Manager)
+- **Content-Type:** `multipart/form-data`
+- **Request Body:**
+  - `name` (String) - Required
+  - `sellingPrice` (Number) - Required
+  - `categoryId` (Integer)
+  - `supplierId` (Integer)
+  - `quantity` (Integer) - Initial stock
+  - `image` (File) - Optional
+- **Response (201 Created):**
+```json
+{
+  "status": "success",
+  "message": "Product created successfully",
   "data": {
-    "id": "category_016",
-    "name": "Modern Furniture",
-    "description": "Modern office and home furniture",
-    "updatedAt": "2026-02-05T09:15:00Z"
+    "id": 1,
+    "name": "iPhone 15",
+    "image": "http://localhost:8000/uploads/images/products/phone_abc.jpg"
   }
 }
 ```
 
 ---
 
-## 11. Delete Category
-- **Endpoint:** `DELETE /categories/:categoryId`
-- **Auth Required:** Yes
+## 3. Update Product
+- **Endpoint:** `PUT /v1/products/:id`
+- **Auth Required:** Yes (CEO or Manager)
+- **Content-Type:** `multipart/form-data`
+- **Request Body:**
+  - `name`, `sellingPrice`, `categoryId`, etc.
+  - `image` (File) - Replaces old image
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "Category deleted successfully"
+  "message": "Product updated successfully"
 }
 ```
 
@@ -1046,121 +901,113 @@
 ---
 
 # 📋 ORDERS
+Prefix: `/v1/orders`
 
 ## 1. Get All Orders
-- **Endpoint:** `GET /orders`
+- **Endpoint:** `GET /v1/orders`
 - **Auth Required:** Yes
-- **Query Parameters:**
-```
-?page=1&limit=20&search=ORD&status=pending&sortBy=date&sortOrder=desc
-```
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "Orders retrieved successfully",
+  "message": "Orders fetched successfully",
   "data": [
     {
-      "id": "order_001",
-      "orderNumber": "ORD-001",
-      "customerId": "customer_001",
-      "customerName": "John Smith",
-      "date": "2026-02-05T08:00:00Z",
-      "dueDate": "2026-02-12T08:00:00Z",
-      "subtotal": 1400.00,
-      "tax": 100.00,
-      "total": 1500.00,
-      "status": "pending",
-      "paymentStatus": "unpaid",
-      "itemCount": 5,
-      "createdAt": "2026-02-05T08:00:00Z"
+      "id": 1,
+      "orderNumber": "ORD-123456",
+      "status": "completed",
+      "discountAmount": 10.00,
+      "discountedTotalPrice": 90.00,
+      "customer": {
+        "id": 1,
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john@example.com"
+      },
+      "items": [
+        {
+          "productId": 1,
+          "product": { "name": "Item A" },
+          "quantity": 2,
+          "sellingPrice": 50.00,
+          "totalPrice": 100.00
+        }
+      ],
+      "transactions": [
+        {
+          "id": 1,
+          "amount": 90.00,
+          "paymentMethod": "cash",
+          "status": "completed"
+        }
+      ],
+      "createdAt": "2026-03-12 21:00:00"
     }
-  ],
-  "pagination": {
-    "page": 1,
-    "limit": 20,
-    "total": 156,
-    "totalPages": 8
-  }
+  ]
 }
 ```
 
 ---
 
 ## 2. Get Order by ID
-- **Endpoint:** `GET /orders/:orderId`
+- **Endpoint:** `GET /v1/orders/:id`
 - **Auth Required:** Yes
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "Order retrieved successfully",
+  "message": "Order fetched successfully",
   "data": {
-    "id": "order_001",
-    "orderNumber": "ORD-001",
-    "customerId": "customer_001",
-    "customerName": "John Smith",
-    "customerEmail": "john.smith@example.com",
-    "customerPhone": "+1234567890",
-    "date": "2026-02-05T08:00:00Z",
-    "dueDate": "2026-02-12T08:00:00Z",
-    "deliveryDate": null,
+    "id": 1,
+    "orderNumber": "ORD-123456",
+    "status": "completed",
+    "discountAmount": 10.00,
+    "discountedTotalPrice": 90.00,
+    "customer": {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john@example.com"
+    },
     "items": [
       {
-        "id": "order_item_001",
-        "productId": "product_001",
-        "productName": "Laptop Pro",
-        "sku": "LP-001",
+        "productId": 1,
+        "product": { "name": "Item A" },
         "quantity": 2,
-        "unitPrice": 1299.99,
-        "subtotal": 2599.98,
-        "discount": 100.00,
-        "total": 2499.98
+        "sellingPrice": 50.00,
+        "totalPrice": 100.00
       }
     ],
-    "subtotal": 2499.98,
-    "discount": 100.00,
-    "tax": 180.00,
-    "shippingCost": 50.00,
-    "total": 2729.98,
-    "status": "pending",
-    "paymentStatus": "unpaid",
-    "shippingAddress": "123 Main Street, City, State 12345",
-    "notes": "Handle with care",
-    "createdAt": "2026-02-05T08:00:00Z",
-    "updatedAt": "2026-02-05T08:30:00Z"
+    "transactions": [
+      {
+        "id": 1,
+        "amount": 90.00,
+        "paymentMethod": "cash",
+        "status": "completed"
+      }
+    ],
+    "createdAt": "2026-03-12 21:00:00"
   }
 }
 ```
 
 ---
 
-## 3. Create Order
-- **Endpoint:** `POST /orders`
+## 3. Create Order (Checkout)
+- **Endpoint:** `POST /v1/orders`
 - **Auth Required:** Yes
 - **Request Body:**
 ```json
 {
-  "customerId": "customer_001",
-  "dueDate": "2026-02-12T08:00:00Z",
+  "customerId": 1,
+  "discountCode": "SAVE10",
+  "paymentMethod": "cash",
   "items": [
     {
-      "productId": "product_001",
-      "quantity": 2,
-      "unitPrice": 1299.99,
-      "discount": 50.00
-    },
-    {
-      "productId": "product_002",
-      "quantity": 1,
-      "unitPrice": 599.99,
-      "discount": 0
+      "productId": 5,
+      "quantity": 2
     }
-  ],
-  "tax": 180.00,
-  "shippingCost": 50.00,
-  "shippingAddress": "123 Main Street, City, State 12345",
-  "notes": "Handle with care"
+  ]
 }
 ```
 - **Response (201 Created):**
@@ -1169,98 +1016,108 @@
   "status": "success",
   "message": "Order created successfully",
   "data": {
-    "id": "order_001",
-    "orderNumber": "ORD-001",
-    "customerId": "customer_001",
-    "date": "2026-02-05T08:00:00Z",
-    "total": 2729.98,
-    "status": "pending",
-    "paymentStatus": "unpaid",
-    "createdAt": "2026-02-05T08:00:00Z"
+    "id": 1,
+    "orderNumber": "ORD-ABCD1234",
+    "discountedTotalPrice": 99.99,
+    "status": "completed"
   }
 }
 ```
 
 ---
 
-## 4. Update Order
-- **Endpoint:** `PUT /orders/:orderId`
-- **Auth Required:** Yes
-- **Request Body:**
-```json
-{
-  "status": "processing",
-  "paymentStatus": "paid",
-  "dueDate": "2026-02-15T08:00:00Z",
-  "notes": "Expedited shipping requested"
-}
-```
+## 4. Cancel Order
+- **Endpoint:** `POST /v1/orders/:id/cancel`
+- **Auth Required:** Yes (CEO or Manager)
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "Order updated successfully",
-  "data": {
-    "id": "order_001",
-    "orderNumber": "ORD-001",
-    "status": "processing",
-    "paymentStatus": "paid",
-    "updatedAt": "2026-02-05T09:00:00Z"
-  }
+  "message": "Order cancelled and stock returned successfully"
 }
 ```
 
 ---
 
-## 5. Delete Order
-- **Endpoint:** `DELETE /orders/:orderId`
+# 💸 REFUNDS
+Prefix: `/v1/refunds`
+
+## 1. Get All Refunds
+- **Endpoint:** `GET /v1/refunds`
 - **Auth Required:** Yes
 - **Response (200 OK):**
 ```json
 {
   "status": "success",
-  "message": "Order deleted successfully"
+  "message": "Refunds fetched successfully",
+  "data": [
+    {
+      "id": 1,
+      "orderId": 1,
+      "refundAmount": 50.00,
+      "refundReason": "Damaged items",
+      "refundStatus": "pending"
+    }
+  ]
 }
 ```
 
 ---
 
-## 6. Create Refund
-- **Endpoint:** `POST /orders/:orderId/refund`
+## 2. Create Refund Request
+- **Endpoint:** `POST /v1/refunds`
 - **Auth Required:** Yes
 - **Request Body:**
 ```json
 {
-  "refundType": "partial",
-  "amount": 500.00,
-  "reason": "customer_request",
+  "orderId": 1,
+  "refundAmount": 50.00,
+  "refundReason": "Damaged items",
   "items": [
     {
-      "orderItemId": "order_item_001",
-      "quantity": 1
+      "productId": 5,
+      "quantity": 1,
+      "restock": true
     }
-  ],
-  "notes": "Customer changed mind"
+  ]
 }
 ```
+*Note: `items` is an optional array. If `restock` is true, inventory will be incremented when the refund is approved.*
+
 - **Response (201 Created):**
 ```json
 {
   "status": "success",
-  "message": "Refund created successfully",
+  "message": "Refund request submitted successfully",
   "data": {
-    "id": "refund_001",
-    "orderId": "order_001",
-    "amount": 500.00,
-    "refundType": "partial",
-    "reason": "customer_request",
-    "status": "processed",
-    "processedAt": "2026-02-05T09:00:00Z"
+    "id": 1,
+    "orderId": 1,
+    "refundAmount": 50.00,
+    "refundStatus": "pending",
+    "items": [...]
   }
 }
 ```
 
 ---
+
+## 3. Update Refund Status
+- **Endpoint:** `PUT /v1/refunds/:id/status`
+- **Auth Required:** Yes (CEO or Manager)
+- **Request Body:**
+```json
+{
+  "status": "completed"
+}
+```
+- **Response (200 OK):**
+```json
+{
+  "status": "success",
+  "message": "Refund status updated successfully"
+}
+```
+
 
 # 🏭 SUPPLIERS & PURCHASES
 
@@ -1499,48 +1356,44 @@
 
 ---
 
-## 8. Create Purchase Order
-- **Endpoint:** `POST /purchases`
+## 8. Create Purchase Order (Restock)
+- **Endpoint:** `POST /v1/purchases`
 - **Auth Required:** Yes
 - **Request Body:**
 ```json
 {
-  "supplierId": "supplier_001",
-  "dueDate": "2026-02-12T08:00:00Z",
-  "expectedDeliveryDate": "2026-02-15T08:00:00Z",
+  "supplierId": 1,
+  "purchaseDate": "2026-03-12 10:00:00",
+  "dueDate": "2026-03-20 10:00:00",
+  "status": "received",
+  "paymentStatus": "paid",
+  "paymentMethod": "bank_transfer",
   "items": [
     {
-      "productId": "product_001",
-      "quantity": 10,
-      "costPrice": 450.00,
-      "sellingPrice": 550.00
-    },
-    {
-      "productId": "product_002",
-      "quantity": 5,
-      "costPrice": 350.00,
-      "sellingPrice": 420.00
+      "productId": 5,
+      "quantity": 50,
+      "costPrice": 12.50,
+      "sellingPrice": 25.00
     }
   ],
-  "tax": 120.00,
-  "shippingCost": 50.00,
-  "notes": "Rush delivery needed"
+  "tax": 5.00,
+  "shippingCost": 10.00,
+  "notes": "Bulk restock for summer season"
 }
 ```
+*Note: If status is 'received', inventory is automatically incremented and product prices are updated.*
+
 - **Response (201 Created):**
 ```json
 {
   "status": "success",
   "message": "Purchase order created successfully",
   "data": {
-    "id": "purchase_001",
-    "purchaseNumber": "PO-001",
-    "supplierId": "supplier_001",
-    "date": "2026-02-05T08:00:00Z",
-    "total": 4920.00,
-    "status": "pending",
-    "paymentStatus": "unpaid",
-    "createdAt": "2026-02-05T08:00:00Z"
+    "id": 1,
+    "purchaseNumber": "PO-A1B2C3",
+    "totalAmount": 640.00,
+    "status": "received",
+    "items": [...]
   }
 }
 ```
@@ -1783,6 +1636,31 @@
     "spent": 0,
     "remaining": 2000.00,
     "status": "active"
+  }
+}
+```
+
+---
+
+## 8. Trigger Scheduled Expenses
+- **Endpoint:** `POST /v1/expense-schedules/process`
+- **Auth Required:** Yes (Manager/CEO)
+- **Description:** Scans all active schedules, generates individual expense records for those due, and updates their next due dates.
+- **Response (200 OK):**
+```json
+{
+  "status": "success",
+  "message": "Successfully processed 2 due schedules",
+  "data": {
+    "status": "success",
+    "processed": [
+      {
+        "scheduleId": 1,
+        "expenseId": 15,
+        "amount": 2000.00
+      }
+    ],
+    "errors": []
   }
 }
 ```

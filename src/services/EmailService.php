@@ -27,8 +27,8 @@ class EmailService
         // Configure SMTP
         $this->configureSMTP();
         
-        $this->fromEmail = $_ENV['MAIL_FROM_ADDRESS'] ?? 'noreply@eventic.com';
-        $this->fromName = $_ENV['MAIL_FROM_NAME'] ?? 'Eventic';
+        $this->fromEmail = $_ENV['MAIL_FROM_ADDRESS'] ?? 'noreply@stringventory.com';
+        $this->fromName = $_ENV['MAIL_FROM_NAME'] ?? 'Stringventory';
         $this->templatePath = dirname(__DIR__, 2) . '/templates/email/';
     }
 
@@ -125,8 +125,8 @@ class EmailService
     private function getCommonVariables(): array
     {
         return [
-            'app_url' => $_ENV['FRONTEND_URL'] ?? 'https://eventic.com',
-            'support_email' => $_ENV['MAIL_FROM_ADDRESS'] ?? 'support@eventic.com',
+            'app_url' => $_ENV['FRONTEND_URL'] ?? 'https://stringventory.com',
+            'support_email' => $_ENV['MAIL_FROM_ADDRESS'] ?? 'support@stringventory.com',
             'year' => date('Y'),
             'social_facebook' => $_ENV['SOCIAL_FACEBOOK'] ?? '#',
             'social_twitter' => $_ENV['SOCIAL_TWITTER'] ?? '#',
@@ -183,18 +183,17 @@ class EmailService
     {
         try {
             $email = $this->buildEmailFromTemplate('welcome', [
-                'user_name' => htmlspecialchars($user->name),
+                'user_name' => htmlspecialchars($user->fullName),
                 'user_email' => htmlspecialchars($user->email),
             ]);
             
             if (!$email) {
-                error_log('Failed to build welcome email template');
                 return false;
             }
 
             $this->mailer->clearAddresses();
             $this->mailer->setFrom($this->fromEmail, $this->fromName);
-            $this->mailer->addAddress($user->email, $user->name);
+            $this->mailer->addAddress($user->email, $user->fullName);
             
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $email['subject'];
@@ -216,7 +215,7 @@ class EmailService
     {
         try {
             $email = $this->buildEmailFromTemplate('email_verification', [
-                'user_name' => htmlspecialchars($user->name),
+                'user_name' => htmlspecialchars($user->fullName),
                 'user_email' => htmlspecialchars($user->email),
                 'verification_url' => $verificationUrl,
             ]);
@@ -228,7 +227,7 @@ class EmailService
 
             $this->mailer->clearAddresses();
             $this->mailer->setFrom($this->fromEmail, $this->fromName);
-            $this->mailer->addAddress($user->email, $user->name);
+            $this->mailer->addAddress($user->email, $user->fullName);
             
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $email['subject'];
@@ -252,19 +251,18 @@ class EmailService
             $resetUrl = ($_ENV['FRONTEND_URL'] ?? 'http://localhost:5173') . "/reset-password?token={$token}&email=" . urlencode($user->email);
             
             $email = $this->buildEmailFromTemplate('password_reset', [
-                'user_name' => htmlspecialchars($user->name),
+                'user_name' => htmlspecialchars($user->fullName),
                 'user_email' => htmlspecialchars($user->email),
                 'reset_url' => $resetUrl,
             ]);
             
             if (!$email) {
-                error_log('Failed to build password reset email template');
                 return false;
             }
 
             $this->mailer->clearAddresses();
             $this->mailer->setFrom($this->fromEmail, $this->fromName);
-            $this->mailer->addAddress($user->email, $user->name);
+            $this->mailer->addAddress($user->email, $user->fullName);
             
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $email['subject'];
@@ -286,19 +284,18 @@ class EmailService
     {
         try {
             $email = $this->buildEmailFromTemplate('password_changed', [
-                'user_name' => htmlspecialchars($user->name),
+                'user_name' => htmlspecialchars($user->fullName),
                 'user_email' => htmlspecialchars($user->email),
                 'timestamp' => date('F j, Y \a\t g:i A T'),
             ]);
             
             if (!$email) {
-                error_log('Failed to build password changed email template');
                 return false;
             }
 
             $this->mailer->clearAddresses();
             $this->mailer->setFrom($this->fromEmail, $this->fromName);
-            $this->mailer->addAddress($user->email, $user->name);
+            $this->mailer->addAddress($user->email, $user->fullName);
             
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $email['subject'];

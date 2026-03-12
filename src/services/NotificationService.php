@@ -420,6 +420,14 @@ class NotificationService
     }
 
     /**
+     * Public wrapper for background workers to process a queued job
+     */
+    public function processJob(array $notification): bool
+    {
+        return $this->sendNow($notification);
+    }
+
+    /**
      * Send notification immediately (synchronous)
      */
     private function sendNow(array $notification): bool
