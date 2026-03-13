@@ -7,7 +7,7 @@
 
 ---
 
-# 🆕 RECENT CHANGES (Feb 28, 2026)
+# 🆕 RECENT CHANGES (March 13, 2026)
 
 ## Access Model Update
 - Frontend access control now uses **3 business roles only**:

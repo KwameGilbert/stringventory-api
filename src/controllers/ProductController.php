@@ -61,9 +61,13 @@ class ProductController
             $data = $request->getParsedBody();
             $uploadedFiles = $request->getUploadedFiles();
 
-            if (empty($data['name']) || !isset($data['sellingPrice'])) {
-                return ResponseHelper::error($response, 'Product name and selling price are required', 400);
+            if (empty($data['name'])) {
+                return ResponseHelper::error($response, 'Product name is required', 400);
             }
+
+            // Default prices to 0 if not provided
+            $data['sellingPrice'] = $data['sellingPrice'] ?? 0;
+            $data['costPrice'] = $data['costPrice'] ?? 0;
 
             // Uniqueness check for SKU
             if (!empty($data['sku'])) {
