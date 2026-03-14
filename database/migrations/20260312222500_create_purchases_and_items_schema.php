@@ -14,6 +14,8 @@ final class CreatePurchasesAndItemsSchema extends AbstractMigration
                 ->addColumn('id', 'integer', ['identity' => true, 'signed' => false])
                 ->addColumn('supplierId', 'integer', ['signed' => false])
                 ->addColumn('purchaseNumber', 'string', ['limit' => 100])
+                ->addColumn('waybillNumber', 'string', ['limit' => 100, 'null' => true])
+                ->addColumn('batchNumber', 'string', ['limit' => 100, 'null' => true])
                 ->addColumn('purchaseDate', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
                 ->addColumn('dueDate', 'datetime', ['null' => true])
                 ->addColumn('expectedDeliveryDate', 'datetime', ['null' => true])
@@ -49,6 +51,7 @@ final class CreatePurchasesAndItemsSchema extends AbstractMigration
                 ->addColumn('costPrice', 'decimal', ['precision' => 12, 'scale' => 2]) // Price bought from supplier
                 ->addColumn('sellingPrice', 'decimal', ['precision' => 12, 'scale' => 2, 'null' => true]) // Suggested new selling price
                 ->addColumn('totalPrice', 'decimal', ['precision' => 12, 'scale' => 2])
+                ->addColumn('expiryDate', 'date', ['null' => true])
                 ->addForeignKey('purchaseId', 'purchases', 'id', ['delete'=> 'CASCADE', 'update'=> 'NO_ACTION'])
                 ->addForeignKey('productId', 'products', 'id', ['delete'=> 'RESTRICT', 'update'=> 'NO_ACTION'])
                 ->create();
@@ -57,9 +60,6 @@ final class CreatePurchasesAndItemsSchema extends AbstractMigration
         // Add missing foreign key in transactions if table exists
         $transactions = $this->table('transactions');
         if ($transactions->hasColumn('purchaseId')) {
-             // Ensure foreign key exists for purchaseId
-             // (Phinx requires you to check if it exists or just add if it won't crash)
-             // But we'll just update it to be safe
              $transactions->addForeignKey('purchaseId', 'purchases', 'id', ['delete' => 'SET_NULL'])->update();
         }
     }

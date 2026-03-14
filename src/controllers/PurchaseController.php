@@ -72,6 +72,8 @@ class PurchaseController
             $purchase = Purchase::create([
                 'supplierId' => $data['supplierId'],
                 'purchaseNumber' => $purchaseNumber,
+                'waybillNumber' => $data['waybillNumber'] ?? null,
+                'batchNumber' => $data['batchNumber'] ?? null,
                 'purchaseDate' => $data['purchaseDate'] ?? date('Y-m-d H:i:s'),
                 'dueDate' => $data['dueDate'] ?? null,
                 'expectedDeliveryDate' => $data['expectedDeliveryDate'] ?? null,
@@ -100,7 +102,8 @@ class PurchaseController
                     'quantity' => $quantity,
                     'costPrice' => $costPrice,
                     'sellingPrice' => (float)($item['sellingPrice'] ?? $product->sellingPrice),
-                    'totalPrice' => $totalPrice
+                    'totalPrice' => $totalPrice,
+                    'expiryDate' => $item['expiryDate'] ?? null
                 ]);
 
                 $subtotal += $totalPrice;

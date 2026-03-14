@@ -18,6 +18,7 @@ class PurchaseItem extends Model
         'costPrice',
         'sellingPrice',
         'totalPrice',
+        'expiryDate',
     ];
 
     protected $casts = [
@@ -27,6 +28,7 @@ class PurchaseItem extends Model
         'costPrice' => 'float',
         'sellingPrice' => 'float',
         'totalPrice' => 'float',
+        'expiryDate' => 'datetime',
     ];
 
     public function purchase()

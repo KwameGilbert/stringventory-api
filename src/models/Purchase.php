@@ -17,6 +17,8 @@ class Purchase extends Model
     protected $fillable = [
         'supplierId',
         'purchaseNumber',
+        'waybillNumber',
+        'batchNumber',
         'purchaseDate',
         'dueDate',
         'expectedDeliveryDate',
