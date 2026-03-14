@@ -25,7 +25,7 @@ return function ($app, $config) {
     });
     
     // Health check route
-    $app->get('/health', function ($request, $response) use ($config) {
+    $app->get('/v1/health', function ($request, $response) use ($config) {
         $data = [
             'status' => 'healthy',
             'timestamp' => date('Y-m-d H:i:s'),
