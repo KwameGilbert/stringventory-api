@@ -41,7 +41,7 @@ class AnalyticsController
                 ->count();
 
             $totalExpenses = (float) Expense::where('status', 'paid')
-                ->whereBetween('date', [$dateFrom, $dateTo])
+                ->whereBetween('transactionDate', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                 ->sum('amount');
 
             $netProfit = $grossRevenue - $totalExpenses;
@@ -250,7 +250,7 @@ class AnalyticsController
                 ->sum(DB::raw('orderItems.quantity * products.costPrice'));
 
             $expenses = (float) Expense::where('status', 'paid')
-                ->whereBetween('date', [$dateFrom, $dateTo])
+                ->whereBetween('transactionDate', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                 ->sum('amount');
 
             $data = [
@@ -334,33 +334,30 @@ class AnalyticsController
             $dateTo = $queryParams['dateTo'] ?? Carbon::now()->toDateString();
 
             $totalExpenses = (float) Expense::where('status', 'paid')
-                ->whereBetween('date', [$dateFrom, $dateTo])
+                ->whereBetween('transactionDate', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                 ->sum('amount');
 
             $data = [
                 'summary' => [
                     'totalExpenses' => $totalExpenses,
                     'totalExpenseItems' => Expense::where('status', 'paid')
-                        ->whereBetween('date', [$dateFrom, $dateTo])
+                        ->whereBetween('transactionDate', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                         ->count(),
                     'averageExpense' => (float) Expense::where('status', 'paid')
-                        ->whereBetween('date', [$dateFrom, $dateTo])
+                        ->whereBetween('transactionDate', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                         ->avg('amount')
                 ],
                 'byCategory' => DB::table('expenseCategories')
-                    ->leftJoin('expenses', 'expenseCategories.id', '=', 'expenses.categoryId')
+                    ->leftJoin('expenses', 'expenseCategories.id', '=', 'expenses.expenseCategoryId')
                     ->where('expenses.status', 'paid')
-                    ->whereBetween('expenses.date', [$dateFrom, $dateTo])
+                    ->whereBetween('expenses.transactionDate', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                     ->select(
                         'expenseCategories.id as categoryId',
                         'expenseCategories.name as categoryName',
                         DB::raw('SUM(expenses.amount) as amount'),
-                        DB::raw('COUNT(expenses.id) as itemCount'),
-                        'expenseCategories.budgetLimit',
-                        DB::raw('SUM(expenses.amount) as spent'),
-                        DB::raw('(expenseCategories.budgetLimit - SUM(expenses.amount)) as remaining')
+                        DB::raw('COUNT(expenses.id) as itemCount')
                     )
-                    ->groupBy('expenseCategories.id', 'expenseCategories.name', 'expenseCategories.budgetLimit')
+                    ->groupBy('expenseCategories.id', 'expenseCategories.name')
                     ->get()
             ];
 
