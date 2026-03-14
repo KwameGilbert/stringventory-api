@@ -60,9 +60,9 @@ class ExpenseController
                 return ResponseHelper::error($response, 'Provided expense category does not exist', 404);
             }
 
-            // Default status to 'completed' if not provided
+            // Default status to 'paid' if not provided
             if (empty($data['status'])) {
-                $data['status'] = 'completed';
+                $data['status'] = 'paid';
             }
 
             $expense = Expense::create($data);
