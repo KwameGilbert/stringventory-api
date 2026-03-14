@@ -57,7 +57,7 @@ class PasswordResetController
     {
         try {
             $data = $request->getParsedBody();
-            $required = ['email', 'token', 'password'];
+            $required = ['email', 'otp', 'password'];
             
             foreach ($required as $field) {
                 if (empty($data[$field])) {
@@ -72,13 +72,13 @@ class PasswordResetController
             $ipAddress = $request->getServerParams()['REMOTE_ADDR'] ?? '0.0.0.0';
             $success = $this->passwordResetService->resetPassword(
                 $data['email'],
-                $data['token'],
+                $data['otp'],
                 $data['password'],
                 $ipAddress
             );
 
             if (!$success) {
-                return ResponseHelper::error($response, 'Invalid or expired reset token', 400);
+                return ResponseHelper::error($response, 'Invalid or expired OTP', 400);
             }
 
             // Revoke all existing tokens for this user for security

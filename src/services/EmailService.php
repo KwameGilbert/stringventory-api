@@ -245,15 +245,13 @@ class EmailService
     /**
      * Send password reset email
      */
-    public function sendPasswordResetEmail(User $user, string $token): bool
+    public function sendPasswordResetEmail(User $user, string $otp): bool
     {
         try {
-            $resetUrl = ($_ENV['FRONTEND_URL'] ?? 'http://localhost:5173') . "/reset-password?token={$token}&email=" . urlencode($user->email);
-            
             $email = $this->buildEmailFromTemplate('password_reset', [
                 'user_name' => htmlspecialchars($user->fullName),
                 'user_email' => htmlspecialchars($user->email),
-                'reset_url' => $resetUrl,
+                'otp' => $otp,
             ]);
             
             if (!$email) {

@@ -39,8 +39,8 @@ class PasswordResetService
 
             PasswordReset::where('email', $email)->delete();
 
-            $plainToken = bin2hex(random_bytes(32));
-            $tokenHash = hash('sha256', $plainToken);
+            $plainOtp = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            $tokenHash = hash('sha256', $plainOtp);
 
             PasswordReset::create([
                 'email' => $email,
@@ -56,7 +56,7 @@ class PasswordResetService
                 'metadata' => ['email' => $email]
             ]);
 
-            $this->emailService->sendPasswordResetEmail($user, $plainToken);
+            $this->emailService->sendPasswordResetEmail($user, $plainOtp);
 
             return true;
         } catch (Exception $e) {
@@ -68,10 +68,10 @@ class PasswordResetService
     /**
      * Validate and reset user password
      */
-    public function resetPassword(string $email, string $token, string $newPassword, string $ipAddress = 'unknown'): bool
+    public function resetPassword(string $email, string $otp, string $newPassword, string $ipAddress = 'unknown'): bool
     {
         try {
-            $tokenHash = hash('sha256', $token);
+            $tokenHash = hash('sha256', $otp);
             $resetToken = PasswordReset::where('email', $email)
                 ->where('token', $tokenHash)
                 ->where('createdAt', '>', date('Y-m-d H:i:s', time() - $this->tokenExpiry))
