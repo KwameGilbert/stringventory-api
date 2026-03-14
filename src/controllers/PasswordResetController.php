@@ -43,7 +43,7 @@ class PasswordResetController
             $this->passwordResetService->sendResetLink($data['email'], $ipAddress);
 
             // Always return success to prevent email enumeration
-            return ResponseHelper::success($response, 'If an account exists with this email, a reset link has been sent.');
+            return ResponseHelper::success($response, 'If an account exists with this email, an OTP has been sent.');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to process request', 500, $e->getMessage());
         }
