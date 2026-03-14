@@ -41,6 +41,7 @@ use App\Controllers\PurchaseController;
 use App\Controllers\ExpenseScheduleController;
 use App\Controllers\TransactionController;
 use App\Controllers\AuditLogController;
+use App\Controllers\AnalyticsController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RoleMiddleware;
 use App\Middleware\RateLimitMiddleware;
@@ -188,6 +189,10 @@ return function ($container) {
 
     $container->set(AuditLogController::class, function () {
         return new AuditLogController();
+    });
+
+    $container->set(AnalyticsController::class, function () {
+        return new AnalyticsController();
     });
     
     // ==================== MIDDLEWARES ====================
