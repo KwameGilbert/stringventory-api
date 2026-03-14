@@ -33,10 +33,6 @@ return function ($app): void {
         '/v1/expenses' => ROUTE . 'v1/ExpenseRoute.php',
         '/v1/expense-schedules' => ROUTE . 'v1/ExpenseScheduleRoute.php',
 
-        // Events & Images
-        '/v1/events' => ROUTE . 'v1/EventRoute.php',
-        '/v1/event-images' => ROUTE . 'v1/EventImageRoute.php',
-
         // System & Utils
         '/v1/transactions' => ROUTE . 'v1/TransactionRoute.php',
         '/v1/audit-logs' => ROUTE . 'v1/AuditLogRoute.php',
