@@ -11,7 +11,7 @@ return [
     'env' => $_ENV['APP_ENV'] ?? 'production',
     
     // Application Name
-    'name' => $_ENV['APP_NAME'] ?? 'Eventic',
+    'name' => $_ENV['APP_NAME'] ?? 'Stringventory',
     
     // Application Version
     'version' => $_ENV['APP_VERSION'] ?? '1.0.0',
