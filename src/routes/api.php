@@ -13,6 +13,7 @@ return function ($app): void {
         '/v1/users' => ROUTE . 'v1/UserRoute.php',
         '/v1/admin' => ROUTE . 'v1/AdminRoute.php',
         '/v1/analytics' => ROUTE . 'v1/AnalyticsRoute.php',
+        '/v1/settings' => ROUTE . 'v1/SettingsRoute.php',
 
         // Settings & Metadata
         '/v1/categories' => ROUTE . 'v1/CategoryRoute.php',

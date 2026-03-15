@@ -64,12 +64,35 @@ class AnalyticsController
             $lowStockItems = Inventory::where('quantity', '<=', 10)->count(); // Default threshold
             $pendingOrders = Order::where('status', 'pending')->count();
 
-            // Charts: Revenue By Date
-            $revenueByDate = Order::where('status', 'completed')
+            // Charts: Revenue and Expenses By Date
+            $revenueData = Order::where('status', 'completed')
                 ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                 ->select(DB::raw('DATE(createdAt) as date'), DB::raw('SUM(discountedTotalPrice) as revenue'))
                 ->groupBy('date')
-                ->get();
+                ->get()
+                ->keyBy('date')
+                ->toArray();
+
+            $expenseData = Expense::where('status', 'paid')
+                ->whereBetween('transactionDate', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
+                ->select(DB::raw('DATE(transactionDate) as date'), DB::raw('SUM(amount) as expenses'))
+                ->groupBy('date')
+                ->get()
+                ->keyBy('date')
+                ->toArray();
+
+            // Merge revenue and expenses by date
+            $allDates = array_unique(array_merge(array_keys($revenueData), array_keys($expenseData)));
+            sort($allDates);
+
+            $revenueByDate = [];
+            foreach ($allDates as $date) {
+                $revenueByDate[] = [
+                    'date' => $date,
+                    'revenue' => (float) ($revenueData[$date]['revenue'] ?? 0),
+                    'expenses' => (float) ($expenseData[$date]['expenses'] ?? 0)
+                ];
+            }
 
             // Charts: Top Products
             $topProducts = OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
@@ -169,6 +192,31 @@ class AnalyticsController
                         DB::raw("(SELECT SUM(quantity) FROM orderItems WHERE orderId IN (SELECT id FROM orders o2 WHERE DATE(o2.createdAt) = DATE(orders.createdAt) AND o2.status = 'completed')) as items")
                     )
                     ->groupBy('date')
+                    ->get(),
+                'byProduct' => OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
+                    ->join('products', 'orderItems.productId', '=', 'products.id')
+                    ->where('orders.status', 'completed')
+                    ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
+                    ->select(
+                        'orderItems.productId',
+                        'products.name as productName',
+                        DB::raw('SUM(orderItems.quantity) as quantity'),
+                        DB::raw('SUM(orderItems.totalPrice) as revenue')
+                    )
+                    ->groupBy('orderItems.productId', 'productName')
+                    ->orderBy('revenue', 'desc')
+                    ->get(),
+                'byCustomer' => Order::join('customers', 'orders.customerId', '=', 'customers.id')
+                    ->where('orders.status', 'completed')
+                    ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
+                    ->select(
+                        'orders.customerId',
+                        DB::raw("CONCAT(customers.firstName, ' ', customers.lastName) as customerName"),
+                        DB::raw('COUNT(orders.id) as orders'),
+                        DB::raw('SUM(orders.discountedTotalPrice) as spent')
+                    )
+                    ->groupBy('orders.customerId', 'customerName')
+                    ->orderBy('spent', 'desc')
                     ->get()
             ];
 
