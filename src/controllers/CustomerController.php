@@ -19,7 +19,7 @@ class CustomerController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $customers = Customer::orderBy('createdAt', 'desc')->get();
+            $customers = Customer::with('orders')->orderBy('createdAt', 'desc')->get();
             return ResponseHelper::success($response, 'Customers fetched successfully', $customers->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch customers', 500, $e->getMessage());
@@ -50,6 +50,13 @@ class CustomerController
         try {
             $data = $request->getParsedBody();
             
+            // Handle the combined 'name' field if provided
+            if (!empty($data['name'])) {
+                $nameParts = explode(' ', $data['name'], 2);
+                $data['firstName'] = $nameParts[0];
+                $data['lastName'] = $nameParts[1] ?? '';
+            }
+
             // Required for individual, businessName for corporate
             if (empty($data['firstName']) && empty($data['lastName']) && empty($data['businessName'])) {
                 return ResponseHelper::error($response, 'At least a name or business name is required', 400);
@@ -74,6 +81,14 @@ class CustomerController
             }
 
             $data = $request->getParsedBody();
+
+            // Handle the combined 'name' field if provided
+            if (!empty($data['name'])) {
+                $nameParts = explode(' ', $data['name'], 2);
+                $data['firstName'] = $nameParts[0];
+                $data['lastName'] = $nameParts[1] ?? '';
+            }
+
             $customer->update($data);
             return ResponseHelper::success($response, 'Customer updated successfully', $customer->toArray());
         } catch (Exception $e) {
