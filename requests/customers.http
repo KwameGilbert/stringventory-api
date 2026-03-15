@@ -1,0 +1,77 @@
+### Customer API Requests
+# This file contains HTTP requests for testing Customer endpoints.
+# You can use the REST Client extension in VS Code to run these.
+
+@baseUrl = http://localhost:8000/api/v1
+@authToken = YOUR_BEARER_TOKEN_HERE
+@customerId = 1
+
+### 1. Get All Customers
+# Returns a list of all customers with their order history.
+GET {{baseUrl}}/customers
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+# Expected Response: 200 OK
+# {
+#   "status": "success",
+#   "message": "Customers fetched successfully",
+#   "data": [...]
+# }
+
+
+### 2. Get Single Customer
+# Returns detailed information about a specific customer including orders and refunds.
+GET {{baseUrl}}/customers/{{customerId}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+# Expected Response: 200 OK / 404 Not Found
+
+
+### 3. Create Customer
+# Creates a new customer record. Supports combined 'name' field.
+POST {{baseUrl}}/customers
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "phone": "+1234567890",
+    "address": "123 Main St, Anytown, USA",
+    "businessName": "John's Store",
+    "customerType": "retail"
+}
+
+# Expected Response: 201 Created
+
+
+### 4. Update Customer
+# Updates an existing customer record.
+PUT {{baseUrl}}/customers/{{customerId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "John Updated",
+    "email": "john.updated@example.com",
+    "phone": "+1987654321",
+    "address": "456 Side St, Othertown, USA",
+    "businessName": "John's New Store",
+    "customerType": "retail"
+}
+
+# Expected Response: 200 OK
+
+
+### 5. Delete Customer
+# Deletes a customer. Only allowed if they have no active orders.
+# Requires CEO or Manager role.
+DELETE {{baseUrl}}/customers/{{customerId}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+# Expected Response: 200 OK / 400 Bad Request (if has orders)

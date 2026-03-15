@@ -93,9 +93,15 @@ class OrderController
                 $itemTotal = $product->sellingPrice * $item['quantity'];
                 $subtotal += $itemTotal;
 
+                $fulfilledAtStart = (int)($item['fulfilledQuantity'] ?? 0);
+                if ($fulfilledAtStart > $item['quantity']) {
+                    $fulfilledAtStart = (int)$item['quantity'];
+                }
+
                 $itemsToProcess[] = [
                     'product' => $product,
                     'quantity' => (int)$item['quantity'],
+                    'fulfilledQuantity' => $fulfilledAtStart,
                     'sellingPrice' => $product->sellingPrice,
                     'costPrice' => $product->costPrice,
                     'totalPrice' => $itemTotal
@@ -105,6 +111,9 @@ class OrderController
             // 2. Handle Discount
             $discountAmount = 0;
             $discountId = null;
+            $discountPercentage = null;
+            $discountType = 'fixed';
+
             if (!empty($data['discountCode'])) {
                 $discount = Discount::where('discountCode', $data['discountCode'])
                     ->where('status', 'active')
@@ -118,36 +127,70 @@ class OrderController
 
                 if ($discount) {
                     $discountId = $discount->id;
+                    $discountType = $discount->discountType;
                     if ($discount->discountType === 'percentage') {
-                        $discountAmount = ($subtotal * $discount->discount) / 100;
+                        $discountPercentage = (float)$discount->discount;
+                        $discountAmount = ($subtotal * $discountPercentage) / 100;
                     } else {
-                        $discountAmount = $discount->discountAmount;
+                        $discountAmount = (float)$discount->discountAmount;
                     }
                 }
             }
 
-            $totalPrice = $subtotal - $discountAmount;
+            $discountedTotalPrice = $subtotal - $discountAmount;
 
-            // 3. Create Order
+            // 3. Determine Order Status
+            $allFulfilled = true;
+            $anyFulfilled = false;
+            foreach ($itemsToProcess as $ip) {
+                if ($ip['fulfilledQuantity'] < $ip['quantity']) {
+                    $allFulfilled = false;
+                }
+                if ($ip['fulfilledQuantity'] > 0) {
+                    $anyFulfilled = true;
+                }
+            }
+
+            $orderStatus = 'pending';
+            if ($allFulfilled) {
+                $orderStatus = 'completed';
+            } elseif ($anyFulfilled) {
+                $orderStatus = 'partially_fulfilled';
+            }
+
+            // 4. Create Order
             $order = Order::create([
                 'orderNumber' => 'ORD-' . strtoupper(bin2hex(random_bytes(4))),
                 'customerId' => $data['customerId'] ?? null,
-                'status' => 'completed',
+                'status' => $orderStatus,
                 'discountId' => $discountId,
+                'discountType' => $discountType,
+                'discountPercentage' => $discountPercentage,
                 'discountAmount' => $discountAmount,
-                'discountedTotalPrice' => $totalPrice,
+                'discountedPrice' => $subtotal, // original price
+                'discountedTotalPrice' => $discountedTotalPrice,
+                'notes' => $data['notes'] ?? null,
                 'createdAt' => date('Y-m-d H:i:s'),
                 'updatedAt' => date('Y-m-d H:i:s')
             ]);
 
-            // 4. Create Order Items and Update Inventory
+            // 5. Create Order Items and Update Inventory
             foreach ($itemsToProcess as $processItem) {
+                $itemStatus = 'pending';
+                if ($processItem['fulfilledQuantity'] == $processItem['quantity']) {
+                    $itemStatus = 'fulfilled';
+                } elseif ($processItem['fulfilledQuantity'] > 0) {
+                    $itemStatus = 'partial';
+                }
+
                 OrderItem::create([
                     'orderId' => $order->id,
                     'productId' => $processItem['product']->id,
                     'costPrice' => $processItem['costPrice'],
                     'sellingPrice' => $processItem['sellingPrice'],
                     'quantity' => $processItem['quantity'],
+                    'fulfilledQuantity' => $processItem['fulfilledQuantity'],
+                    'fulfillmentStatus' => $itemStatus,
                     'totalPrice' => $processItem['totalPrice']
                 ]);
 
@@ -155,12 +198,12 @@ class OrderController
                 Inventory::where('productId', $processItem['product']->id)->decrement('quantity', $processItem['quantity']);
             }
 
-            // 5. Record Transaction
+            // 6. Record Transaction
             Transaction::create([
                 'orderId' => $order->id,
                 'transactionType' => 'order',
                 'paymentMethod' => $data['paymentMethod'] ?? 'cash',
-                'amount' => $totalPrice,
+                'amount' => $discountedTotalPrice,
                 'status' => 'completed',
                 'createdAt' => date('Y-m-d H:i:s')
             ]);
@@ -206,6 +249,48 @@ class OrderController
         } catch (Exception $e) {
             DB::rollBack();
             return ResponseHelper::error($response, 'Failed to cancel order', 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * Fulfill an order item (Partial or Full)
+     * POST /v1/orders/item/{itemId}/fulfill
+     */
+    public function fulfillItem(Request $request, Response $response, array $args): Response
+    {
+        try {
+            $itemId = $args['itemId'];
+            $data = $request->getParsedBody();
+            $fulfillAmount = (int) ($data['quantity'] ?? 0);
+
+            if ($fulfillAmount <= 0) {
+                return ResponseHelper::error($response, 'Valid quantity to fulfill is required', 400);
+            }
+
+            $orderItem = OrderItem::find($itemId);
+            if (!$orderItem) {
+                return ResponseHelper::error($response, 'Order item not found', 404);
+            }
+
+            $remainingQuantity = $orderItem->quantity - $orderItem->fulfilledQuantity;
+
+            if ($fulfillAmount > $remainingQuantity) {
+                return ResponseHelper::error($response, "Cannot fulfill more than remaining quantity ($remainingQuantity)", 400);
+            }
+
+            $orderItem->fulfilledQuantity += $fulfillAmount;
+
+            if ($orderItem->fulfilledQuantity == $orderItem->quantity) {
+                $orderItem->fulfillmentStatus = 'fulfilled';
+            } else {
+                $orderItem->fulfillmentStatus = 'partial';
+            }
+
+            $orderItem->save();
+
+            return ResponseHelper::success($response, "Successfully fulfilled $fulfillAmount units", $orderItem->toArray());
+        } catch (Exception $e) {
+            return ResponseHelper::error($response, 'Failed to fulfill item', 500, $e->getMessage());
         }
     }
 }

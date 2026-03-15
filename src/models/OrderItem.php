@@ -28,6 +28,8 @@ class OrderItem extends Model
         'costPrice',
         'sellingPrice',
         'quantity',
+        'fulfilledQuantity',
+        'fulfillmentStatus',
         'totalPrice',
     ];
 
@@ -37,6 +39,7 @@ class OrderItem extends Model
         'costPrice' => 'float',
         'sellingPrice' => 'float',
         'quantity' => 'integer',
+        'fulfilledQuantity' => 'integer',
         'totalPrice' => 'float',
     ];
 

@@ -1,0 +1,133 @@
+### Order API Requests
+# This file contains HTTP requests for testing Order endpoints.
+
+@baseUrl = http://localhost:8000/api/v1
+@authToken = YOUR_BEARER_TOKEN_HERE
+@orderId = 1
+@orderItemId = 1
+
+### 1. Get All Orders
+# Returns all orders with customers, items, discounts, and transactions.
+GET {{baseUrl}}/orders
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+# Expected Response: 200 OK
+# {
+#   "success": true,
+#   "message": "Orders fetched successfully",
+#   "data": [
+#     {
+#       "id": 1,
+#       "orderNumber": "ORD-A1B2C3D4",
+#       "status": "completed",
+#       "discountedTotalPrice": 90.00,
+#       "customer": { ... },
+#       "items": [...],
+#       "transactions": [...]
+#     }
+#   ]
+# }
+
+### 2. Get Single Order
+GET {{baseUrl}}/orders/{{orderId}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+# Expected Response: 200 OK
+# {
+#   "success": true,
+#   "message": "Order fetched successfully",
+#   "data": { ... }
+# }
+
+### 3a. Create Order (With Discount & Partial Fulfillment)
+# Creates a new order. Stock is automatically deducted from inventory.
+POST {{baseUrl}}/orders
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+    "customerId": 1,
+    "paymentMethod": "cash",
+    "discountCode": "SAVE10",
+    "notes": "Deliver to the front desk",
+    "items": [
+        {
+            "productId": 1,
+            "quantity": 100,
+            "fulfilledQuantity": 40
+        }
+    ]
+}
+
+# Expected Response: 201 Created
+# {
+#   "success": true,
+#   "message": "Order created successfully",
+#   "data": {
+#     "id": 5,
+#     "orderNumber": "ORD-E5F6G7H8",
+#     "status": "partially_fulfilled",
+#     "discountAmount": 10.00,
+#     "discountedTotalPrice": 90.00,
+#     "items": [...]
+#   }
+# }
+
+### 3b. Create Order (No Discount, Full Fulfillment)
+POST {{baseUrl}}/orders
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+    "customerId": 1,
+    "paymentMethod": "momo",
+    "items": [
+        {
+            "productId": 2,
+            "quantity": 5,
+            "fulfilledQuantity": 5
+        }
+    ]
+}
+
+# Expected Response: 201 Created (Status: "completed")
+
+### 4. Fulfill Order Item (Partial or Full)
+# Use this to track when a customer takes their remaining items.
+# Quantity to fulfill must be <= remaining unfulfilled quantity.
+POST {{baseUrl}}/orders/item/{{orderItemId}}/fulfill
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+    "quantity": 30
+}
+
+# Expected Response: 200 OK
+# {
+#   "success": true,
+#   "message": "Successfully fulfilled 30 units",
+#   "data": {
+#     "id": 1,
+#     "fulfilledQuantity": 70,
+#     "fulfillmentStatus": "partial"
+#   }
+# }
+
+### 5. Cancel Order
+# Reverses inventory and cancels transactions.
+# Only allowed for CEO/Manager roles.
+POST {{baseUrl}}/orders/{{orderId}}/cancel
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+# Expected Response: 200 OK
+# {
+#   "success": true,
+#   "message": "Order cancelled and stock returned successfully"
+# }

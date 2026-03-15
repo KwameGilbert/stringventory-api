@@ -40,6 +40,7 @@ class Order extends Model
         'discountType',
         'discountedPrice',
         'discountedTotalPrice',
+        'notes',
     ];
 
     protected $casts = [

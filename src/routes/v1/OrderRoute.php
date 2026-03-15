@@ -29,6 +29,9 @@ return function (App $app): void {
         // Everyone can create an order (make a sale)
         $group->post('', [$orderController, 'create'])->add(new RoleMiddleware($allRoles));
 
+        // Fulfill individual items
+        $group->post('/item/{itemId}/fulfill', [$orderController, 'fulfillItem'])->add(new RoleMiddleware($allRoles));
+
         // Only management can cancel orders (reverses stock/transactions)
         $group->post('/{id}/cancel', [$orderController, 'cancel'])->add(new RoleMiddleware($managementRoles));
     })->add($authMiddleware);
