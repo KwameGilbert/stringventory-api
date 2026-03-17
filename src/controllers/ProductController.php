@@ -58,7 +58,7 @@ class ProductController
     public function create(Request $request, Response $response): Response
     {
         try {
-            $data = $request->getParsedBody();
+            $data = (array)($request->getParsedBody() ?? []);
             $uploadedFiles = $request->getUploadedFiles();
 
             if (empty($data['name'])) {

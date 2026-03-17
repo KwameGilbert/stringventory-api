@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Purchase extends Model
 {
     protected $table = 'purchases';
-    public $timestamps = false;
+    public $timestamps = true;
 
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';

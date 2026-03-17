@@ -20,11 +20,47 @@ Accept: application/json
 #     {
 #       "id": 1,
 #       "orderNumber": "ORD-A1B2C3D4",
+#       "customerId": 1,
 #       "status": "completed",
+#       "discountId": 2,
+#       "discountType": "percentage",
+#       "discountPercentage": 10,
+#       "discountAmount": 10.00,
+#       "discountedPrice": 100.00,
 #       "discountedTotalPrice": 90.00,
-#       "customer": { ... },
-#       "items": [...],
-#       "transactions": [...]
+#       "notes": "Regular customer",
+#       "createdAt": "2026-03-15 17:15:00",
+#       "updatedAt": "2026-03-15 17:15:00",
+#       "customer": {
+#         "id": 1,
+#         "firstName": "John",
+#         "lastName": "Doe"
+#       },
+#       "items": [
+#         {
+#           "id": 1,
+#           "orderId": 1,
+#           "productId": 1,
+#           "quantity": 10,
+#           "fulfilledQuantity": 10,
+#           "fulfillmentStatus": "fulfilled",
+#           "sellingPrice": 10.00,
+#           "totalPrice": 100.00,
+#           "product": {
+#             "id": 1,
+#             "name": "Widget A"
+#           }
+#         }
+#       ],
+#       "transactions": [
+#         {
+#           "id": 1,
+#           "orderId": 1,
+#           "transactionType": "order",
+#           "amount": 90.00,
+#           "status": "completed"
+#         }
+#       ]
 #     }
 #   ]
 # }
@@ -38,7 +74,52 @@ Accept: application/json
 # {
 #   "success": true,
 #   "message": "Order fetched successfully",
-#   "data": { ... }
+#   "data": {
+#     "id": 1,
+#     "orderNumber": "ORD-A1B2C3D4",
+#     "customerId": 1,
+#     "status": "completed",
+#     "discountId": 2,
+#     "discountType": "percentage",
+#     "discountPercentage": 10,
+#     "discountAmount": 10.00,
+#     "discountedPrice": 100.00,
+#     "discountedTotalPrice": 90.00,
+#     "notes": "Regular customer",
+#     "createdAt": "2026-03-15 17:15:00",
+#     "updatedAt": "2026-03-15 17:15:00",
+#     "customer": {
+#       "id": 1,
+#       "firstName": "John",
+#       "lastName": "Doe",
+#       "email": "john.doe@example.com"
+#     },
+#     "items": [
+#       {
+#         "id": 1,
+#         "orderId": 1,
+#         "productId": 1,
+#         "quantity": 10,
+#         "fulfilledQuantity": 10,
+#         "fulfillmentStatus": "fulfilled",
+#         "sellingPrice": 10.00,
+#         "totalPrice": 100.00,
+#         "product": {
+#           "id": 1,
+#           "name": "Widget A"
+#         }
+#       }
+#     ],
+#     "transactions": [
+#       {
+#         "id": 1,
+#         "orderId": 1,
+#         "transactionType": "order",
+#         "amount": 90.00,
+#         "status": "completed"
+#       }
+#     ]
+#   }
 # }
 
 ### 3a. Create Order (With Discount & Partial Fulfillment)
@@ -69,10 +150,30 @@ Accept: application/json
 #   "data": {
 #     "id": 5,
 #     "orderNumber": "ORD-E5F6G7H8",
+#     "customerId": 1,
 #     "status": "partially_fulfilled",
+#     "discountId": 2,
+#     "discountType": "percentage",
+#     "discountPercentage": 10,
 #     "discountAmount": 10.00,
+#     "discountedPrice": 100.00,
 #     "discountedTotalPrice": 90.00,
-#     "items": [...]
+#     "notes": "Deliver to the front desk",
+#     "createdAt": "2026-03-15 17:45:00",
+#     "updatedAt": "2026-03-15 17:45:00",
+#     "items": [
+#       {
+#         "id": 10,
+#         "orderId": 5,
+#         "productId": 1,
+#         "quantity": 100,
+#         "fulfilledQuantity": 40,
+#         "fulfillmentStatus": "partial",
+#         "costPrice": 5.00,
+#         "sellingPrice": 10.00,
+#         "totalPrice": 1000.00
+#       }
+#     ]
 #   }
 # }
 
@@ -94,7 +195,19 @@ Accept: application/json
     ]
 }
 
-# Expected Response: 201 Created (Status: "completed")
+# Expected Response: 201 Created
+# {
+#   "success": true,
+#   "message": "Order created successfully",
+#   "data": {
+#     "id": 6,
+#     "orderNumber": "ORD-J9K0L1M2",
+#     "status": "completed",
+#     "discountAmount": 0.00,
+#     "discountedTotalPrice": 50.00,
+#     "items": [...]
+#   }
+# }
 
 ### 4. Fulfill Order Item (Partial or Full)
 # Use this to track when a customer takes their remaining items.
@@ -114,8 +227,12 @@ Accept: application/json
 #   "message": "Successfully fulfilled 30 units",
 #   "data": {
 #     "id": 1,
+#     "orderId": 1,
+#     "productId": 1,
+#     "quantity": 100,
 #     "fulfilledQuantity": 70,
-#     "fulfillmentStatus": "partial"
+#     "fulfillmentStatus": "partial",
+#     "totalPrice": 1000.00
 #   }
 # }
 

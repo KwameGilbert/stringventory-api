@@ -68,7 +68,24 @@ class PurchaseController
 
             $purchaseNumber = 'PO-' . strtoupper(substr(uniqid(), 7));
             
-            // 2. Create Header
+            $user = $request->getAttribute('user');
+            $role = $user ? $user->role : \App\Models\User::ROLE_MANAGER; // Default to manager if guest (shouldn't happen with auth)
+
+            // 2. Determine Initial Status
+            $status = $data['status'] ?? 'pending';
+            
+            if ($role === \App\Models\User::ROLE_CEO) {
+                // If CEO adds a purchase, it shouldn't be 'pending'. 
+                // Default to 'ordered' (approved) if not specified as 'received'
+                if ($status === 'pending') {
+                    $status = 'ordered';
+                }
+            } else {
+                // Managers and others MUST be 'pending' for CEO approval
+                $status = 'pending';
+            }
+
+            // 3. Create Header
             $purchase = Purchase::create([
                 'supplierId' => $data['supplierId'],
                 'purchaseNumber' => $purchaseNumber,
@@ -79,7 +96,7 @@ class PurchaseController
                 'expectedDeliveryDate' => $data['expectedDeliveryDate'] ?? null,
                 'tax' => (float)($data['tax'] ?? 0),
                 'shippingCost' => (float)($data['shippingCost'] ?? 0),
-                'status' => $data['status'] ?? 'pending', // pending, ordered, received
+                'status' => $status,
                 'paymentStatus' => $data['paymentStatus'] ?? 'unpaid',
                 'paymentMethod' => $data['paymentMethod'] ?? 'bank_transfer',
                 'notes' => $data['notes'] ?? null,

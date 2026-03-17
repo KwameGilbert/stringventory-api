@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $table = 'products';
-    public $timestamps = false;
+    public $timestamps = true;
 
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';
