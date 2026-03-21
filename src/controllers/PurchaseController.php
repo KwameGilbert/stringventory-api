@@ -98,7 +98,7 @@ class PurchaseController
                 'shippingCost' => (float)($data['shippingCost'] ?? 0),
                 'status' => $status,
                 'paymentStatus' => $data['paymentStatus'] ?? 'unpaid',
-                'paymentMethod' => $data['paymentMethod'] ?? 'bank_transfer',
+                'paymentMethod' => $data['paymentMethod'] ?? $data['payment_method'] ?? 'bank_transfer',
                 'notes' => $data['notes'] ?? null,
             ]);
 

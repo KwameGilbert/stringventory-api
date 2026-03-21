@@ -202,7 +202,7 @@ class OrderController
             Transaction::create([
                 'orderId' => $order->id,
                 'transactionType' => 'order',
-                'paymentMethod' => $data['paymentMethod'] ?? 'cash',
+                'paymentMethod' => $data['paymentMethod'] ?? $data['payment_method'] ?? 'cash',
                 'amount' => $discountedTotalPrice,
                 'status' => 'completed',
                 'createdAt' => date('Y-m-d H:i:s')

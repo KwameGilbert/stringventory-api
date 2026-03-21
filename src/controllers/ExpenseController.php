@@ -6,9 +6,11 @@ namespace App\Controllers;
 
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
+use App\Models\Transaction;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Illuminate\Database\Capsule\Manager as DB;
 use Exception;
 
 class ExpenseController
@@ -65,9 +67,23 @@ class ExpenseController
                 $data['status'] = 'paid';
             }
 
+            DB::beginTransaction();
             $expense = Expense::create($data);
+
+            // Record transaction for the expense
+            Transaction::create([
+                'expenseId' => $expense->id,
+                'transactionType' => 'expense',
+                'amount' => -$expense->amount, // Expense is an outflow
+                'paymentMethod' => $data['paymentMethod'] ?? $data['payment_method'] ?? 'cash',
+                'status' => 'completed',
+                'createdAt' => date('Y-m-d H:i:s')
+            ]);
+
+            DB::commit();
             return ResponseHelper::success($response, 'Expense created successfully', $expense->load('category')->toArray(), 201);
         } catch (Exception $e) {
+            DB::rollBack();
             return ResponseHelper::error($response, 'Failed to create expense', 500, $e->getMessage());
         }
     }

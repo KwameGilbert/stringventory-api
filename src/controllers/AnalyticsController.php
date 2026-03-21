@@ -185,6 +185,17 @@ class AnalyticsController
                         ->orderBy('count', 'desc')
                         ->first()->paymentMethod ?? 'N/A'
                 ],
+                'byPaymentMethod' => DB::table('transactions')
+                    ->join('orders', 'transactions.orderId', '=', 'orders.id')
+                    ->where('orders.status', 'completed')
+                    ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
+                    ->select(
+                        'transactions.paymentMethod',
+                        DB::raw('SUM(transactions.amount) as revenue'),
+                        DB::raw('COUNT(transactions.id) as orders')
+                    )
+                    ->groupBy('transactions.paymentMethod')
+                    ->get(),
                 'byDate' => (function() use ($dateFrom, $dateTo) {
                     $byDateSales = Order::where('status', 'completed')
                         ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
