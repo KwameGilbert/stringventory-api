@@ -6,9 +6,11 @@ namespace App\Controllers;
 
 use App\Models\Inventory;
 use App\Models\Product;
+use App\Models\Transaction;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Illuminate\Database\Capsule\Manager as DB;
 use Exception;
 
 class InventoryController
@@ -59,6 +61,8 @@ class InventoryController
                 return ResponseHelper::error($response, 'Product not found', 404);
             }
 
+            DB::beginTransaction();
+            
             $inventory = Inventory::where('productId', $data['productId'])->first();
             $adjustment = (int)$data['adjustment'];
 
@@ -85,8 +89,20 @@ class InventoryController
                 $inventory->save();
             }
 
+            // Record transaction for the adjustment
+            Transaction::create([
+                'adjustmentId' => $inventory->id, // We use the inventory ID as the adjustment reference for now
+                'transactionType' => 'adjustment',
+                'amount' => 0, // Adjustments don't necessarily have a financial impact shown in amount
+                'paymentMethod' => 'internal',
+                'status' => 'completed',
+                'createdAt' => date('Y-m-d H:i:s')
+            ]);
+
+            DB::commit();
             return ResponseHelper::success($response, 'Stock adjusted successfully', $inventory->load('product')->toArray());
         } catch (Exception $e) {
+            DB::rollBack();
             return ResponseHelper::error($response, 'Failed to adjust stock', 500, $e->getMessage());
         }
     }
