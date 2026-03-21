@@ -9,7 +9,7 @@ class CreatePaymentMethodsTable extends AbstractMigration
     public function change(): void
     {
         $table = $this->table('payment_methods', ['id' => false, 'primary_key' => ['id']]);
-        $table->addColumn('id', 'string', ['limit' => 50])
+        $table->addColumn('id', 'string', ['limit' => 50, 'null' => false])
               ->addColumn('name', 'string', ['limit' => 100])
               ->addColumn('type', 'string', ['limit' => 50])
               ->addColumn('enabled', 'boolean', ['default' => true])

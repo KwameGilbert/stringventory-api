@@ -9,7 +9,7 @@ class CreateUserSettingsTable extends AbstractMigration
     public function change(): void
     {
         $table = $this->table('user_settings', ['id' => false, 'primary_key' => ['id']]);
-        $table->addColumn('id', 'integer', ['identity' => true, 'signed' => false])
+        $table->addColumn('id', 'integer', ['identity' => true, 'signed' => false, 'null' => false])
               ->addColumn('userId', 'integer', ['signed' => false])
               ->addColumn('category', 'string', ['limit' => 50])
               ->addColumn('data', 'json')
