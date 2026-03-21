@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Setting;
+use App\Models\PaymentMethod;
+use App\Models\UserSetting;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -22,7 +24,12 @@ class SettingsController
             if (!$settings) {
                 return ResponseHelper::error($response, 'Business settings not found', 404);
             }
-            return ResponseHelper::success($response, 'Business settings retrieved successfully', $settings);
+            
+            return ResponseHelper::jsonResponse($response, [
+                'status' => 'success',
+                'message' => 'Business settings retrieved successfully',
+                'data' => $settings
+            ]);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to retrieve business settings', 500, $e->getMessage());
         }
@@ -35,9 +42,24 @@ class SettingsController
     {
         try {
             $data = $request->getParsedBody();
-            Setting::updateCategory('business', $data);
-            $settings = Setting::getByCategory('business');
-            return ResponseHelper::success($response, 'Business settings updated successfully', $settings);
+            
+            // Get existing to merge or just overwrite with provided fields
+            $current = Setting::getByCategory('business') ?: [];
+            $updated = array_merge($current, $data);
+            $updated['updatedAt'] = date('c'); // ISO 8601
+            
+            Setting::updateCategory('business', $updated);
+            
+            return ResponseHelper::jsonResponse($response, [
+                'status' => 'success',
+                'message' => 'Business settings updated successfully',
+                'data' => [
+                    'businessId' => $updated['businessId'] ?? null,
+                    'businessName' => $updated['businessName'] ?? null,
+                    'email' => $updated['email'] ?? null,
+                    'updatedAt' => $updated['updatedAt']
+                ]
+            ]);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update business settings', 500, $e->getMessage());
         }
@@ -49,16 +71,47 @@ class SettingsController
     public function getNotificationSettings(Request $request, Response $response): Response
     {
         try {
-            $settings = Setting::getByCategory('notifications');
+            $user = $request->getAttribute('user');
+            $userId = (int) ($user->id ?? 0);
+            
+            $settings = UserSetting::getByUserAndCategory($userId, 'notifications');
+            
             if (!$settings) {
-                // Return default if not set
+                // Return defaults as requested
                 $settings = [
-                    'emailNotifications' => ['orderCreated' => true, 'lowStock' => true],
-                    'smsNotifications' => ['orderCreated' => false, 'lowStock' => true],
-                    'pushNotifications' => ['orderCreated' => true]
+                    'userId' => (string)$userId,
+                    'emailNotifications' => [
+                        'orderCreated' => true,
+                        'orderShipped' => true,
+                        'orderDelivered' => true,
+                        'lowStock' => true,
+                        'newCustomer' => true,
+                        'expenseApproved' => false
+                    ],
+                    'smsNotifications' => [
+                        'orderCreated' => true,
+                        'lowStock' => true,
+                        'urgentAlerts' => true
+                    ],
+                    'pushNotifications' => [
+                        'orderCreated' => true,
+                        'dashboardAlerts' => true
+                    ],
+                    'quietHours' => [
+                        'enabled' => true,
+                        'startTime' => '20:00',
+                        'endTime' => '08:00'
+                    ]
                 ];
+            } else {
+                $settings['userId'] = (string)$userId;
             }
-            return ResponseHelper::success($response, 'Notification settings retrieved successfully', $settings);
+            
+            return ResponseHelper::jsonResponse($response, [
+                'status' => 'success',
+                'message' => 'Notification settings retrieved successfully',
+                'data' => $settings
+            ]);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to retrieve notification settings', 500, $e->getMessage());
         }
@@ -70,10 +123,20 @@ class SettingsController
     public function updateNotificationSettings(Request $request, Response $response): Response
     {
         try {
+            $user = $request->getAttribute('user');
+            $userId = (int) ($user->id ?? 0);
             $data = $request->getParsedBody();
-            Setting::updateCategory('notifications', $data);
-            $settings = Setting::getByCategory('notifications');
-            return ResponseHelper::success($response, 'Notification settings updated successfully', $settings);
+            
+            UserSetting::updateByUserAndCategory($userId, 'notifications', $data);
+            
+            return ResponseHelper::jsonResponse($response, [
+                'status' => 'success',
+                'message' => 'Notification settings updated successfully',
+                'data' => [
+                    'userId' => (string)$userId,
+                    'updatedAt' => date('c')
+                ]
+            ]);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update notification settings', 500, $e->getMessage());
         }
@@ -85,17 +148,24 @@ class SettingsController
     public function getPaymentSettings(Request $request, Response $response): Response
     {
         try {
-            $settings = Setting::getByCategory('payment');
-            if (!$settings) {
-                $settings = [
-                    'paymentMethods' => [
-                        ['id' => 'pm_001', 'name' => 'Cash', 'type' => 'cash', 'enabled' => true],
-                        ['id' => 'pm_002', 'name' => 'Bank Transfer', 'type' => 'bank', 'enabled' => true]
-                    ],
-                    'defaultPaymentMethod' => 'pm_001'
-                ];
-            }
-            return ResponseHelper::success($response, 'Payment settings retrieved successfully', $settings);
+            $globalConfig = Setting::getByCategory('payment') ?: [
+                'businessId' => 'business_88234',
+                'defaultPaymentMethod' => 'pm_001',
+                'autoReconciliation' => true,
+                'receiptEmail' => 'accounting@johnsstore.com'
+            ];
+            
+            $methods = PaymentMethod::all();
+            
+            $data = array_merge($globalConfig, [
+                'paymentMethods' => $methods->toArray()
+            ]);
+            
+            return ResponseHelper::jsonResponse($response, [
+                'status' => 'success',
+                'message' => 'Payment settings retrieved successfully',
+                'data' => $data
+            ]);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to retrieve payment settings', 500, $e->getMessage());
         }
@@ -108,9 +178,28 @@ class SettingsController
     {
         try {
             $data = $request->getParsedBody();
-            Setting::updateCategory('payment', $data);
-            $settings = Setting::getByCategory('payment');
-            return ResponseHelper::success($response, 'Payment settings updated successfully', $settings);
+            
+            // Extract enabled methods if provided
+            if (isset($data['enabledMethods'])) {
+                PaymentMethod::whereIn('id', $data['enabledMethods'])->update(['enabled' => true]);
+                PaymentMethod::whereNotIn('id', $data['enabledMethods'])->update(['enabled' => false]);
+            }
+            
+            // Update global payment config (limit to non-methods fields)
+            $configKeys = ['defaultPaymentMethod', 'autoReconciliation', 'receiptEmail', 'businessId'];
+            $newConfig = array_intersect_key($data, array_flip($configKeys));
+            
+            $current = Setting::getByCategory('payment') ?: [];
+            Setting::updateCategory('payment', array_merge($current, $newConfig));
+            
+            return ResponseHelper::jsonResponse($response, [
+                'status' => 'success',
+                'message' => 'Payment settings updated successfully',
+                'data' => [
+                    'businessId' => $data['businessId'] ?? $current['businessId'] ?? null,
+                    'updatedAt' => date('c')
+                ]
+            ]);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update payment settings', 500, $e->getMessage());
         }
