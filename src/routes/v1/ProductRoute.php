@@ -16,6 +16,8 @@ return function (App $app): void {
 
     $app->group('/v1/products', function ($group) use ($controller, $managementRoles) {
         $group->get('', [$controller, 'index']);
+        $group->get('/expiring', [$controller, 'expiring']);
+        $group->get('/low-stock', [$controller, 'lowStock']);
         $group->get('/{id}', [$controller, 'show']);
 
         $group->post('', [$controller, 'create'])->add(new RoleMiddleware($managementRoles));

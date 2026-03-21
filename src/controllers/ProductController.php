@@ -176,4 +176,54 @@ class ProductController
             return ResponseHelper::error($response, 'Failed to delete product', 500, $e->getMessage());
         }
     }
+
+    /**
+     * Get expiring products
+     */
+    public function expiring(Request $request, Response $response): Response
+    {
+        try {
+            $limit = (int)($request->getQueryParams()['limit'] ?? 5);
+            
+            $products = PurchaseItem::join('products', 'purchaseItems.productId', '=', 'products.id')
+                ->where('purchaseItems.expiryDate', '>=', date('Y-m-d'))
+                ->select(
+                    'products.*',
+                    'purchaseItems.expiryDate',
+                    'purchaseItems.batchNumber'
+                )
+                ->orderBy('purchaseItems.expiryDate', 'asc')
+                ->limit($limit)
+                ->get();
+
+            return ResponseHelper::success($response, 'Expiring products fetched successfully', $products->toArray());
+        } catch (Exception $e) {
+            return ResponseHelper::error($response, 'Failed to fetch expiring products', 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * Get low stock products
+     */
+    public function lowStock(Request $request, Response $response): Response
+    {
+        try {
+            $limit = (int)($request->getQueryParams()['limit'] ?? 5);
+            
+            $products = Product::join('inventory', 'products.id', '=', 'inventory.productId')
+                ->whereRaw('inventory.quantity <= products.reorderLevel')
+                ->orWhere(function($query) {
+                    $query->whereNull('products.reorderLevel')
+                          ->where('inventory.quantity', '<=', 10);
+                })
+                ->select('products.*', 'inventory.quantity as currentQuantity')
+                ->orderBy('inventory.quantity', 'asc')
+                ->limit($limit)
+                ->get();
+
+            return ResponseHelper::success($response, 'Low stock products fetched successfully', $products->toArray());
+        } catch (Exception $e) {
+            return ResponseHelper::error($response, 'Failed to fetch low stock products', 500, $e->getMessage());
+        }
+    }
 }

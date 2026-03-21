@@ -176,10 +176,12 @@ class AnalyticsController
                         ->where('orders.status', 'completed')
                         ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                         ->sum('orderItems.quantity'),
-                    'topPaymentMethod' => Order::where('status', 'completed')
-                        ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                        ->select('paymentMethod', DB::raw('COUNT(*) as count'))
-                        ->groupBy('paymentMethod')
+                    'topPaymentMethod' => DB::table('transactions')
+                        ->join('orders', 'transactions.orderId', '=', 'orders.id')
+                        ->where('orders.status', 'completed')
+                        ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
+                        ->select('transactions.paymentMethod', DB::raw('COUNT(*) as count'))
+                        ->groupBy('transactions.paymentMethod')
                         ->orderBy('count', 'desc')
                         ->first()->paymentMethod ?? 'N/A'
                 ],
