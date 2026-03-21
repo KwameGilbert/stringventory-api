@@ -185,16 +185,39 @@ class AnalyticsController
                         ->orderBy('count', 'desc')
                         ->first()->paymentMethod ?? 'N/A'
                 ],
-                'byDate' => Order::where('status', 'completed')
-                    ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                    ->select(
-                        DB::raw('DATE(createdAt) as date'),
-                        DB::raw('SUM(discountedTotalPrice) as sales'),
-                        DB::raw('COUNT(*) as orders'),
-                        DB::raw("(SELECT SUM(quantity) FROM orderItems WHERE orderId IN (SELECT id FROM orders o2 WHERE DATE(o2.createdAt) = DATE(orders.createdAt) AND o2.status = 'completed')) as items")
-                    )
-                    ->groupBy('date')
-                    ->get(),
+                'byDate' => (function() use ($dateFrom, $dateTo) {
+                    $byDateSales = Order::where('status', 'completed')
+                        ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
+                        ->select(
+                            DB::raw('DATE(createdAt) as date'),
+                            DB::raw('SUM(discountedTotalPrice) as sales'),
+                            DB::raw('COUNT(*) as orders')
+                        )
+                        ->groupBy('date')
+                        ->get()
+                        ->keyBy('date');
+
+                    $byDateItems = OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
+                        ->where('orders.status', 'completed')
+                        ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
+                        ->select(
+                            DB::raw('DATE(orders.createdAt) as date'),
+                            DB::raw('SUM(orderItems.quantity) as items')
+                        )
+                        ->groupBy('date')
+                        ->get()
+                        ->keyBy('date');
+
+                    // Merge results
+                    return $byDateSales->map(function ($row, $date) use ($byDateItems) {
+                        return [
+                            'date' => $row->date,
+                            'sales' => (float) $row->sales,
+                            'orders' => (int) $row->orders,
+                            'items' => (int) ($byDateItems[$date]->items ?? 0)
+                        ];
+                    })->values();
+                })(),
                 'byProduct' => OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
                     ->join('products', 'orderItems.productId', '=', 'products.id')
                     ->where('orders.status', 'completed')
