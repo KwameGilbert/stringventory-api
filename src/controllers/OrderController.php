@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use App\Models\Discount;
 use App\Models\Customer;
 use App\Helper\ResponseHelper;
+use App\Services\NotificationService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -23,6 +24,13 @@ use Exception;
  */
 class OrderController
 {
+    private NotificationService $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     /**
      * Get all orders
      * GET /v1/orders
@@ -209,6 +217,28 @@ class OrderController
             ]);
 
             DB::commit();
+
+            // Trigger notification for admins
+            $this->notificationService->notifyAdmins(
+                'order',
+                'New Order Received',
+                "A new order {$order->orderNumber} has been placed for a total of " . number_format((float)$discountedTotalPrice, 2),
+                ['orderId' => $order->id, 'orderNumber' => $order->orderNumber, 'total' => $discountedTotalPrice]
+            );
+
+            // Also check for low stock on each item
+            foreach ($itemsToProcess as $processItem) {
+                $product = $processItem['product'];
+                $inventory = Inventory::where('productId', $product->id)->first();
+                if ($inventory && $inventory->quantity <= ($product->reorderLevel ?? 5)) {
+                    $this->notificationService->notifyAdmins(
+                        'stock_alert',
+                        'Low Stock Alert',
+                        "Product '{$product->name}' is running low on stock after order {$order->orderNumber}. Current quantity: {$inventory->quantity}.",
+                        ['productId' => $product->id, 'quantity' => $inventory->quantity]
+                    );
+                }
+            }
 
             return ResponseHelper::success($response, 'Order created successfully', $order->load('items')->toArray(), 201);
         } catch (Exception $e) {

@@ -8,6 +8,8 @@ use App\Services\EmailService;
 use App\Services\SMSService;
 use App\Services\NotificationQueue;
 use App\Services\TemplateEngine;
+use App\Models\Notification;
+use App\Models\User;
 use Exception;
 
 /**
@@ -280,7 +282,7 @@ class NotificationService
     /**
      * Send password changed confirmation
      */
-    public function sendPasswordChanged(string $email, string $phone = null): bool
+    public function sendPasswordChanged(string $email, ?string $phone = null): bool
     {
         return $this->send([
             'type' => 'password_changed',
@@ -387,6 +389,40 @@ class NotificationService
         ]);
     }
 
+
+
+    /**
+     * Create a persistent notification in the database
+     */
+    public function createDirectNotification(int $userId, string $type, string $title, string $message, ?array $data = null): bool
+    {
+        try {
+            Notification::create([
+                'userId' => $userId,
+                'type' => $type,
+                'title' => $title,
+                'message' => $message,
+                'data' => $data,
+                'isRead' => false
+            ]);
+            return true;
+        } catch (Exception $e) {
+            error_log('Failed to create persistent notification: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Notify all administrators (CEO and Managers)
+     */
+    public function notifyAdmins(string $type, string $title, string $message, ?array $data = null): void
+    {
+        $admins = User::whereIn('role', [User::ROLE_CEO, User::ROLE_MANAGER])->get();
+        foreach ($admins as $admin) {
+            $this->createDirectNotification($admin->id, $type, $title, $message, $data);
+        }
+    }
+
     // ==================== CORE NOTIFICATION ENGINE ====================
 
     /**
@@ -443,6 +479,17 @@ class NotificationService
         // Send SMS
         if (in_array('sms', $channels) && !empty($notification['to_phone'])) {
             $success = $this->sendSMS($notification) && $success;
+        }
+
+        // Persist to database if userId is provided
+        if (!empty($notification['user_id'])) {
+            $this->createDirectNotification(
+                (int)$notification['user_id'],
+                $notification['type'],
+                $notification['title'] ?? ucfirst(str_replace('_', ' ', $notification['type'])),
+                $notification['message'] ?? 'You have a new notification',
+                $notification['data'] ?? null
+            );
         }
 
         return $success;

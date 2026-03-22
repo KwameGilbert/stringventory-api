@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Helper\ResponseHelper;
 use App\Services\VerificationService;
 use App\Services\UploadService;
+use App\Services\NotificationService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exception;
@@ -20,11 +21,13 @@ class UserController
 {
     private VerificationService $verificationService;
     private UploadService $uploadService;
+    private NotificationService $notificationService;
 
-    public function __construct(VerificationService $verificationService, UploadService $uploadService)
+    public function __construct(VerificationService $verificationService, UploadService $uploadService, NotificationService $notificationService)
     {
         $this->verificationService = $verificationService;
         $this->uploadService = $uploadService;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -101,6 +104,14 @@ class UserController
 
             // Send verification email
             $this->verificationService->sendVerificationEmail($user);
+
+            // Trigger notification for admins
+            $this->notificationService->notifyAdmins(
+                'user',
+                'New User Created',
+                "A new user {$user->firstName} {$user->lastName} ({$user->role}) has been registered.",
+                ['userId' => $user->id, 'email' => $user->email]
+            );
             
             return ResponseHelper::success($response, 'User created successfully and verification email sent', $user->toArray(), 201);
         } catch (Exception $e) {

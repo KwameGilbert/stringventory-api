@@ -11,10 +11,18 @@ use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
+use App\Services\NotificationService;
 use Exception;
 
 class InventoryController
 {
+    private NotificationService $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     /**
      * Get all inventory levels
      */
@@ -100,6 +108,25 @@ class InventoryController
             ]);
 
             DB::commit();
+
+            // Trigger notification for admins
+            $this->notificationService->notifyAdmins(
+                'product',
+                'Stock Adjusted',
+                "Stock for product '{$product->name}' was adjusted by {$adjustment} units. Current stock: {$inventory->quantity}.",
+                ['productId' => $product->id, 'adjustment' => $adjustment, 'newQuantity' => $inventory->quantity]
+            );
+
+            // Check for low stock
+            if ($inventory->quantity <= ($product->reorderLevel ?? 5)) {
+                $this->notificationService->notifyAdmins(
+                    'stock_alert',
+                    'Low Stock Alert',
+                    "Product '{$product->name}' is running low on stock. Current quantity: {$inventory->quantity}.",
+                    ['productId' => $product->id, 'quantity' => $inventory->quantity]
+                );
+            }
+
             return ResponseHelper::success($response, 'Stock adjusted successfully', $inventory->load('product')->toArray());
         } catch (Exception $e) {
             DB::rollBack();

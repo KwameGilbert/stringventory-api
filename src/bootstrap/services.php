@@ -42,6 +42,7 @@ use App\Controllers\ExpenseScheduleController;
 use App\Controllers\TransactionController;
 use App\Controllers\AuditLogController;
 use App\Controllers\AnalyticsController;
+use App\Controllers\NotificationController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RoleMiddleware;
 use App\Middleware\RateLimitMiddleware;
@@ -114,7 +115,8 @@ return function ($container) {
     $container->set(UserController::class, function ($container) {
         return new UserController(
             $container->get(VerificationService::class),
-            $container->get(\App\Services\UploadService::class)
+            $container->get(\App\Services\UploadService::class),
+            $container->get(\App\Services\NotificationService::class)
         );
     });
 
@@ -129,8 +131,10 @@ return function ($container) {
         );
     });
 
-    $container->set(OrderController::class, function () {
-        return new OrderController();
+    $container->set(OrderController::class, function ($container) {
+        return new OrderController(
+            $container->get(\App\Services\NotificationService::class)
+        );
     });
 
     $container->set(CategoryController::class, function ($container) {
@@ -167,8 +171,10 @@ return function ($container) {
         return new ExpenseController();
     });
 
-    $container->set(InventoryController::class, function () {
-        return new InventoryController();
+    $container->set(InventoryController::class, function ($container) {
+        return new InventoryController(
+            $container->get(\App\Services\NotificationService::class)
+        );
     });
 
     $container->set(RefundController::class, function () {
@@ -193,6 +199,10 @@ return function ($container) {
 
     $container->set(AnalyticsController::class, function () {
         return new AnalyticsController();
+    });
+
+    $container->set(NotificationController::class, function () {
+        return new NotificationController();
     });
     
     // ==================== MIDDLEWARES ====================

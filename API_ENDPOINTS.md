@@ -3124,6 +3124,79 @@ File: stringventory_sales_report_2026-01-01_2026-02-05.pdf
 
 ---
 
+# 🔔 NOTIFICATIONS
+Prefix: `/v1/notifications`
+
+## 1. Get All Notifications
+- **Endpoint:** `GET /v1/notifications`
+- **Auth Required:** Yes
+- **Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Notifications fetched successfully",
+  "data": {
+    "notifications": [
+      {
+        "id": 1,
+        "userId": 1,
+        "type": "order",
+        "title": "New Order Received",
+        "message": "A new order ORD-123456 has been placed...",
+        "data": { "orderId": 123, "total": 150.00 },
+        "isRead": false,
+        "readAt": null,
+        "createdAt": "2026-03-22 00:15:00",
+        "updatedAt": "2026-03-22 00:15:00"
+      }
+    ],
+    "unreadCount": 1,
+    "totalCount": 1
+  }
+}
+```
+
+---
+
+## 2. Mark as Read
+- **Endpoint:** `POST /v1/notifications/:id/read`
+- **Auth Required:** Yes
+- **Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Notification marked as read"
+}
+```
+
+---
+
+## 3. Mark All as Read
+- **Endpoint:** `POST /v1/notifications/read-all`
+- **Auth Required:** Yes
+- **Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "All notifications marked as read"
+}
+```
+
+---
+
+## 4. Delete Notification
+- **Endpoint:** `DELETE /v1/notifications/:id`
+- **Auth Required:** Yes
+- **Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Notification deleted successfully"
+}
+```
+
+---
+
 # ✅ HTTP STATUS CODES
 
 | Code | Meaning | Example |
@@ -3195,6 +3268,6 @@ Content-Type: application/json
 
 ---
 
-**Document Version:** 1.1
-**Last Updated:** February 28, 2026
+**Document Version:** 1.2
+**Last Updated:** March 22, 2026
 **Status:** Complete

@@ -38,6 +38,7 @@ return function ($app): void {
         // System & Utils
         '/v1/transactions' => ROUTE . 'v1/TransactionRoute.php',
         '/v1/audit-logs' => ROUTE . 'v1/AuditLogRoute.php',
+        '/v1/notifications' => ROUTE . 'v1/NotificationRoute.php',
         '/v1/utils' => ROUTE . 'v1/UtilsRoute.php',
     ];
 
