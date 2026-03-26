@@ -19,7 +19,7 @@ class CustomerController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $customers = Customer::with('orders')->orderBy('createdAt', 'desc')->get();
+            $customers = Customer::with('orders', 'refunds')->orderBy('createdAt', 'desc')->get();
             return ResponseHelper::success($response, 'Customers fetched successfully', $customers->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch customers', 500, $e->getMessage());
