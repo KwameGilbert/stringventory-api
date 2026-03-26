@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Inventory;
 use App\Models\Supplier;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -69,17 +70,14 @@ class PurchaseController
             $purchaseNumber = 'PO-' . strtoupper(substr(uniqid(), 7));
             
             $user = $request->getAttribute('user');
-            $role = $user ? $user->role : \App\Models\User::ROLE_MANAGER; // Default to manager if guest (shouldn't happen with auth)
+            $role = $user ? $user->role : User::ROLE_MANAGER; // Default to manager if guest (shouldn't happen with auth)
 
             // 2. Determine Initial Status
             $status = $data['status'] ?? 'pending';
             
-            if ($role === \App\Models\User::ROLE_CEO) {
-                // If CEO adds a purchase, it shouldn't be 'pending'. 
-                // Default to 'ordered' (approved) if not specified as 'received'
-                if ($status === 'pending') {
-                    $status = 'ordered';
-                }
+            if ($role === User::ROLE_CEO) {
+                // CEO purchases are automatically received/updated
+                $status = 'received';
             } else {
                 // Managers and others MUST be 'pending' for CEO approval
                 $status = 'pending';
