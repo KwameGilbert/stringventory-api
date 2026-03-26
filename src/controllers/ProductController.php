@@ -69,8 +69,13 @@ class ProductController
             $data['sellingPrice'] = $data['sellingPrice'] ?? 0;
             $data['costPrice'] = $data['costPrice'] ?? 0;
 
-            // Uniqueness check for SKU
-            if (!empty($data['sku'])) {
+            // Handle SKU: Generate default if not provided
+            if (empty($data['sku'])) {
+                do {
+                    $sku = 'SKU-' . strtoupper(substr(uniqid(), 7));
+                } while (Product::where('sku', $sku)->exists());
+                $data['sku'] = $sku;
+            } else {
                 if (Product::where('sku', $data['sku'])->exists()) {
                     return ResponseHelper::error($response, 'Product with this SKU already exists', 409);
                 }
