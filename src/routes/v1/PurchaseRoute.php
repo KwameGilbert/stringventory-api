@@ -12,6 +12,7 @@ return function ($app) {
         $group->get('', [PurchaseController::class, 'index']);
         $group->get('/{id}', [PurchaseController::class, 'show']);
         $group->post('', [PurchaseController::class, 'create']);
+        $group->post('/{id}/approve', [PurchaseController::class, 'approve']);
         $group->put('/{id}', [PurchaseController::class, 'update']);
         $group->delete('/{id}', [PurchaseController::class, 'delete']);
     })->add($auth);

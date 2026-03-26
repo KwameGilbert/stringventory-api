@@ -235,6 +235,54 @@ class PurchaseController
     }
 
     /**
+     * Approve a pending purchase (CEO only)
+     */
+    public function approve(Request $request, Response $response, array $args): Response
+    {
+        DB::beginTransaction();
+        try {
+            $user = $request->getAttribute('user');
+            if (!$user || $user->role !== User::ROLE_CEO) {
+                return ResponseHelper::error($response, 'Only CEOs can approve purchases', 403);
+            }
+
+            $purchase = Purchase::with('items')->find($args['id']);
+            if (!$purchase) {
+                return ResponseHelper::error($response, 'Purchase not found', 404);
+            }
+
+            if ($purchase->status !== 'pending') {
+                return ResponseHelper::error($response, "Only pending purchases can be approved. Current status: {$purchase->status}", 400);
+            }
+
+            // Update status to received (which triggers inventory update)
+            $oldStatus = $purchase->status;
+            $purchase->status = 'received';
+            $purchase->receivedDate = date('Y-m-d H:i:s');
+            $purchase->save();
+
+            // Trigger inventory inflow
+            foreach ($purchase->items as $item) {
+                $product = Product::find($item->productId);
+                if ($product) {
+                    $this->updateInventoryAndPricing($product, $item->quantity, $item->costPrice, $item->sellingPrice);
+                }
+            }
+
+            // Record transaction if not already exists
+            if (!Transaction::where('purchaseId', $purchase->id)->exists()) {
+                $this->recordTransaction($purchase);
+            }
+
+            DB::commit();
+            return ResponseHelper::success($response, 'Purchase approved and inventory updated successfully', $purchase->toArray());
+        } catch (Exception $e) {
+            DB::rollBack();
+            return ResponseHelper::error($response, 'Failed to approve purchase', 500, $e->getMessage());
+        }
+    }
+
+    /**
      * Cancel/Delete Purchase
      */
     public function delete(Request $request, Response $response, array $args): Response
