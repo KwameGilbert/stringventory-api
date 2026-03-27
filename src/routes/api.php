@@ -20,6 +20,7 @@ return function ($app): void {
         '/v1/suppliers' => ROUTE . 'v1/SupplierRoute.php',
         '/v1/expense-categories' => ROUTE . 'v1/ExpenseCategoryRoute.php',
         '/v1/discounts' => ROUTE . 'v1/DiscountRoute.php',
+        '/v1/units-of-measure' => ROUTE . 'v1/UnitOfMeasureRoute.php',
 
         // Inventory & Products
         '/v1/products' => ROUTE . 'v1/ProductRoute.php',

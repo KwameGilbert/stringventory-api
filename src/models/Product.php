@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $supplierId
  * @property float $sellingPrice
  * @property float|null $costPrice
- * @property string|null $unit
+ * @property int|null $unitOfMeasureId
  * @property string|null $barcode
  * @property string|null $image
  * @property int|null $reorderLevel
@@ -41,22 +41,28 @@ class Product extends Model
         'supplierId',
         'sellingPrice',
         'costPrice',
-        'unit',
+        'unitOfMeasureId',
         'barcode',
         'image',
         'reorderLevel',
         'status',
     ];
-
+    
     protected $casts = [
         'categoryId' => 'integer',
         'supplierId' => 'integer',
         'sellingPrice' => 'float',
         'costPrice' => 'float',
+        'unitOfMeasureId' => 'integer',
         'reorderLevel' => 'integer',
         'createdAt' => 'datetime',
         'updatedAt' => 'datetime',
     ];
+
+    public function unitOfMeasure()
+    {
+        return $this->belongsTo(UnitOfMeasure::class, 'unitOfMeasureId');
+    }
 
     public function category()
     {
