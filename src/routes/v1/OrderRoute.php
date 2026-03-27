@@ -34,5 +34,8 @@ return function (App $app): void {
 
         // Only management can cancel orders (reverses stock/transactions)
         $group->post('/{id}/cancel', [$orderController, 'cancel'])->add(new RoleMiddleware($managementRoles));
+
+        // Bulk fulfillment
+        $group->post('/{id}/fulfill', [$orderController, 'fulfill'])->add(new RoleMiddleware($allRoles));
     })->add($authMiddleware);
 };

@@ -102,6 +102,9 @@ class OrderController
                 $subtotal += $itemTotal;
 
                 $fulfilledAtStart = (int)($item['fulfilledQuantity'] ?? 0);
+                if ($fulfilledAtStart < 0) {
+                    $fulfilledAtStart = 0;
+                }
                 if ($fulfilledAtStart > $item['quantity']) {
                     $fulfilledAtStart = (int)$item['quantity'];
                 }
@@ -321,6 +324,95 @@ class OrderController
             return ResponseHelper::success($response, "Successfully fulfilled $fulfillAmount units", $orderItem->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fulfill item', 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * Bulk fulfill an order
+     * POST /v1/orders/{id}/fulfill
+     */
+    public function fulfill(Request $request, Response $response, array $args): Response
+    {
+        DB::beginTransaction();
+        try {
+            $orderId = $args['id'];
+            $data = $request->getParsedBody();
+            $itemsToFulfill = $data['items'] ?? [];
+
+            if (empty($itemsToFulfill) || !is_array($itemsToFulfill)) {
+                return ResponseHelper::error($response, 'Items to fulfill are required', 400);
+            }
+
+            $order = Order::with('items')->find($orderId);
+            if (!$order) {
+                return ResponseHelper::error($response, 'Order not found', 404);
+            }
+
+            foreach ($itemsToFulfill as $itemData) {
+                $orderItemId = $itemData['orderItemId'] ?? null;
+                $fulfilledQuantity = (int)($itemData['fulfilledQuantity'] ?? 0);
+
+                if ($fulfilledQuantity <= 0) {
+                    // Skip if 0 or negative
+                    continue;
+                }
+
+                if (!$orderItemId) {
+                    throw new Exception('orderItemId is required for each item');
+                }
+
+                $orderItem = OrderItem::where('orderId', $order->id)->find($orderItemId);
+                if (!$orderItem) {
+                    throw new Exception("Order item ID $orderItemId not found in this order");
+                }
+
+                $remainingQuantity = $orderItem->quantity - $orderItem->fulfilledQuantity;
+                if ($fulfilledQuantity > $remainingQuantity) {
+                    throw new Exception("Cannot fulfill more than remaining quantity ($remainingQuantity) for item ID $orderItemId");
+                }
+
+                // Increment fulfilled quantity
+                $orderItem->fulfilledQuantity += $fulfilledQuantity;
+
+                // Update item status
+                if ($orderItem->fulfilledQuantity == $orderItem->quantity) {
+                    $orderItem->fulfillmentStatus = 'fulfilled';
+                } elseif ($orderItem->fulfilledQuantity > 0) {
+                    $orderItem->fulfillmentStatus = 'partial';
+                }
+                
+                $orderItem->save();
+            }
+
+            // Recalculate Order Status
+            $allFulfilled = true;
+            $anyFulfilled = false;
+            
+            // Reload items to get fresh data
+            $order->load('items');
+            foreach ($order->items as $item) {
+                if ($item->fulfilledQuantity < $item->quantity) {
+                    $allFulfilled = false;
+                }
+                if ($item->fulfilledQuantity > 0) {
+                    $anyFulfilled = true;
+                }
+            }
+
+            $orderStatus = 'pending';
+            if ($allFulfilled) {
+                $orderStatus = 'completed';
+            } elseif ($anyFulfilled) {
+                $orderStatus = 'partially_fulfilled';
+            }
+
+            $order->update(['status' => $orderStatus]);
+
+            DB::commit();
+            return ResponseHelper::success($response, 'Order fulfillment updated successfully', $order->load('items')->toArray());
+        } catch (Exception $e) {
+            DB::rollBack();
+            return ResponseHelper::error($response, $e->getMessage(), 400);
         }
     }
 }
