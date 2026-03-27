@@ -191,11 +191,12 @@ class ProductController
             $limit = (int)($request->getQueryParams()['limit'] ?? 5);
             
             $products = PurchaseItem::join('products', 'purchaseItems.productId', '=', 'products.id')
+                ->join('purchases', 'purchaseItems.purchaseId', '=', 'purchases.id')
                 ->where('purchaseItems.expiryDate', '>=', date('Y-m-d'))
                 ->select(
                     'products.*',
                     'purchaseItems.expiryDate',
-                    'purchaseItems.batchNumber'
+                    'purchases.batchNumber'
                 )
                 ->orderBy('purchaseItems.expiryDate', 'asc')
                 ->limit($limit)
