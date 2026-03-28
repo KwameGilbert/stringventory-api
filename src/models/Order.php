@@ -21,6 +21,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $discountedTotalPrice
  * @property \Illuminate\Support\Carbon|null $updatedAt
  * @property \Illuminate\Support\Carbon|null $createdAt
+ * 
+ * @property-read \Illuminate\Database\Eloquent\Collection $items
+ * @property-read \Illuminate\Database\Eloquent\Collection $refunds
+ * @property-read \Illuminate\Database\Eloquent\Collection $transactions
+ * @property-read \App\Models\Customer|null $customer
+ * @property-read \App\Models\Discount|null $discount
  */
 class Order extends Model
 {

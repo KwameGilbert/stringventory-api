@@ -60,7 +60,8 @@ class RefundController
                 return ResponseHelper::error($response, 'Order ID and refund amount are required', 400);
             }
 
-            $order = Order::with('items.product')->find($data['orderId']);
+            /** @var Order $order */
+            $order = Order::with('items.product')->find((int)$data['orderId']);
             if (!$order) {
                 return ResponseHelper::error($response, 'Order not found', 404);
             }
@@ -81,9 +82,9 @@ class RefundController
             }
 
             // Validate Items if provided
-            $items = $data['items'] ?? [];
-            if (!empty($items)) {
-                foreach ($items as $item) {
+            $refundItems = $data['items'] ?? [];
+            if (!empty($refundItems)) {
+                foreach ($refundItems as $item) {
                     $orderItemId = $item['orderItemId'] ?? null;
                     $refundQty = (int)($item['quantity'] ?? 0);
 
@@ -91,7 +92,7 @@ class RefundController
                         return ResponseHelper::error($response, 'Invalid item data provided', 400);
                     }
 
-                    $orderItem = $order->items->where('id', $orderItemId)->first();
+                    $orderItem = $order->items->firstWhere('id', $orderItemId);
                     if (!$orderItem) {
                         return ResponseHelper::error($response, "Item with ID $orderItemId not found in this order", 400);
                     }
@@ -109,7 +110,7 @@ class RefundController
                 'refundType' => $data['refundType'] ?? 'partial',
                 'refundAmount' => $refundAmount,
                 'refundReason' => $data['reason'] ?? null,
-                'items' => $items, // Array of {orderItemId, quantity}
+                'items' => $refundItems, // Array of {orderItemId, quantity}
                 'notes' => $data['notes'] ?? null,
                 'refundStatus' => 'pending',
                 'refundDate' => date('Y-m-d H:i:s'),
