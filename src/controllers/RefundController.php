@@ -60,7 +60,7 @@ class RefundController
                 return ResponseHelper::error($response, 'Order ID and refund amount are required', 400);
             }
 
-            $order = Order::with('orderItems')->find($data['orderId']);
+            $order = Order::with('items.product')->find($data['orderId']);
             if (!$order) {
                 return ResponseHelper::error($response, 'Order not found', 404);
             }
@@ -91,7 +91,7 @@ class RefundController
                         return ResponseHelper::error($response, 'Invalid item data provided', 400);
                     }
 
-                    $orderItem = $order->orderItems->where('id', $orderItemId)->first();
+                    $orderItem = $order->items->where('id', $orderItemId)->first();
                     if (!$orderItem) {
                         return ResponseHelper::error($response, "Item with ID $orderItemId not found in this order", 400);
                     }
