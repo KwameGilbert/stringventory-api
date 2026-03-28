@@ -127,6 +127,7 @@ class AnalyticsController
 
             // Charts: Revenue by Payment Method
             $revenueByPaymentMethod = Transaction::where('status', 'completed')
+                ->whereNotNull('paymentMethod')
                 ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                 ->select(
                     'paymentMethod',
@@ -201,6 +202,7 @@ class AnalyticsController
                 'byPaymentMethod' => DB::table('transactions')
                     ->join('orders', 'transactions.orderId', '=', 'orders.id')
                     ->where('orders.status', 'completed')
+                    ->whereNotNull('transactions.paymentMethod')
                     ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                     ->select(
                         'transactions.paymentMethod',
