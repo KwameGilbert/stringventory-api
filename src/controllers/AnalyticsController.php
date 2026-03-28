@@ -116,13 +116,25 @@ class AnalyticsController
                 ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                 ->select(
                     'orders.customerId',
-                    DB::raw("CONCAT(customers.firstName, ' ', customers.lastName) as customerName"),
+                    DB::raw("TRIM(CONCAT_WS(' ', customers.firstName, customers.lastName)) as customerName"),
                     DB::raw('COUNT(orders.id) as orders'),
                     DB::raw('SUM(orders.discountedTotalPrice) as spent')
                 )
                 ->groupBy('orders.customerId', 'customerName')
                 ->orderBy('spent', 'desc')
                 ->limit(5)
+                ->get();
+
+            // Charts: Revenue by Payment Method
+            $revenueByPaymentMethod = Transaction::where('status', 'completed')
+                ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
+                ->select(
+                    'paymentMethod',
+                    DB::raw('SUM(amount) as revenue'),
+                    DB::raw('COUNT(id) as transactionCount')
+                )
+                ->groupBy('paymentMethod')
+                ->orderBy('revenue', 'desc')
                 ->get();
 
             $data = [
@@ -138,6 +150,7 @@ class AnalyticsController
                 ],
                 'charts' => [
                     'revenueByDate' => $revenueByDate,
+                    'revenueByPaymentMethod' => $revenueByPaymentMethod,
                     'topProducts' => $topProducts,
                     'topCustomers' => $topCustomers
                 ]
@@ -247,7 +260,7 @@ class AnalyticsController
                     ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                     ->select(
                         'orders.customerId',
-                        DB::raw("CONCAT(customers.firstName, ' ', customers.lastName) as customerName"),
+                        DB::raw("TRIM(CONCAT_WS(' ', customers.firstName, customers.lastName)) as customerName"),
                         DB::raw('COUNT(orders.id) as orders'),
                         DB::raw('SUM(orders.discountedTotalPrice) as spent')
                     )
@@ -390,7 +403,7 @@ class AnalyticsController
                     ->where('orders.status', 'completed')
                     ->select(
                         'orders.customerId',
-                        DB::raw("CONCAT(customers.firstName, ' ', customers.lastName) as customerName"),
+                        DB::raw("TRIM(CONCAT_WS(' ', customers.firstName, customers.lastName)) as customerName"),
                         DB::raw('COUNT(orders.id) as orders'),
                         DB::raw('SUM(orders.discountedTotalPrice) as spent'),
                         DB::raw('MAX(orders.createdAt) as lastOrderDate')
