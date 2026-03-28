@@ -108,6 +108,7 @@ class RefundController
                 'orderId' => $order->id,
                 'customerId' => $order->customerId,
                 'refundType' => $data['refundType'] ?? 'partial',
+                'paymentMethod' => $data['paymentMethod'] ?? null,
                 'refundAmount' => $refundAmount,
                 'refundReason' => $data['reason'] ?? null,
                 'items' => $refundItems, // Array of {orderItemId, quantity}
@@ -152,11 +153,17 @@ class RefundController
 
             // If approved, record a transaction and handle restocking
             if ($status === 'completed' && $oldStatus !== 'completed') {
+                // Allow optional paymentMethod update during approval
+                if (!empty($data['paymentMethod'])) {
+                    $refund->paymentMethod = $data['paymentMethod'];
+                }
+
                 // 1. Record Financial Transaction
                 Transaction::create([
                     'orderId' => $refund->orderId,
                     'refundId' => $refund->id,
                     'transactionType' => 'refunds',
+                    'paymentMethod' => $refund->paymentMethod,
                     'amount' => -$refund->refundAmount,
                     'status' => 'completed',
                     'createdAt' => date('Y-m-d H:i:s')

@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $refundReason
  * @property string $refundStatus
  * @property string|null $notes
+ * @property string|null $paymentMethod
  * @property \Illuminate\Support\Carbon|null $updatedAt
  * @property \Illuminate\Support\Carbon|null $createdAt
  */
@@ -33,6 +34,7 @@ class Refund extends Model
         'orderId',
         'customerId',
         'refundType',
+        'paymentMethod',
         'refundAmount',
         'refundDate',
         'refundReason',
