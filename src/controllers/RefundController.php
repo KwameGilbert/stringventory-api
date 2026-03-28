@@ -164,19 +164,21 @@ class RefundController
 
                 // 2. Handle OrderItem updates and Restocking
                 if (!empty($refund->items) && is_array($refund->items)) {
+                    $totalLostStockValue = 0;
+                    
                     foreach ($refund->items as $item) {
                         $orderItemId = $item['orderItemId'] ?? null;
                         $quantity = (int)($item['quantity'] ?? 0);
                         $restock = $item['restock'] ?? true; 
 
                         if ($orderItemId && $quantity > 0) {
-                            $orderItem = OrderItem::find($orderItemId);
+                            $orderItem = OrderItem::with('product')->find($orderItemId);
                             if ($orderItem) {
                                 // Update refunded quantity
                                 $orderItem->refundedQuantity += $quantity;
                                 $orderItem->save();
 
-                                // Restock inventory
+                                // Handle Restocking vs Loss
                                 if ($restock && $orderItem->productId) {
                                     $inventory = Inventory::where('productId', $orderItem->productId)->first();
                                     if ($inventory) {
@@ -184,10 +186,28 @@ class RefundController
                                         $inventory->lastUpdated = date('Y-m-d H:i:s');
                                         $inventory->save();
                                     }
+                                } else {
+                                    // Calculate loss if not restocked
+                                    // Fallback order: OrderItem cost -> Product current cost -> 0
+                                    $unitCost = $orderItem->costPrice ?? ($orderItem->product->costPrice ?? 0);
+                                    $totalLostStockValue += ($unitCost * $quantity);
                                 }
                             }
                         }
                     }
+                    
+                    // 3. Record Stock Loss Transaction if applicable
+                    if ($totalLostStockValue > 0) {
+                        Transaction::create([
+                            'orderId' => $refund->orderId,
+                            'refundId' => $refund->id,
+                            'transactionType' => 'stock_loss',
+                            'amount' => -$totalLostStockValue,
+                            'status' => 'completed',
+                            'createdAt' => date('Y-m-d H:i:s')
+                        ]);
+                    }
+
                     $refund->isRestocked = true;
                 }
             }
