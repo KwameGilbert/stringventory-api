@@ -64,4 +64,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Refund::class, 'refundId');
     }
+
+    public function purchase()
+    {
+        return $this->belongsTo(Purchase::class, 'purchaseId');
+    }
 }

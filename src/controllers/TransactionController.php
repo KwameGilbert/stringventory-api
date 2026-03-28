@@ -15,8 +15,26 @@ class TransactionController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $transactions = Transaction::orderBy('createdAt', 'desc')->get();
-            return ResponseHelper::success($response, 'Transactions fetched successfully', $transactions->toArray());
+            $query = Transaction::with(['order', 'expense', 'refund', 'purchase']);
+            
+            // Record original order for transaction listing
+            $transactions = (clone $query)->orderBy('createdAt', 'desc')->get();
+            
+            // Calculate financial summaries
+            $totalInflow = (float)Transaction::where('amount', '>', 0)->sum('amount');
+            $totalOutflow = (float)Transaction::where('amount', '<', 0)->sum('amount');
+            $netProfitLoss = $totalInflow + $totalOutflow;
+
+            $result = [
+                'summary' => [
+                    'totalInflow' => round($totalInflow, 2),
+                    'totalOutflow' => round($totalOutflow, 2),
+                    'netProfitLoss' => round($netProfitLoss, 2),
+                ],
+                'transactions' => $transactions->toArray()
+            ];
+
+            return ResponseHelper::success($response, 'Transactions fetched successfully', $result);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch transactions', 500, $e->getMessage());
         }
