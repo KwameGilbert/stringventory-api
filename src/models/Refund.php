@@ -12,10 +12,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $orderId
  * @property int $customerId
+ * @property string $refundType
  * @property float $refundAmount
  * @property \Illuminate\Support\Carbon $refundDate
  * @property string|null $refundReason
  * @property string $refundStatus
+ * @property string|null $notes
  * @property \Illuminate\Support\Carbon|null $updatedAt
  * @property \Illuminate\Support\Carbon|null $createdAt
  */
@@ -30,11 +32,13 @@ class Refund extends Model
     protected $fillable = [
         'orderId',
         'customerId',
+        'refundType',
         'refundAmount',
         'refundDate',
         'refundReason',
         'refundStatus',
         'items',
+        'notes',
         'isRestocked',
     ];
 

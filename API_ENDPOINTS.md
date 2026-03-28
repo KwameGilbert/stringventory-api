@@ -3243,6 +3243,107 @@ Prefix: `/v1/notifications`
 
 ---
 
+---
+
+# 💸 REFUNDS
+Prefix: `/v1/refunds`
+
+## 1. Get All Refunds
+- **Endpoint:** `GET /v1/refunds`
+- **Auth Required:** Yes (CEO or Manager)
+- **Response (200 OK):**
+```json
+{
+  "status": "success",
+  "message": "Refunds fetched successfully",
+  "data": [
+    {
+      "id": 1,
+      "orderId": 12,
+      "refundAmount": 2500.50,
+      "refundStatus": "pending",
+      "items": [
+        {
+          "orderItemId": 12,
+          "quantity": 2
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## 2. Get Single Refund
+- **Endpoint:** `GET /v1/refunds/:id`
+- **Auth Required:** Yes (CEO or Manager)
+- **Response (200 OK):**
+```json
+{
+  "status": "success",
+  "message": "Refund fetched successfully",
+  "data": {
+    "id": 1,
+    "orderId": 12,
+    "refundAmount": 2500.50,
+    "refundStatus": "pending",
+    "items": [
+      {
+        "orderItemId": 12,
+        "quantity": 2
+      }
+    ]
+  }
+}
+```
+
+---
+
+## 3. Create Refund Request
+- **Endpoint:** `POST /v1/refunds`
+- **Auth Required:** Yes
+- **Request Body:**
+```json
+{
+  "orderId": 12,
+  "refundAmount": 2500.50,
+  "refundType": "full",
+  "reason": "customer_request",
+  "items": [
+    {
+      "orderItemId": 12,
+      "quantity": 2,
+      "restock": true
+    }
+  ],
+  "notes": "Optional additional notes"
+}
+```
+- **Response (201 Created):**
+```json
+{
+  "status": "success",
+  "message": "Refund request submitted successfully",
+  "data": { "id": 1, "status": "pending" }
+}
+```
+
+---
+
+## 3. Update Refund Status (Approve/Reject)
+- **Endpoint:** `PUT /v1/refunds/:id/status`
+- **Auth Required:** Yes (CEO or Manager)
+- **Request Body:**
+```json
+{
+  "refundStatus": "completed"
+}
+```
+- **Note:** Approving a refund (`completed`) will automatically restock items (if requested) and record a financial transaction.
+
+---
+
 # 🔐 AUTHENTICATION HEADERS
 
 All protected endpoints require:

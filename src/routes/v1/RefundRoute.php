@@ -16,6 +16,7 @@ return function (App $app): void {
 
     $app->group('/v1/refunds', function ($group) use ($controller, $managementRoles) {
         $group->get('', [$controller, 'index'])->add(new RoleMiddleware($managementRoles));
+        $group->get('/{id}', [$controller, 'show'])->add(new RoleMiddleware($managementRoles));
         $group->post('', [$controller, 'create']);
         $group->put('/{id}/status', [$controller, 'updateStatus'])->add(new RoleMiddleware($managementRoles));
     })->add($auth);

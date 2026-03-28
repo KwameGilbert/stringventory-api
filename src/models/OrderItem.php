@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property float|null $costPrice
  * @property float|null $sellingPrice
  * @property int $quantity
+ * @property int $fulfilledQuantity
+ * @property int $refundedQuantity
  * @property float|null $totalPrice
  */
 class OrderItem extends Model
@@ -29,6 +31,7 @@ class OrderItem extends Model
         'sellingPrice',
         'quantity',
         'fulfilledQuantity',
+        'refundedQuantity',
         'fulfillmentStatus',
         'totalPrice',
     ];
@@ -40,6 +43,7 @@ class OrderItem extends Model
         'sellingPrice' => 'float',
         'quantity' => 'integer',
         'fulfilledQuantity' => 'integer',
+        'refundedQuantity' => 'integer',
         'totalPrice' => 'float',
     ];
 

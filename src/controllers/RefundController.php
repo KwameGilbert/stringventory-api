@@ -8,6 +8,7 @@ use App\Models\Refund;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\Inventory;
+use App\Models\OrderItem;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -30,6 +31,22 @@ class RefundController
     }
 
     /**
+     * Get single refund
+     */
+    public function show(Request $request, Response $response, array $args): Response
+    {
+        try {
+            $refund = Refund::with(['order', 'customer'])->find($args['id']);
+            if (!$refund) {
+                return ResponseHelper::error($response, 'Refund record not found', 404);
+            }
+            return ResponseHelper::success($response, 'Refund fetched successfully', $refund->toArray());
+        } catch (Exception $e) {
+            return ResponseHelper::error($response, 'Failed to fetch refund', 500, $e->getMessage());
+        }
+    }
+
+    /**
      * Create refund request
      */
     public function create(Request $request, Response $response): Response
@@ -37,36 +54,63 @@ class RefundController
         DB::beginTransaction();
         try {
             $data = $request->getParsedBody();
+            $user = $request->getAttribute('user'); 
 
             if (empty($data['orderId']) || empty($data['refundAmount'])) {
                 return ResponseHelper::error($response, 'Order ID and refund amount are required', 400);
             }
 
-            $order = Order::find($data['orderId']);
+            $order = Order::with('orderItems')->find($data['orderId']);
             if (!$order) {
                 return ResponseHelper::error($response, 'Order not found', 404);
             }
 
             // Validate refund amount (cannot exceed order total)
-            if ($data['refundAmount'] > $order->discountedTotalPrice) {
+            $refundAmount = (float)$data['refundAmount'];
+            if ($refundAmount > $order->discountedTotalPrice) {
                 return ResponseHelper::error($response, 'Refund amount cannot exceed the total order price', 400);
             }
 
-            // Check if already refunded
+            // Check if already refunded (total amount)
             $totalRefunded = Refund::where('orderId', $order->id)
                 ->whereIn('refundStatus', ['pending', 'completed'])
                 ->sum('refundAmount');
             
-            if (($totalRefunded + $data['refundAmount']) > $order->discountedTotalPrice) {
+            if (($totalRefunded + $refundAmount) > $order->discountedTotalPrice) {
                 return ResponseHelper::error($response, 'Total refund amount would exceed the order total price', 400);
+            }
+
+            // Validate Items if provided
+            $items = $data['items'] ?? [];
+            if (!empty($items)) {
+                foreach ($items as $item) {
+                    $orderItemId = $item['orderItemId'] ?? null;
+                    $refundQty = (int)($item['quantity'] ?? 0);
+
+                    if (!$orderItemId || $refundQty <= 0) {
+                        return ResponseHelper::error($response, 'Invalid item data provided', 400);
+                    }
+
+                    $orderItem = $order->orderItems->where('id', $orderItemId)->first();
+                    if (!$orderItem) {
+                        return ResponseHelper::error($response, "Item with ID $orderItemId not found in this order", 400);
+                    }
+
+                    $availableToRefund = $orderItem->quantity - $orderItem->refundedQuantity;
+                    if ($refundQty > $availableToRefund) {
+                        return ResponseHelper::error($response, "Cannot refund $refundQty units of product '{$orderItem->product->name}'. Only $availableToRefund remaining.", 400);
+                    }
+                }
             }
 
             $refund = Refund::create([
                 'orderId' => $order->id,
                 'customerId' => $order->customerId,
-                'refundAmount' => (float)$data['refundAmount'],
-                'refundReason' => $data['refundReason'] ?? null,
-                'items' => $data['items'] ?? null, // Array of {productId, quantity, restock: bool}
+                'refundType' => $data['refundType'] ?? 'partial',
+                'refundAmount' => $refundAmount,
+                'refundReason' => $data['reason'] ?? null,
+                'items' => $items, // Array of {orderItemId, quantity}
+                'notes' => $data['notes'] ?? null,
                 'refundStatus' => 'pending',
                 'refundDate' => date('Y-m-d H:i:s'),
                 'createdAt' => date('Y-m-d H:i:s')
@@ -117,20 +161,28 @@ class RefundController
                     'createdAt' => date('Y-m-d H:i:s')
                 ]);
 
-                // 2. Handle Restocking if items are provided
+                // 2. Handle OrderItem updates and Restocking
                 if (!empty($refund->items) && is_array($refund->items)) {
                     foreach ($refund->items as $item) {
-                        $isRestockRequested = $item['restock'] ?? false;
-                        if ($isRestockRequested) {
-                            $productId = $item['productId'] ?? null;
-                            $quantity = (int)($item['quantity'] ?? 0);
+                        $orderItemId = $item['orderItemId'] ?? null;
+                        $quantity = (int)($item['quantity'] ?? 0);
+                        $restock = $item['restock'] ?? true; 
 
-                            if ($productId && $quantity > 0) {
-                                $inventory = Inventory::where('productId', $productId)->first();
-                                if ($inventory) {
-                                    $inventory->quantity += $quantity;
-                                    $inventory->lastUpdated = date('Y-m-d H:i:s');
-                                    $inventory->save();
+                        if ($orderItemId && $quantity > 0) {
+                            $orderItem = OrderItem::find($orderItemId);
+                            if ($orderItem) {
+                                // Update refunded quantity
+                                $orderItem->refundedQuantity += $quantity;
+                                $orderItem->save();
+
+                                // Restock inventory
+                                if ($restock && $orderItem->productId) {
+                                    $inventory = Inventory::where('productId', $orderItem->productId)->first();
+                                    if ($inventory) {
+                                        $inventory->quantity += $quantity;
+                                        $inventory->lastUpdated = date('Y-m-d H:i:s');
+                                        $inventory->save();
+                                    }
                                 }
                             }
                         }
