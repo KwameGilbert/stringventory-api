@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\PurchaseItem;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -97,6 +98,28 @@ class InventoryController
                 $inventory->save();
             }
 
+            // Handle Batch Adjustment if batchId is provided
+            if (!empty($data['batchId'])) {
+                $batch = PurchaseItem::where('productId', $data['productId'])->find($data['batchId']);
+                if ($batch) {
+                    $batch->remainingQuantity += $adjustment;
+                    if ($batch->remainingQuantity < 0) $batch->remainingQuantity = 0;
+                    $batch->save();
+                }
+            } elseif ($adjustment < 0) {
+                // If no batchId but it's a decrease, use FEFO deduction for consistency
+                $this->deductFromBatches((int)$data['productId'], abs($adjustment));
+            } elseif ($adjustment > 0) {
+                // If no batchId but it's an increase, add to the latest batch
+                $latestBatch = PurchaseItem::where('productId', $data['productId'])
+                    ->orderBy('createdAt', 'desc')
+                    ->first();
+                if ($latestBatch) {
+                    $latestBatch->remainingQuantity += $adjustment;
+                    $latestBatch->save();
+                }
+            }
+
             // Record transaction for the adjustment
             Transaction::create([
                 'adjustmentId' => $inventory->id, // We use the inventory ID as the adjustment reference for now
@@ -131,6 +154,36 @@ class InventoryController
         } catch (Exception $e) {
             DB::rollBack();
             return ResponseHelper::error($response, 'Failed to adjust stock', 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * Deduct quantity from batches using FEFO (First Expired First Out)
+     */
+    private function deductFromBatches(int $productId, int $quantity): void
+    {
+        $remainingToDeduct = $quantity;
+
+        // Get all batches for this product with stock left, ordered by expiry date (soonest first)
+        $batches = PurchaseItem::where('productId', $productId)
+            ->where('remainingQuantity', '>', 0)
+            ->orderBy('expiryDate', 'asc')
+            ->get();
+
+        foreach ($batches as $batch) {
+            if ($remainingToDeduct <= 0) break;
+
+            if ($batch->remainingQuantity >= $remainingToDeduct) {
+                // If this batch has enough stock, deduct all and stop
+                $batch->remainingQuantity -= $remainingToDeduct;
+                $batch->save();
+                $remainingToDeduct = 0;
+            } else {
+                // If this batch doesn't have enough, empty it and continue to next batch
+                $remainingToDeduct -= $batch->remainingQuantity;
+                $batch->remainingQuantity = 0;
+                $batch->save();
+            }
         }
     }
 }

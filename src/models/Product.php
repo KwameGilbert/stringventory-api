@@ -59,6 +59,19 @@ class Product extends Model
         'updatedAt' => 'datetime',
     ];
 
+    protected $appends = ['soonestExpiryDate'];
+
+    public function getSoonestExpiryDateAttribute(): ?string
+    {
+        $soonest = $this->purchaseItems()
+            ->where('remainingQuantity', '>', 0)
+            ->whereNotNull('expiryDate')
+            ->orderBy('expiryDate', 'asc')
+            ->first();
+            
+        return $soonest ? $soonest->expiryDate->format('Y-m-d') : null;
+    }
+
     public function unitOfMeasure()
     {
         return $this->belongsTo(UnitOfMeasure::class, 'unitOfMeasureId');

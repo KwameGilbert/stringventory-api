@@ -37,6 +37,13 @@ class Inventory extends Model
         'createdAt' => 'datetime',
     ];
 
+    protected $appends = ['soonestExpiryDate'];
+
+    public function getSoonestExpiryDateAttribute(): ?string
+    {
+        return $this->product ? $this->product->soonestExpiryDate : null;
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'productId');

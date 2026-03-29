@@ -280,6 +280,10 @@ class PurchaseController
 
             // Trigger inventory inflow
             foreach ($purchase->items as $item) {
+                // Initialize remainingQuantity for batch tracking
+                $item->remainingQuantity = $item->quantity;
+                $item->save();
+
                 $product = Product::find($item->productId);
                 if ($product) {
                     $this->updateInventoryAndPricing($product, $item->quantity, $item->costPrice, $item->sellingPrice);

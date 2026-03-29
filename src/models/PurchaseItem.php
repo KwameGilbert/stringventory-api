@@ -19,17 +19,26 @@ class PurchaseItem extends Model
         'sellingPrice',
         'totalPrice',
         'expiryDate',
+        'remainingQuantity',
     ];
 
     protected $casts = [
         'purchaseId' => 'integer',
         'productId' => 'integer',
         'quantity' => 'integer',
+        'remainingQuantity' => 'integer',
         'costPrice' => 'float',
         'sellingPrice' => 'float',
         'totalPrice' => 'float',
         'expiryDate' => 'datetime',
     ];
+
+    protected $appends = ['batchNumber'];
+
+    public function getBatchNumberAttribute(): ?string
+    {
+        return $this->purchase ? $this->purchase->batchNumber : null;
+    }
 
     public function purchase()
     {

@@ -11,6 +11,7 @@ use App\Models\Inventory;
 use App\Models\Transaction;
 use App\Models\Discount;
 use App\Models\Customer;
+use App\Models\PurchaseItem;
 use App\Helper\ResponseHelper;
 use App\Services\NotificationService;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -206,7 +207,10 @@ class OrderController
                     'totalPrice' => $processItem['totalPrice']
                 ]);
 
-                // Update stock
+                // Update stock using FEFO (First Expired First Out)
+                $this->deductFromBatches($processItem['product']->id, $processItem['quantity']);
+
+                // Update global aggregate stock
                 Inventory::where('productId', $processItem['product']->id)->decrement('quantity', $processItem['quantity']);
             }
 
@@ -426,6 +430,36 @@ class OrderController
         } catch (Exception $e) {
             DB::rollBack();
             return ResponseHelper::error($response, $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Deduct quantity from batches using FEFO (First Expired First Out)
+     */
+    private function deductFromBatches(int $productId, int $quantity): void
+    {
+        $remainingToDeduct = $quantity;
+
+        // Get all batches for this product with stock left, ordered by expiry date (soonest first)
+        $batches = PurchaseItem::where('productId', $productId)
+            ->where('remainingQuantity', '>', 0)
+            ->orderBy('expiryDate', 'asc')
+            ->get();
+
+        foreach ($batches as $batch) {
+            if ($remainingToDeduct <= 0) break;
+
+            if ($batch->remainingQuantity >= $remainingToDeduct) {
+                // If this batch has enough stock, deduct all and stop
+                $batch->remainingQuantity -= $remainingToDeduct;
+                $batch->save();
+                $remainingToDeduct = 0;
+            } else {
+                // If this batch doesn't have enough, empty it and continue to next batch
+                $remainingToDeduct -= $batch->remainingQuantity;
+                $batch->remainingQuantity = 0;
+                $batch->save();
+            }
         }
     }
 }
