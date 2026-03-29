@@ -8,6 +8,7 @@ use App\Services\EmailService;
 use App\Services\SMSService;
 use App\Services\NotificationQueue;
 use App\Services\TemplateEngine;
+use App\Services\WebPushService;
 use App\Models\Notification;
 use App\Models\User;
 use Exception;
@@ -24,18 +25,21 @@ class NotificationService
     private SMSService $smsService;
     private NotificationQueue $queue;
     private TemplateEngine $templateEngine;
+    private WebPushService $webPushService;
     private bool $useQueue;
-    
+
     public function __construct(
         EmailService $emailService,
         SMSService $smsService,
         NotificationQueue $queue,
-        TemplateEngine $templateEngine
+        TemplateEngine $templateEngine,
+        WebPushService $webPushService
     ) {
         $this->emailService = $emailService;
         $this->smsService = $smsService;
         $this->queue = $queue;
         $this->templateEngine = $templateEngine;
+        $this->webPushService = $webPushService;
         $this->useQueue = ($_ENV['USE_NOTIFICATION_QUEUE'] ?? 'true') === 'true';
     }
 
@@ -405,6 +409,14 @@ class NotificationService
                 'data' => $data,
                 'isRead' => false
             ]);
+
+            $this->webPushService->sendToUser($userId, [
+                'title' => $title,
+                'body'  => $message,
+                'icon'  => '/favicon.ico',
+                'url'   => '/dashboard',
+            ]);
+
             return true;
         } catch (Exception $e) {
             error_log('Failed to create persistent notification: ' . $e->getMessage());
@@ -419,6 +431,7 @@ class NotificationService
     {
         $admins = User::whereIn('role', [User::ROLE_CEO, User::ROLE_MANAGER])->get();
         foreach ($admins as $admin) {
+            // createDirectNotification already fires the push per user
             $this->createDirectNotification($admin->id, $type, $title, $message, $data);
         }
     }

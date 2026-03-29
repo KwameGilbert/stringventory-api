@@ -78,6 +78,10 @@ return function ($container) {
         return new \App\Services\NotificationQueue();
     });
 
+    $container->set(\App\Services\WebPushService::class, function () {
+        return new \App\Services\WebPushService();
+    });
+
     $container->set(\App\Services\TemplateEngine::class, function () {
         return new \App\Services\TemplateEngine();
     });
@@ -91,7 +95,8 @@ return function ($container) {
             $container->get(EmailService::class),
             $container->get(SMSService::class),
             $container->get(\App\Services\NotificationQueue::class),
-            $container->get(\App\Services\TemplateEngine::class)
+            $container->get(\App\Services\TemplateEngine::class),
+            $container->get(\App\Services\WebPushService::class)
         );
     });
 
@@ -202,8 +207,10 @@ return function ($container) {
         return new AnalyticsController();
     });
 
-    $container->set(NotificationController::class, function () {
-        return new NotificationController();
+    $container->set(NotificationController::class, function ($container) {
+        return new NotificationController(
+            $container->get(\App\Services\WebPushService::class)
+        );
     });
 
     $container->set(UnitOfMeasureController::class, function () {

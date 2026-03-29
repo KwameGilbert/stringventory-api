@@ -30,6 +30,7 @@
     "illuminate/container": "^10.49",
     "illuminate/database": "^10.0",
     "illuminate/events": "^10.49",
+    "minishlink/web-push": "^10.0",
     "monolog/monolog": "^3.5",
     "php-di/php-di": "^7.0",
     "phpmailer/phpmailer": "^6.10",
