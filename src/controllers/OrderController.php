@@ -14,6 +14,7 @@ use App\Models\Customer;
 use App\Models\PurchaseItem;
 use App\Helper\ResponseHelper;
 use App\Services\NotificationService;
+use App\Services\CurrencyService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -171,11 +172,13 @@ class OrderController
             }
 
             // 4. Create Order
+            $currency = CurrencyService::getCurrent();
             $order = Order::create([
                 'orderNumber' => 'ORD-' . strtoupper(bin2hex(random_bytes(4))),
                 'customerId' => $data['customerId'] ?? null,
                 'createdBy' => $user ? $user->id : null,
                 'status' => $orderStatus,
+                'currency' => $currency,
                 'discountId' => $discountId,
                 'discountType' => $discountType,
                 'discountPercentage' => $discountPercentage,
@@ -220,6 +223,7 @@ class OrderController
                 'transactionType' => 'order',
                 'paymentMethod' => $data['paymentMethod'] ?? $data['payment_method'] ?? 'cash',
                 'amount' => $discountedTotalPrice,
+                'currency' => $currency,
                 'status' => 'completed',
                 'createdAt' => date('Y-m-d H:i:s')
             ]);

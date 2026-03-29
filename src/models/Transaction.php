@@ -52,6 +52,7 @@ class Transaction extends Model
         'paymentMethod',
         'amount',
         'status',
+        'currency',
     ];
 
     protected $casts = [
@@ -62,6 +63,7 @@ class Transaction extends Model
         'refundId' => 'integer',
         'amount' => 'float',
         'createdAt' => 'datetime',
+        'currency' => 'string',
     ];
 
     public function order()

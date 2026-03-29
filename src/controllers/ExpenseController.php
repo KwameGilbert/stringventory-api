@@ -9,6 +9,7 @@ use App\Models\ExpenseCategory;
 use App\Models\Transaction;
 use App\Helper\ResponseHelper;
 use App\Services\NotificationService;
+use App\Services\CurrencyService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -74,9 +75,11 @@ class ExpenseController
                 $data['status'] = 'paid';
             }
 
-            // Set createdBy
+            // Set createdBy and currency
             $user = $request->getAttribute('user');
             $data['createdBy'] = $user ? $user->id : null;
+            $currency = CurrencyService::getCurrent();
+            $data['currency'] = $currency;
 
             DB::beginTransaction();
             $expense = Expense::create($data);
@@ -86,6 +89,7 @@ class ExpenseController
                 'expenseId' => $expense->id,
                 'transactionType' => 'expense',
                 'amount' => -$expense->amount, // Expense is an outflow
+                'currency' => $currency,
                 'paymentMethod' => $data['paymentMethod'] ?? $data['payment_method'] ?? 'cash',
                 'status' => 'completed',
                 'createdAt' => date('Y-m-d H:i:s')

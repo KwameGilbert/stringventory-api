@@ -14,6 +14,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
 use App\Services\NotificationService;
+use App\Services\CurrencyService;
 use Exception;
 
 class RefundController
@@ -121,6 +122,7 @@ class RefundController
                 'items' => $refundItems, // Array of {orderItemId, quantity}
                 'notes' => $data['notes'] ?? null,
                 'refundStatus' => 'pending',
+                'currency' => $order->currency ?? CurrencyService::getCurrent(),
                 'createdBy' => $user ? $user->id : null,
                 'refundDate' => date('Y-m-d H:i:s'),
                 'createdAt' => date('Y-m-d H:i:s')
@@ -182,6 +184,7 @@ class RefundController
                     'transactionType' => 'refunds',
                     'paymentMethod' => $refund->paymentMethod,
                     'amount' => -$refund->refundAmount,
+                    'currency' => $refund->currency ?? CurrencyService::getCurrent(),
                     'status' => 'completed',
                     'createdAt' => date('Y-m-d H:i:s')
                 ]);
@@ -227,6 +230,7 @@ class RefundController
                             'refundId' => $refund->id,
                             'transactionType' => 'stock_loss',
                             'amount' => -$totalLostStockValue,
+                            'currency' => $refund->currency ?? CurrencyService::getCurrent(),
                             'status' => 'completed',
                             'createdAt' => date('Y-m-d H:i:s')
                         ]);

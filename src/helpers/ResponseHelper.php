@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helper;
 
 use Psr\Http\Message\ResponseInterface as Response;
+use App\Services\CurrencyService;
 
 class ResponseHelper
 {
@@ -41,8 +42,9 @@ class ResponseHelper
     public static function success(Response $response, string $message, array $data = [], int $status = 200): Response
     {
         $payload = [
-            'success' => true,
-            'message' => $message,
+            'success'  => true,
+            'message'  => $message,
+            'currency' => CurrencyService::getCurrent(),
         ];
 
         if (!empty($data)) {

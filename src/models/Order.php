@@ -49,6 +49,7 @@ class Order extends Model
         'discountedPrice',
         'discountedTotalPrice',
         'notes',
+        'currency',
     ];
 
     protected $casts = [
@@ -61,6 +62,7 @@ class Order extends Model
         'discountedTotalPrice' => 'float',
         'updatedAt' => 'datetime',
         'createdAt' => 'datetime',
+        'currency' => 'string',
     ];
 
     public function getCreatedByAttribute($value): string|int|null

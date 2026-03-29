@@ -107,6 +107,10 @@ return function ($container) {
     $container->set(ExpenseService::class, function () {
         return new ExpenseService();
     });
+
+    $container->set(\App\Services\CurrencyService::class, function () {
+        return new \App\Services\CurrencyService();
+    });
     
     // ==================== CONTROLLERS ====================
     

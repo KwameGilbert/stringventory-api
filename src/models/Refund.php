@@ -43,6 +43,7 @@ class Refund extends Model
         'notes',
         'isRestocked',
         'createdBy',
+        'currency',
     ];
 
     protected $casts = [
@@ -55,6 +56,7 @@ class Refund extends Model
         'updatedAt' => 'datetime',
         'createdAt' => 'datetime',
         'createdBy' => 'integer',
+        'currency' => 'string',
     ];
 
     public function getCreatedByAttribute($value): string|int|null

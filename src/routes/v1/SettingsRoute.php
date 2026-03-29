@@ -22,5 +22,9 @@ return function (App $app) {
         
         $group->get('/api', SettingsController::class . ':getApiSettings');
         $group->post('/api/regenerate-key', SettingsController::class . ':regenerateApiKey');
+
+        $group->get('/currency', SettingsController::class . ':getCurrencySettings');
+        $group->put('/currency', SettingsController::class . ':updateCurrencySettings');
+        $group->post('/currency/fetch-rates', SettingsController::class . ':fetchExchangeRates');
     })->add(AuthMiddleware::class);
 };

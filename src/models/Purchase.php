@@ -32,6 +32,7 @@ class Purchase extends Model
         'paymentMethod',
         'notes',
         'createdBy',
+        'currency',
     ];
 
     protected $casts = [
@@ -47,6 +48,7 @@ class Purchase extends Model
         'createdAt' => 'datetime',
         'updatedAt' => 'datetime',
         'createdBy' => 'integer',
+        'currency' => 'string',
     ];
 
     public function getCreatedByAttribute($value): string|int|null

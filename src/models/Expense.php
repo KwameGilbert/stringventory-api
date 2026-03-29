@@ -33,6 +33,7 @@ class Expense extends Model
         'notes',
         'status',
         'createdBy',
+        'currency',
     ];
 
     protected $casts = [
@@ -42,6 +43,7 @@ class Expense extends Model
         'transactionDate' => 'datetime',
         'createdAt' => 'datetime',
         'createdBy' => 'integer',
+        'currency' => 'string',
     ];
 
     public function getCreatedByAttribute($value): string|int|null

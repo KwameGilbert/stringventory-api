@@ -13,6 +13,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Helper\ResponseHelper;
 use App\Services\NotificationService;
+use App\Services\CurrencyService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -103,6 +104,7 @@ class PurchaseController
                 'tax' => (float)($data['tax'] ?? 0),
                 'shippingCost' => (float)($data['shippingCost'] ?? 0),
                 'status' => $status,
+                'currency' => CurrencyService::getCurrent(),
                 'paymentStatus' => $data['paymentStatus'] ?? 'unpaid',
                 'paymentMethod' => $data['paymentMethod'] ?? $data['payment_method'] ?? 'bank_transfer',
                 'notes' => $data['notes'] ?? null,
@@ -120,13 +122,14 @@ class PurchaseController
                 $totalPrice = $quantity * $costPrice;
 
                 PurchaseItem::create([
-                    'purchaseId' => $purchase->id,
-                    'productId' => $product->id,
-                    'quantity' => $quantity,
-                    'costPrice' => $costPrice,
-                    'sellingPrice' => (float)($item['sellingPrice'] ?? $product->sellingPrice),
-                    'totalPrice' => $totalPrice,
-                    'expiryDate' => $item['expiryDate'] ?? null
+                    'purchaseId'        => $purchase->id,
+                    'productId'         => $product->id,
+                    'quantity'          => $quantity,
+                    'remainingQuantity' => $status === 'received' ? $quantity : 0,
+                    'costPrice'         => $costPrice,
+                    'sellingPrice'      => (float)($item['sellingPrice'] ?? $product->sellingPrice),
+                    'totalPrice'        => $totalPrice,
+                    'expiryDate'        => $item['expiryDate'] ?? null,
                 ]);
 
                 $subtotal += $totalPrice;
@@ -191,6 +194,10 @@ class PurchaseController
                 $purchase->save();
 
                 foreach ($purchase->items as $item) {
+                    // Initialize batch remaining quantity for FEFO tracking
+                    $item->remainingQuantity = $item->quantity;
+                    $item->save();
+
                     $product = Product::find($item->productId);
                     $this->updateInventoryAndPricing($product, $item->quantity, $item->costPrice, $item->sellingPrice);
                 }
@@ -245,6 +252,7 @@ class PurchaseController
             'purchaseId' => $purchase->id,
             'transactionType' => 'purchase',
             'amount' => -$purchase->totalAmount, // Outflow (Negative)
+            'currency' => $purchase->currency ?? CurrencyService::getCurrent(),
             'status' => 'completed',
             'paymentMethod' => $purchase->paymentMethod ?? 'bank_transfer',
             'createdAt' => date('Y-m-d H:i:s')

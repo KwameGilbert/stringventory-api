@@ -11,6 +11,7 @@ use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Services\NotificationService;
+use App\Services\CurrencyService;
 use Exception;
 
 class SettingsController
@@ -245,6 +246,112 @@ class SettingsController
             return ResponseHelper::success($response, 'API settings retrieved successfully', $settings);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to retrieve API settings', 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * Get Currency Settings
+     */
+    public function getCurrencySettings(Request $request, Response $response): Response
+    {
+        try {
+            $businessSettings = Setting::getByCategory('business');
+            $currentCurrency  = $businessSettings['currency'] ?? 'GHS';
+
+            // Ensure today's rates are available (fetch from API if not)
+            CurrencyService::fetchAndStoreRates();
+
+            return ResponseHelper::jsonResponse($response, [
+                'status'   => 'success',
+                'message'  => 'Currency settings retrieved successfully',
+                'data'     => [
+                    'currentCurrency'     => $currentCurrency,
+                    'supportedCurrencies' => CurrencyService::getSupportedCurrencies(),
+                    'rates'               => CurrencyService::getCurrentRates(),
+                ],
+            ]);
+        } catch (Exception $e) {
+            return ResponseHelper::error($response, 'Failed to retrieve currency settings', 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * Update Currency Settings
+     * Accepts: { currency: "USD", rates: { "GHS": { "USD": 0.065 }, ... } }
+     * Manual rates are logged to exchange_rate_history with source='manual'.
+     */
+    public function updateCurrencySettings(Request $request, Response $response): Response
+    {
+        try {
+            $data = $request->getParsedBody();
+
+            $current = Setting::getByCategory('business') ?: [];
+
+            if (!empty($data['currency'])) {
+                $supported = CurrencyService::getSupportedCurrencies();
+                if (!in_array($data['currency'], $supported, true)) {
+                    return ResponseHelper::error($response, 'Unsupported currency. Allowed: ' . implode(', ', $supported), 400);
+                }
+                $current['currency'] = $data['currency'];
+            }
+
+            $current['updatedAt'] = date('c');
+            Setting::updateCategory('business', $current);
+
+            // Persist any manually provided rates
+            if (!empty($data['rates']) && is_array($data['rates'])) {
+                foreach ($data['rates'] as $base => $targets) {
+                    if (!is_array($targets)) {
+                        continue;
+                    }
+                    foreach ($targets as $target => $rate) {
+                        CurrencyService::storeManualRate((string) $base, (string) $target, (float) $rate);
+                    }
+                }
+            }
+
+            $this->notificationService->notifyAdmins(
+                'settings_update',
+                'Currency Settings Updated',
+                'Business currency configuration has been updated.',
+                ['currency' => $current['currency']]
+            );
+
+            return ResponseHelper::jsonResponse($response, [
+                'status'  => 'success',
+                'message' => 'Currency settings updated successfully',
+                'data'    => [
+                    'currentCurrency' => $current['currency'],
+                    'updatedAt'       => $current['updatedAt'],
+                ],
+            ]);
+        } catch (Exception $e) {
+            return ResponseHelper::error($response, 'Failed to update currency settings', 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * Force-fetch latest exchange rates from the API
+     */
+    public function fetchExchangeRates(Request $request, Response $response): Response
+    {
+        try {
+            $success = CurrencyService::fetchAndStoreRates();
+
+            if (!$success) {
+                return ResponseHelper::error($response, 'Failed to fetch exchange rates. Check your API key.', 502);
+            }
+
+            return ResponseHelper::jsonResponse($response, [
+                'status'  => 'success',
+                'message' => 'Exchange rates fetched and stored successfully',
+                'data'    => [
+                    'rates'     => CurrencyService::getCurrentRates(),
+                    'fetchedAt' => date('c'),
+                ],
+            ]);
+        } catch (Exception $e) {
+            return ResponseHelper::error($response, 'Failed to fetch exchange rates', 500, $e->getMessage());
         }
     }
 
