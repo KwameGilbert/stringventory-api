@@ -19,7 +19,18 @@ class CustomerController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $customers = Customer::with('orders', 'refunds')->orderBy('createdAt', 'desc')->get();
+            $customers = Customer::with(['orders', 'refunds'])
+                ->withCount('orders')
+                ->withSum('orders', 'discountedTotalPrice')
+                ->orderBy('createdAt', 'desc')
+                ->get()
+                ->map(function ($customer) {
+                    $data = $customer->toArray();
+                    $data['totalOrders'] = $customer->orders_count ?? 0;
+                    $data['totalAmountSpent'] = (float)($customer->orders_sum_discounted_total_price ?? 0);
+                    return $data;
+                });
+
             return ResponseHelper::success($response, 'Customers fetched successfully', $customers->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch customers', 500, $e->getMessage());
@@ -32,11 +43,20 @@ class CustomerController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $customer = Customer::with(['orders', 'refunds'])->find($args['id']);
+            $customer = Customer::with(['orders', 'refunds'])
+                ->withCount('orders')
+                ->withSum('orders', 'discountedTotalPrice')
+                ->find($args['id']);
+                
             if (!$customer) {
                 return ResponseHelper::error($response, 'Customer not found', 404);
             }
-            return ResponseHelper::success($response, 'Customer fetched successfully', $customer->toArray());
+
+            $responseData = $customer->toArray();
+            $responseData['totalOrders'] = $customer->orders_count ?? 0;
+            $responseData['totalAmountSpent'] = (float)($customer->orders_sum_discounted_total_price ?? 0);
+
+            return ResponseHelper::success($response, 'Customer fetched successfully', $responseData);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch customer', 500, $e->getMessage());
         }
