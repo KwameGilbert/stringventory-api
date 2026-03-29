@@ -86,7 +86,7 @@ class PurchaseController
             // 3. Create Header
             $purchase = Purchase::create([
                 'supplierId' => $data['supplierId'],
-                'createdBy' => $user ? $user->id : null,
+                'createdBy' => $user->id ?? null,
                 'purchaseNumber' => $purchaseNumber,
                 'waybillNumber' => $data['waybillNumber'] ?? null,
                 'batchNumber' => $data['batchNumber'] ?? null,

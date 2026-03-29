@@ -28,6 +28,20 @@ class Transaction extends Model
 
     const CREATED_AT = 'createdAt';
 
+    // Transaction Types
+    const TYPE_ORDER = 'order';
+    const TYPE_PURCHASE = 'purchase';
+    const TYPE_EXPENSE = 'expense';
+    const TYPE_ADJUSTMENT = 'adjustment';
+    const TYPE_REFUNDS = 'refunds';
+    const TYPE_STOCK_LOSS = 'stock_loss';
+
+    // Statuses
+    const STATUS_PENDING = 'pending';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_CANCELLED = 'cancelled';
+    const STATUS_FAILED = 'failed';
+
     protected $fillable = [
         'orderId',
         'expenseId',

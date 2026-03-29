@@ -16,7 +16,6 @@ class Purchase extends Model
 
     protected $fillable = [
         'supplierId',
-        'createdBy',
         'purchaseNumber',
         'waybillNumber',
         'batchNumber',
@@ -32,11 +31,11 @@ class Purchase extends Model
         'paymentStatus',
         'paymentMethod',
         'notes',
+        'createdBy',
     ];
 
     protected $casts = [
         'supplierId' => 'integer',
-        'createdBy' => 'integer',
         'purchaseDate' => 'datetime',
         'dueDate' => 'datetime',
         'expectedDeliveryDate' => 'datetime',
@@ -47,6 +46,7 @@ class Purchase extends Model
         'totalAmount' => 'float',
         'createdAt' => 'datetime',
         'updatedAt' => 'datetime',
+        'createdBy' => 'integer',
     ];
 
     public function supplier()
