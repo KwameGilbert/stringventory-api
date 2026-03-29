@@ -25,7 +25,7 @@ class PurchaseController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $purchases = Purchase::with(['supplier', 'items.product'])->orderBy('createdAt', 'desc')->get();
+            $purchases = Purchase::with(['supplier', 'items.product', 'creator'])->orderBy('createdAt', 'desc')->get();
             return ResponseHelper::success($response, 'Purchases fetched successfully', $purchases->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch purchases', 500, $e->getMessage());
@@ -38,7 +38,7 @@ class PurchaseController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $purchase = Purchase::with(['supplier', 'items.product', 'transactions'])->find($args['id']);
+            $purchase = Purchase::with(['supplier', 'items.product', 'transactions', 'creator'])->find($args['id']);
             if (!$purchase) {
                 return ResponseHelper::error($response, 'Purchase not found', 404);
             }
@@ -86,6 +86,7 @@ class PurchaseController
             // 3. Create Header
             $purchase = Purchase::create([
                 'supplierId' => $data['supplierId'],
+                'createdBy' => $user ? $user->id : null,
                 'purchaseNumber' => $purchaseNumber,
                 'waybillNumber' => $data['waybillNumber'] ?? null,
                 'batchNumber' => $data['batchNumber'] ?? null,
@@ -140,7 +141,7 @@ class PurchaseController
             }
 
             DB::commit();
-            return ResponseHelper::success($response, 'Purchase order created successfully', $purchase->load('items')->toArray(), 201);
+            return ResponseHelper::success($response, 'Purchase order created successfully', $purchase->load(['items', 'creator'])->toArray(), 201);
         } catch (Exception $e) {
             DB::rollBack();
             return ResponseHelper::error($response, 'Failed to create purchase', 500, $e->getMessage());

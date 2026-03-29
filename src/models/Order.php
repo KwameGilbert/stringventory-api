@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -39,6 +40,7 @@ class Order extends Model
     protected $fillable = [
         'orderNumber',
         'customerId',
+        'createdBy',
         'status',
         'discountId',
         'discountPercentage',
@@ -51,6 +53,7 @@ class Order extends Model
 
     protected $casts = [
         'customerId' => 'integer',
+        'createdBy' => 'integer',
         'discountId' => 'integer',
         'discountPercentage' => 'float',
         'discountAmount' => 'float',
@@ -59,6 +62,11 @@ class Order extends Model
         'updatedAt' => 'datetime',
         'createdAt' => 'datetime',
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'createdBy');
+    }
 
     public function customer()
     {

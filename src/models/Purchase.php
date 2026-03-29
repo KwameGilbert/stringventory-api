@@ -16,6 +16,7 @@ class Purchase extends Model
 
     protected $fillable = [
         'supplierId',
+        'createdBy',
         'purchaseNumber',
         'waybillNumber',
         'batchNumber',
@@ -35,6 +36,7 @@ class Purchase extends Model
 
     protected $casts = [
         'supplierId' => 'integer',
+        'createdBy' => 'integer',
         'purchaseDate' => 'datetime',
         'dueDate' => 'datetime',
         'expectedDeliveryDate' => 'datetime',
@@ -50,6 +52,11 @@ class Purchase extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplierId');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'createdBy');
     }
 
     public function items()

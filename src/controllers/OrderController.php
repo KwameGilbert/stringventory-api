@@ -38,7 +38,7 @@ class OrderController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $orders = Order::with(['customer', 'items.product', 'discount', 'transactions'])->orderBy('createdAt', 'desc')->get();
+            $orders = Order::with(['customer', 'items.product', 'discount', 'transactions', 'creator'])->orderBy('createdAt', 'desc')->get();
             return ResponseHelper::success($response, 'Orders fetched successfully', $orders->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch orders', 500, $e->getMessage());
@@ -52,7 +52,7 @@ class OrderController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $order = Order::with(['customer', 'items.product', 'discount', 'transactions'])->find($args['id']);
+            $order = Order::with(['customer', 'items.product', 'discount', 'transactions', 'creator'])->find($args['id']);
             if (!$order) {
                 return ResponseHelper::error($response, 'Order not found', 404);
             }
@@ -173,6 +173,7 @@ class OrderController
             $order = Order::create([
                 'orderNumber' => 'ORD-' . strtoupper(bin2hex(random_bytes(4))),
                 'customerId' => $data['customerId'] ?? null,
+                'createdBy' => $user ? $user->id : null,
                 'status' => $orderStatus,
                 'discountId' => $discountId,
                 'discountType' => $discountType,
@@ -243,7 +244,7 @@ class OrderController
                 }
             }
 
-            return ResponseHelper::success($response, 'Order created successfully', $order->load('items')->toArray(), 201);
+            return ResponseHelper::success($response, 'Order created successfully', $order->load(['items', 'creator'])->toArray(), 201);
         } catch (Exception $e) {
             DB::rollBack();
             return ResponseHelper::error($response, $e->getMessage(), 400);
