@@ -10,6 +10,7 @@ use App\Models\PurchaseItem;
 use App\Models\OrderItem;
 use App\Helper\ResponseHelper;
 use App\Services\UploadService;
+use App\Services\NotificationService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exception;
@@ -17,10 +18,12 @@ use Exception;
 class ProductController
 {
     private UploadService $uploadService;
+    private NotificationService $notificationService;
 
-    public function __construct(UploadService $uploadService)
+    public function __construct(UploadService $uploadService, NotificationService $notificationService)
     {
         $this->uploadService = $uploadService;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -108,6 +111,14 @@ class ProductController
                     'lastUpdated' => date('Y-m-d H:i:s')
                 ]);
             }
+
+            // Notify admins about new product
+            $this->notificationService->notifyAdmins(
+                'product_created',
+                'New Product Created',
+                "A new product '{$product->name}' with SKU {$product->sku} has been added to the catalog.",
+                ['productId' => $product->id, 'sku' => $product->sku]
+            );
 
             return ResponseHelper::success($response, 'Product created successfully', $product->load('inventory')->toArray(), 201);
         } catch (Exception $e) {

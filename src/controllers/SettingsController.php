@@ -10,10 +10,17 @@ use App\Models\UserSetting;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Services\NotificationService;
 use Exception;
 
 class SettingsController
 {
+    private NotificationService $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     /**
      * Get Business Settings
      */
@@ -50,6 +57,14 @@ class SettingsController
             
             Setting::updateCategory('business', $updated);
             
+            // Notify admins about business settings change
+            $this->notificationService->notifyAdmins(
+                'settings_update',
+                'Business Settings Updated',
+                "Business configuration settings have been updated.",
+                ['category' => 'business']
+            );
+
             return ResponseHelper::jsonResponse($response, [
                 'status' => 'success',
                 'message' => 'Business settings updated successfully',
@@ -192,6 +207,14 @@ class SettingsController
             $current = Setting::getByCategory('payment') ?: [];
             Setting::updateCategory('payment', array_merge($current, $newConfig));
             
+            // Notify admins about payment settings change
+            $this->notificationService->notifyAdmins(
+                'settings_update',
+                'Payment Settings Updated',
+                "Financial/Payment configuration settings have been updated.",
+                ['category' => 'payment']
+            );
+
             return ResponseHelper::jsonResponse($response, [
                 'status' => 'success',
                 'message' => 'Payment settings updated successfully',
@@ -234,6 +257,15 @@ class SettingsController
             $settings = Setting::getByCategory('api') ?: [];
             $settings['apiKey'] = 'sk_live_' . bin2hex(random_bytes(32));
             Setting::updateCategory('api', $settings);
+
+            // Notify admins about API key regeneration
+            $this->notificationService->notifyAdmins(
+                'security_update',
+                'API Key Regenerated',
+                "The system API key has been regenerated.",
+                ['category' => 'api']
+            );
+
             return ResponseHelper::success($response, 'API key regenerated successfully', ['apiKey' => $settings['apiKey']]);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to regenerate API key', 500, $e->getMessage());

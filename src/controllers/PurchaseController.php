@@ -12,6 +12,7 @@ use App\Models\Supplier;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Helper\ResponseHelper;
+use App\Services\NotificationService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -19,6 +20,12 @@ use Exception;
 
 class PurchaseController
 {
+    private NotificationService $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     /**
      * Get all purchases (Restocks)
      */
@@ -141,6 +148,15 @@ class PurchaseController
             }
 
             DB::commit();
+
+            // Notify admins about new purchase
+            $this->notificationService->notifyAdmins(
+                'purchase_created',
+                'New Purchase Order',
+                "A new purchase order {$purchase->purchaseNumber} has been created with status '{$purchase->status}' for total of " . number_format($purchase->totalAmount, 2),
+                ['purchaseId' => $purchase->id, 'purchaseNumber' => $purchase->purchaseNumber, 'total' => $purchase->totalAmount]
+            );
+
             return ResponseHelper::success($response, 'Purchase order created successfully', $purchase->load(['items', 'creator'])->toArray(), 201);
         } catch (Exception $e) {
             DB::rollBack();
@@ -276,6 +292,15 @@ class PurchaseController
             }
 
             DB::commit();
+
+            // Notify admins about purchase approval
+            $this->notificationService->notifyAdmins(
+                'purchase_approved',
+                'Purchase Approved',
+                "Purchase order {$purchase->purchaseNumber} has been approved and inventory updated.",
+                ['purchaseId' => $purchase->id, 'purchaseNumber' => $purchase->purchaseNumber]
+            );
+
             return ResponseHelper::success($response, 'Purchase approved and inventory updated successfully', $purchase->toArray());
         } catch (Exception $e) {
             DB::rollBack();

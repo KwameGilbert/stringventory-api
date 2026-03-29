@@ -151,7 +151,8 @@ return function ($container) {
 
     $container->set(SupplierController::class, function ($container) {
         return new SupplierController(
-            $container->get(\App\Services\UploadService::class)
+            $container->get(\App\Services\UploadService::class),
+            $container->get(\App\Services\NotificationService::class)
         );
     });
 
@@ -159,13 +160,16 @@ return function ($container) {
         return new ExpenseCategoryController();
     });
 
-    $container->set(DiscountController::class, function () {
-        return new DiscountController();
+    $container->set(DiscountController::class, function ($container) {
+        return new DiscountController(
+            $container->get(\App\Services\NotificationService::class)
+        );
     });
 
     $container->set(ProductController::class, function ($container) {
         return new ProductController(
-            $container->get(\App\Services\UploadService::class)
+            $container->get(\App\Services\UploadService::class),
+            $container->get(\App\Services\NotificationService::class)
         );
     });
 
@@ -173,8 +177,10 @@ return function ($container) {
         return new CustomerController();
     });
 
-    $container->set(ExpenseController::class, function () {
-        return new ExpenseController();
+    $container->set(ExpenseController::class, function ($container) {
+        return new ExpenseController(
+            $container->get(\App\Services\NotificationService::class)
+        );
     });
 
     $container->set(InventoryController::class, function ($container) {
@@ -183,12 +189,16 @@ return function ($container) {
         );
     });
 
-    $container->set(RefundController::class, function () {
-        return new RefundController();
+    $container->set(RefundController::class, function ($container) {
+        return new RefundController(
+            $container->get(\App\Services\NotificationService::class)
+        );
     });
 
-    $container->set(PurchaseController::class, function () {
-        return new PurchaseController();
+    $container->set(PurchaseController::class, function ($container) {
+        return new PurchaseController(
+            $container->get(\App\Services\NotificationService::class)
+        );
     });
 
     $container->set(ExpenseScheduleController::class, function ($container) {
@@ -205,6 +215,12 @@ return function ($container) {
 
     $container->set(AnalyticsController::class, function () {
         return new AnalyticsController();
+    });
+    
+    $container->set(\App\Controllers\SettingsController::class, function ($container) {
+        return new \App\Controllers\SettingsController(
+            $container->get(\App\Services\NotificationService::class)
+        );
     });
 
     $container->set(NotificationController::class, function ($container) {

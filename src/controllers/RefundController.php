@@ -13,10 +13,17 @@ use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
+use App\Services\NotificationService;
 use Exception;
 
 class RefundController
 {
+    private NotificationService $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     /**
      * Get all refunds
      */
@@ -119,6 +126,15 @@ class RefundController
             ]);
 
             DB::commit();
+
+            // Notify admins about new refund request
+            $this->notificationService->notifyAdmins(
+                'refund_request',
+                'New Refund Request',
+                "A new refund request for order {$order->orderNumber} has been submitted for " . number_format($refundAmount, 2),
+                ['refundId' => $refund->id, 'orderId' => $order->id, 'amount' => $refundAmount]
+            );
+
             return ResponseHelper::success($response, 'Refund request submitted successfully', $refund->toArray(), 201);
         } catch (Exception $e) {
             DB::rollBack();
@@ -222,6 +238,15 @@ class RefundController
             $refund->save();
             DB::commit();
             
+            // Notify admins about refund status update
+            $statusText = ucfirst($refund->refundStatus);
+            $this->notificationService->notifyAdmins(
+                'refund_update',
+                "Refund {$statusText}",
+                "Refund request for order #{$refund->orderId} has been {$refund->refundStatus}.",
+                ['refundId' => $refund->id, 'status' => $refund->refundStatus]
+            );
+
             return ResponseHelper::success($response, 'Refund status updated successfully', $refund->toArray());
         } catch (Exception $e) {
             DB::rollBack();

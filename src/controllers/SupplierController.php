@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Purchase;
 use App\Helper\ResponseHelper;
 use App\Services\UploadService;
+use App\Services\NotificationService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exception;
@@ -16,10 +17,12 @@ use Exception;
 class SupplierController
 {
     private UploadService $uploadService;
+    private NotificationService $notificationService;
 
-    public function __construct(UploadService $uploadService)
+    public function __construct(UploadService $uploadService, NotificationService $notificationService)
     {
         $this->uploadService = $uploadService;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -80,6 +83,15 @@ class SupplierController
             }
 
             $supplier = Supplier::create($data);
+
+            // Notify admins about new supplier
+            $this->notificationService->notifyAdmins(
+                'supplier_created',
+                'New Supplier Added',
+                "A new supplier '{$supplier->name}' has been added to the system.",
+                ['supplierId' => $supplier->id]
+            );
+
             return ResponseHelper::success($response, 'Supplier created successfully', $supplier->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create supplier', 500, $e->getMessage());

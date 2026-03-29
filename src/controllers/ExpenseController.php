@@ -8,6 +8,7 @@ use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Transaction;
 use App\Helper\ResponseHelper;
+use App\Services\NotificationService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -15,6 +16,12 @@ use Exception;
 
 class ExpenseController
 {
+    private NotificationService $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     /**
      * Get all expenses
      */
@@ -81,6 +88,15 @@ class ExpenseController
             ]);
 
             DB::commit();
+
+            // Notify admins about new expense
+            $this->notificationService->notifyAdmins(
+                'expense_created',
+                'New Expense Recorded',
+                "A new expense of " . number_format((float)$expense->amount, 2) . " has been recorded (" . ($expense->notes ?? 'No description') . ").",
+                ['expenseId' => $expense->id, 'amount' => $expense->amount]
+            );
+
             return ResponseHelper::success($response, 'Expense created successfully', $expense->load('category')->toArray(), 201);
         } catch (Exception $e) {
             DB::rollBack();

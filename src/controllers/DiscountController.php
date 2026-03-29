@@ -6,12 +6,19 @@ namespace App\Controllers;
 
 use App\Models\Discount;
 use App\Helper\ResponseHelper;
+use App\Services\NotificationService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exception;
 
 class DiscountController
 {
+    private NotificationService $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
     /**
      * Get all discounts
      */
@@ -70,6 +77,15 @@ class DiscountController
             }
 
             $discount = Discount::create($data);
+
+            // Notify admins about new discount
+            $this->notificationService->notifyAdmins(
+                'discount_created',
+                'New Discount Created',
+                "A new discount '{$discount->name}' with code '{$discount->discountCode}' has been created.",
+                ['discountId' => $discount->id, 'code' => $discount->discountCode]
+            );
+
             return ResponseHelper::success($response, 'Discount created successfully', $discount->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create discount', 500, $e->getMessage());
