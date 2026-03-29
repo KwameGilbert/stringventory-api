@@ -32,7 +32,7 @@ class ProductController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $products = Product::with(['category', 'supplier', 'inventory', 'unitOfMeasure', 'purchaseItems.purchase'])->orderBy('name', 'asc')->get();
+            $products = Product::with(['category', 'supplier', 'inventory', 'unitOfMeasure', 'batches.purchase'])->orderBy('name', 'asc')->get();
             return ResponseHelper::success($response, 'Products fetched successfully', $products->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch products', 500, $e->getMessage());
@@ -45,7 +45,7 @@ class ProductController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $product = Product::with(['category', 'supplier', 'inventory', 'purchaseItems.purchase', 'orderItems', 'unitOfMeasure'])->find($args['id']);
+            $product = Product::with(['category', 'supplier', 'inventory', 'batches.purchase', 'orderItems', 'unitOfMeasure'])->find($args['id']);
             if (!$product) {
                 return ResponseHelper::error($response, 'Product not found', 404);
             }

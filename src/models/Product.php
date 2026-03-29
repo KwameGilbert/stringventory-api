@@ -63,7 +63,7 @@ class Product extends Model
 
     public function getSoonestExpiryDateAttribute(): ?string
     {
-        $soonest = $this->purchaseItems()
+        $soonest = $this->batches()
             ->where('remainingQuantity', '>', 0)
             ->whereNotNull('expiryDate')
             ->orderBy('expiryDate', 'asc')
@@ -92,7 +92,7 @@ class Product extends Model
         return $this->hasOne(Inventory::class, 'productId');
     }
 
-    public function purchaseItems()
+    public function batches()
     {
         return $this->hasMany(PurchaseItem::class, 'productId');
     }

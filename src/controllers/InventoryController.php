@@ -30,7 +30,7 @@ class InventoryController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $inventory = Inventory::with('product')->get();
+            $inventory = Inventory::with(['product.batches.purchase'])->get();
             return ResponseHelper::success($response, 'Inventory fetched successfully', $inventory->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch inventory', 500, $e->getMessage());
@@ -43,7 +43,7 @@ class InventoryController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $inventory = Inventory::with('product')->where('productId', $args['id'])->first();
+            $inventory = Inventory::with(['product.batches.purchase'])->where('productId', $args['id'])->first();
             if (!$inventory) {
                 return ResponseHelper::error($response, 'Inventory record not found', 404);
             }
