@@ -409,6 +409,18 @@ class OrderController
 
             $order->update(['status' => $orderStatus]);
 
+            // Notify salesperson
+            if ($order->createdBy) {
+                $statusText = str_replace('_', ' ', $orderStatus);
+                $this->notificationService->notifyUser(
+                    $order->createdBy,
+                    'order_update',
+                    "Order Status Updated",
+                    "Your order {$order->orderNumber} is now {$statusText}.",
+                    ['orderId' => $order->id, 'status' => $orderStatus]
+                );
+            }
+
             DB::commit();
             return ResponseHelper::success($response, 'Order fulfillment updated successfully', $order->load('items')->toArray());
         } catch (Exception $e) {

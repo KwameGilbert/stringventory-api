@@ -425,6 +425,14 @@ class NotificationService
     }
 
     /**
+     * Notify a specific user
+     */
+    public function notifyUser(int $userId, string $type, string $title, string $message, ?array $data = null): void
+    {
+        $this->createDirectNotification($userId, $type, $title, $message, $data);
+    }
+
+    /**
      * Notify all administrators (CEO and Managers)
      */
     public function notifyAdmins(string $type, string $title, string $message, ?array $data = null): void

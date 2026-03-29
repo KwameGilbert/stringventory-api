@@ -32,6 +32,7 @@ class Expense extends Model
         'transactionDate',
         'notes',
         'status',
+        'createdBy',
     ];
 
     protected $casts = [
@@ -40,7 +41,21 @@ class Expense extends Model
         'amount' => 'float',
         'transactionDate' => 'datetime',
         'createdAt' => 'datetime',
+        'createdBy' => 'integer',
     ];
+
+    public function getCreatedByAttribute($value): string|int|null
+    {
+        if ($this->relationLoaded('creator') && $this->creator) {
+            return trim($this->creator->firstName . ' ' . $this->creator->lastName);
+        }
+        return $value;
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'createdBy');
+    }
 
     public function category()
     {

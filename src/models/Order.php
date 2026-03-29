@@ -63,6 +63,14 @@ class Order extends Model
         'createdAt' => 'datetime',
     ];
 
+    public function getCreatedByAttribute($value): string|int|null
+    {
+        if ($this->relationLoaded('creator') && $this->creator) {
+            return trim($this->creator->firstName . ' ' . $this->creator->lastName);
+        }
+        return $value;
+    }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'createdBy');

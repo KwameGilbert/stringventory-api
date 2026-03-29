@@ -30,7 +30,7 @@ class RefundController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $refunds = Refund::with(['order', 'customer'])->orderBy('createdAt', 'desc')->get();
+            $refunds = Refund::with(['order', 'customer', 'creator'])->orderBy('createdAt', 'desc')->get();
             return ResponseHelper::success($response, 'Refunds fetched successfully', $refunds->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch refunds', 500, $e->getMessage());
@@ -43,7 +43,7 @@ class RefundController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $refund = Refund::with(['order', 'customer'])->find($args['id']);
+            $refund = Refund::with(['order', 'customer', 'creator'])->find($args['id']);
             if (!$refund) {
                 return ResponseHelper::error($response, 'Refund record not found', 404);
             }
@@ -121,6 +121,7 @@ class RefundController
                 'items' => $refundItems, // Array of {orderItemId, quantity}
                 'notes' => $data['notes'] ?? null,
                 'refundStatus' => 'pending',
+                'createdBy' => $user ? $user->id : null,
                 'refundDate' => date('Y-m-d H:i:s'),
                 'createdAt' => date('Y-m-d H:i:s')
             ]);
@@ -246,6 +247,17 @@ class RefundController
                 "Refund request for order #{$refund->orderId} has been {$refund->refundStatus}.",
                 ['refundId' => $refund->id, 'status' => $refund->refundStatus]
             );
+
+            // Notify the salesperson who requested the refund
+            if ($refund->createdBy) {
+                $this->notificationService->notifyUser(
+                    $refund->createdBy,
+                    'refund_update',
+                    "Your Refund Request was {$statusText}",
+                    "The refund request you submitted for order #{$refund->orderId} has been {$refund->refundStatus}.",
+                    ['refundId' => $refund->id, 'status' => $refund->refundStatus]
+                );
+            }
 
             return ResponseHelper::success($response, 'Refund status updated successfully', $refund->toArray());
         } catch (Exception $e) {

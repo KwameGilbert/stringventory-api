@@ -28,7 +28,7 @@ class ExpenseController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $expenses = Expense::with('category')->orderBy('transactionDate', 'desc')->get();
+            $expenses = Expense::with(['category', 'creator'])->orderBy('transactionDate', 'desc')->get();
             return ResponseHelper::success($response, 'Expenses fetched successfully', $expenses->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch expenses', 500, $e->getMessage());
@@ -41,7 +41,7 @@ class ExpenseController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $expense = Expense::with('category')->find($args['id']);
+            $expense = Expense::with(['category', 'creator'])->find($args['id']);
             if (!$expense) {
                 return ResponseHelper::error($response, 'Expense not found', 404);
             }
@@ -73,6 +73,10 @@ class ExpenseController
             if (empty($data['status'])) {
                 $data['status'] = 'paid';
             }
+
+            // Set createdBy
+            $user = $request->getAttribute('user');
+            $data['createdBy'] = $user ? $user->id : null;
 
             DB::beginTransaction();
             $expense = Expense::create($data);

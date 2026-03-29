@@ -49,6 +49,14 @@ class Purchase extends Model
         'createdBy' => 'integer',
     ];
 
+    public function getCreatedByAttribute($value): string|int|null
+    {
+        if ($this->relationLoaded('creator') && $this->creator) {
+            return trim($this->creator->firstName . ' ' . $this->creator->lastName);
+        }
+        return $value;
+    }
+
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplierId');

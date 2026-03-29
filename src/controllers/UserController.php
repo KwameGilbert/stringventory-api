@@ -154,7 +154,21 @@ class UserController
                 }
             }
             
+            $oldEmail = $user->email;
             $user->update($data);
+
+            // Notify user about profile update
+            $message = "Your profile information has been updated.";
+            if (isset($data['email']) && $data['email'] !== $oldEmail) {
+                $message = "Your email address has been updated to {$data['email']}.";
+            }
+            $this->notificationService->notifyUser(
+                $user->id,
+                'profile_update',
+                'Profile Updated',
+                $message,
+                ['userId' => $user->id]
+            );
             
             return ResponseHelper::success($response, 'User updated successfully', $user->toArray());
         } catch (Exception $e) {

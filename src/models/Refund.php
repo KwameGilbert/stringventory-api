@@ -42,6 +42,7 @@ class Refund extends Model
         'items',
         'notes',
         'isRestocked',
+        'createdBy',
     ];
 
     protected $casts = [
@@ -53,11 +54,25 @@ class Refund extends Model
         'isRestocked' => 'boolean',
         'updatedAt' => 'datetime',
         'createdAt' => 'datetime',
+        'createdBy' => 'integer',
     ];
+
+    public function getCreatedByAttribute($value): string|int|null
+    {
+        if ($this->relationLoaded('creator') && $this->creator) {
+            return trim($this->creator->firstName . ' ' . $this->creator->lastName);
+        }
+        return $value;
+    }
 
     public function order()
     {
         return $this->belongsTo(Order::class, 'orderId');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'createdBy');
     }
 
     public function customer()
