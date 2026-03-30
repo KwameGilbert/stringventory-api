@@ -331,6 +331,42 @@ class SettingsController
     }
 
     /**
+     * Get Exchange Rate History
+     * Optional query params: ?base=GHS&target=USD&from=2026-01-01&to=2026-03-30
+     */
+    public function getExchangeRateHistory(Request $request, Response $response): Response
+    {
+        try {
+            $params = $request->getQueryParams();
+
+            $query = \App\Models\ExchangeRateHistory::orderBy('effectiveDate', 'desc')
+                ->orderBy('id', 'desc');
+
+            if (!empty($params['base'])) {
+                $query->where('baseCurrency', strtoupper($params['base']));
+            }
+
+            if (!empty($params['target'])) {
+                $query->where('targetCurrency', strtoupper($params['target']));
+            }
+
+            if (!empty($params['from'])) {
+                $query->where('effectiveDate', '>=', $params['from']);
+            }
+
+            if (!empty($params['to'])) {
+                $query->where('effectiveDate', '<=', $params['to']);
+            }
+
+            $history = $query->get();
+
+            return ResponseHelper::success($response, 'Exchange rate history retrieved successfully', $history->toArray());
+        } catch (\Exception $e) {
+            return ResponseHelper::error($response, 'Failed to retrieve exchange rate history', 500, $e->getMessage());
+        }
+    }
+
+    /**
      * Force-fetch latest exchange rates from the API
      */
     public function fetchExchangeRates(Request $request, Response $response): Response

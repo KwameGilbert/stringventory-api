@@ -26,5 +26,6 @@ return function (App $app) {
         $group->get('/currency', SettingsController::class . ':getCurrencySettings');
         $group->put('/currency', SettingsController::class . ':updateCurrencySettings');
         $group->post('/currency/fetch-rates', SettingsController::class . ':fetchExchangeRates');
+        $group->get('/currency/history', SettingsController::class . ':getExchangeRateHistory');
     })->add(AuthMiddleware::class);
 };
