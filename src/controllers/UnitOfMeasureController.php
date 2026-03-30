@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\UnitOfMeasure;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -37,6 +38,13 @@ class UnitOfMeasureController
             }
 
             $unit = UnitOfMeasure::create($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'uom_created', [
+                'uomId' => $unit->id,
+                'name' => $unit->name,
+            ]);
+
             return ResponseHelper::success($response, 'Unit of measure created successfully', $unit->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create unit of measure', 500, $e->getMessage());
@@ -56,6 +64,13 @@ class UnitOfMeasureController
 
             $data = $request->getParsedBody();
             $unit->update($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'uom_updated', [
+                'uomId' => $unit->id,
+                'name' => $unit->name,
+            ]);
+
             return ResponseHelper::success($response, 'Unit of measure updated successfully', $unit->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update unit of measure', 500, $e->getMessage());
@@ -77,7 +92,16 @@ class UnitOfMeasureController
                 return ResponseHelper::error($response, 'Cannot delete unit of measure that is currently in use by products', 400);
             }
 
+            $unitId = $unit->id;
+            $unitName = $unit->name;
             $unit->delete();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'uom_deleted', [
+                'uomId' => $unitId,
+                'name' => $unitName,
+            ]);
+
             return ResponseHelper::success($response, 'Unit of measure deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete unit of measure', 500, $e->getMessage());

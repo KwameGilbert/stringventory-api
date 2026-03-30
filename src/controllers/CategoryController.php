@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Category;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use App\Services\UploadService;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -71,6 +72,13 @@ class CategoryController
             }
 
             $category = Category::create($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'category_created', [
+                'categoryId' => $category->id,
+                'name' => $category->name,
+            ]);
+
             return ResponseHelper::success($response, 'Category created successfully', $category->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create category', 500, $e->getMessage());
@@ -100,6 +108,13 @@ class CategoryController
             }
 
             $category->update($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'category_updated', [
+                'categoryId' => $category->id,
+                'name' => $category->name,
+            ]);
+
             return ResponseHelper::success($response, 'Category updated successfully', $category->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update category', 500, $e->getMessage());
@@ -122,7 +137,16 @@ class CategoryController
                 $this->uploadService->deleteFile($category->image);
             }
 
+            $categoryId = $category->id;
+            $categoryName = $category->name;
             $category->delete();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'category_deleted', [
+                'categoryId' => $categoryId,
+                'name' => $categoryName,
+            ]);
+
             return ResponseHelper::success($response, 'Category deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete category', 500, $e->getMessage());

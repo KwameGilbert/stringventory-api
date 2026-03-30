@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -83,6 +84,12 @@ class CustomerController
             }
 
             $customer = Customer::create($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'customer_created', [
+                'customerId' => $customer->id,
+            ]);
+
             return ResponseHelper::success($response, 'Customer created successfully', $customer->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create customer', 500, $e->getMessage());
@@ -110,6 +117,12 @@ class CustomerController
             }
 
             $customer->update($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'customer_updated', [
+                'customerId' => $customer->id,
+            ]);
+
             return ResponseHelper::success($response, 'Customer updated successfully', $customer->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update customer', 500, $e->getMessage());
@@ -133,7 +146,14 @@ class CustomerController
                 return ResponseHelper::error($response, "Cannot delete customer as they have $orderCount associated orders.", 400);
             }
 
+            $customerId = $customer->id;
             $customer->delete();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'customer_deleted', [
+                'customerId' => $customerId,
+            ]);
+
             return ResponseHelper::success($response, 'Customer deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete customer', 500, $e->getMessage());

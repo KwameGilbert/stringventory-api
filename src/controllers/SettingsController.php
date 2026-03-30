@@ -57,7 +57,10 @@ class SettingsController
             $updated['updatedAt'] = date('c'); // ISO 8601
             
             Setting::updateCategory('business', $updated);
-            
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'settings_business_updated');
+
             // Notify admins about business settings change
             $this->notificationService->notifyAdmins(
                 'settings_update',
@@ -207,7 +210,10 @@ class SettingsController
             
             $current = Setting::getByCategory('payment') ?: [];
             Setting::updateCategory('payment', array_merge($current, $newConfig));
-            
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'settings_payment_updated');
+
             // Notify admins about payment settings change
             $this->notificationService->notifyAdmins(
                 'settings_update',
@@ -297,6 +303,11 @@ class SettingsController
 
             $current['updatedAt'] = date('c');
             Setting::updateCategory('business', $current);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'settings_currency_updated', [
+                'currency' => $current['currency'],
+            ]);
 
             // Persist any manually provided rates
             if (!empty($data['rates']) && is_array($data['rates'])) {
@@ -400,6 +411,9 @@ class SettingsController
             $settings = Setting::getByCategory('api') ?: [];
             $settings['apiKey'] = 'sk_live_' . bin2hex(random_bytes(32));
             Setting::updateCategory('api', $settings);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'api_key_regenerated');
 
             // Notify admins about API key regeneration
             $this->notificationService->notifyAdmins(

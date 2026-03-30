@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Helper\ResponseHelper;
+use App\Models\AuditLog;
 use App\Services\AuthService;
 use App\Services\PasswordResetService;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -41,6 +42,10 @@ class PasswordResetController
 
             $ipAddress = $request->getServerParams()['REMOTE_ADDR'] ?? '0.0.0.0';
             $this->passwordResetService->sendResetLink($data['email'], $ipAddress);
+
+            AuditLog::log($request, null, 'password_reset_requested', [
+                'email' => $data['email'],
+            ]);
 
             // Always return success to prevent email enumeration
             return ResponseHelper::success($response, 'If an account exists with this email, an OTP has been sent.');
@@ -86,6 +91,10 @@ class PasswordResetController
             if ($user) {
                 $this->authService->revokeAllUserTokens($user->id);
             }
+
+            AuditLog::log($request, $user ? $user->id : null, 'password_reset_completed', [
+                'email' => $data['email'],
+            ]);
 
             return ResponseHelper::success($response, 'Password has been reset successfully. You can now login with your new password.');
         } catch (Exception $e) {

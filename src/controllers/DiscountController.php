@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Discount;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use App\Services\NotificationService;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -86,6 +87,12 @@ class DiscountController
                 ['discountId' => $discount->id, 'code' => $discount->discountCode]
             );
 
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'discount_created', [
+                'discountId' => $discount->id,
+                'code' => $discount->discountCode,
+            ]);
+
             return ResponseHelper::success($response, 'Discount created successfully', $discount->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create discount', 500, $e->getMessage());
@@ -111,6 +118,13 @@ class DiscountController
             }
 
             $discount->update($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'discount_updated', [
+                'discountId' => $discount->id,
+                'code' => $discount->discountCode,
+            ]);
+
             return ResponseHelper::success($response, 'Discount updated successfully', $discount->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update discount', 500, $e->getMessage());
@@ -131,7 +145,16 @@ class DiscountController
             // Soft delete or check usage? The user didn't specify, so we'll just delete.
             // But we should check if it's currently used in active orders (too complex for this check).
             
+            $discountId = $discount->id;
+            $discountCode = $discount->discountCode;
             $discount->delete();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'discount_deleted', [
+                'discountId' => $discountId,
+                'code' => $discountCode,
+            ]);
+
             return ResponseHelper::success($response, 'Discount deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete discount', 500, $e->getMessage());

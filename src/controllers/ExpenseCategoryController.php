@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Models\ExpenseCategory;
 use App\Models\Expense;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -59,6 +60,13 @@ class ExpenseCategoryController
             }
 
             $category = ExpenseCategory::create($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'expense_category_created', [
+                'categoryId' => $category->id,
+                'name' => $category->name,
+            ]);
+
             return ResponseHelper::success($response, 'Expense category created successfully', $category->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create expense category', 500, $e->getMessage());
@@ -83,6 +91,13 @@ class ExpenseCategoryController
             }
 
             $category->update($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'expense_category_updated', [
+                'categoryId' => $category->id,
+                'name' => $category->name,
+            ]);
+
             return ResponseHelper::success($response, 'Expense category updated successfully', $category->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update expense category', 500, $e->getMessage());
@@ -106,7 +121,16 @@ class ExpenseCategoryController
                 return ResponseHelper::error($response, "Cannot delete category as it has $expensesCount associated expenses.", 400);
             }
 
+            $categoryId = $category->id;
+            $categoryName = $category->name;
             $category->delete();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'expense_category_deleted', [
+                'categoryId' => $categoryId,
+                'name' => $categoryName,
+            ]);
+
             return ResponseHelper::success($response, 'Expense category deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete expense category', 500, $e->getMessage());
