@@ -42,7 +42,13 @@ class OrderController
     {
         try {
             $orders = Order::with(['customer', 'items.product', 'discount', 'transactions', 'creator'])->orderBy('createdAt', 'desc')->get();
-            return ResponseHelper::success($response, 'Orders fetched successfully', $orders->toArray());
+            $data   = CurrencyService::convertCollection(
+                $orders->toArray(),
+                ['discountAmount', 'discountedPrice', 'discountedTotalPrice'],
+                'createdAt',
+                ['items' => ['costPrice', 'sellingPrice', 'totalPrice']]
+            );
+            return ResponseHelper::success($response, 'Orders fetched successfully', $data);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch orders', 500, $e->getMessage());
         }
@@ -59,7 +65,13 @@ class OrderController
             if (!$order) {
                 return ResponseHelper::error($response, 'Order not found', 404);
             }
-            return ResponseHelper::success($response, 'Order fetched successfully', $order->toArray());
+            $data = CurrencyService::convertRecord(
+                $order->toArray(),
+                ['discountAmount', 'discountedPrice', 'discountedTotalPrice'],
+                'createdAt',
+                ['items' => ['costPrice', 'sellingPrice', 'totalPrice']]
+            );
+            return ResponseHelper::success($response, 'Order fetched successfully', $data);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch order', 500, $e->getMessage());
         }

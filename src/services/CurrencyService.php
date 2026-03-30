@@ -220,6 +220,81 @@ class CurrencyService
         return self::SUPPORTED;
     }
 
+    /**
+     * Convert all monetary fields in a single record array from its stored currency
+     * to the current business currency, using the historical rate for the record's date.
+     *
+     * @param array  $record       Associative array (from model->toArray())
+     * @param array  $amountFields Monetary field names on the record itself
+     * @param string $dateField    Key used to look up the historical rate (e.g. 'createdAt', 'transactionDate')
+     * @param array  $nested       Nested relation keys and their monetary fields, e.g.
+     *                             ['items' => ['costPrice', 'sellingPrice', 'totalPrice']]
+     *                             Nested items inherit the parent's currency and date.
+     */
+    public static function convertRecord(
+        array  $record,
+        array  $amountFields,
+        string $dateField = 'createdAt',
+        array  $nested = []
+    ): array {
+        $current = self::getCurrent();
+        $from    = isset($record['currency']) ? strtoupper((string) $record['currency']) : $current;
+
+        // Always stamp the current currency on the record
+        $record['currency'] = $current;
+
+        if ($from === $current) {
+            return $record;
+        }
+
+        $rawDate = $record[$dateField] ?? null;
+        $date    = $rawDate ? substr((string) $rawDate, 0, 10) : date('Y-m-d');
+
+        // Convert top-level monetary fields
+        foreach ($amountFields as $field) {
+            if (isset($record[$field]) && is_numeric($record[$field])) {
+                $record[$field] = self::convert((float) $record[$field], $from, $current, $date);
+            }
+        }
+
+        // Convert nested relation arrays (e.g. order items) using the parent's currency and date
+        foreach ($nested as $relationKey => $itemFields) {
+            if (empty($record[$relationKey]) || !is_array($record[$relationKey])) {
+                continue;
+            }
+            foreach ($record[$relationKey] as &$item) {
+                foreach ($itemFields as $field) {
+                    if (isset($item[$field]) && is_numeric($item[$field])) {
+                        $item[$field] = self::convert((float) $item[$field], $from, $current, $date);
+                    }
+                }
+            }
+            unset($item);
+        }
+
+        return $record;
+    }
+
+    /**
+     * Convert a collection of record arrays.
+     *
+     * @param array  $records      Array of associative arrays
+     * @param array  $amountFields Monetary field names to convert
+     * @param string $dateField    Date field used for historical rate lookup
+     * @param array  $nested       Nested relation keys and their monetary fields (see convertRecord)
+     */
+    public static function convertCollection(
+        array  $records,
+        array  $amountFields,
+        string $dateField = 'createdAt',
+        array  $nested = []
+    ): array {
+        return array_map(
+            static fn(array $r) => self::convertRecord($r, $amountFields, $dateField, $nested),
+            $records
+        );
+    }
+
     // -----------------------------------------------------------------------
     // Private helpers
     // -----------------------------------------------------------------------

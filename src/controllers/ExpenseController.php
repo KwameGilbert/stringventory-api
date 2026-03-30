@@ -31,7 +31,8 @@ class ExpenseController
     {
         try {
             $expenses = Expense::with(['category', 'creator'])->orderBy('transactionDate', 'desc')->get();
-            return ResponseHelper::success($response, 'Expenses fetched successfully', $expenses->toArray());
+            $data     = CurrencyService::convertCollection($expenses->toArray(), ['amount'], 'transactionDate');
+            return ResponseHelper::success($response, 'Expenses fetched successfully', $data);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch expenses', 500, $e->getMessage());
         }
@@ -47,7 +48,8 @@ class ExpenseController
             if (!$expense) {
                 return ResponseHelper::error($response, 'Expense not found', 404);
             }
-            return ResponseHelper::success($response, 'Expense fetched successfully', $expense->toArray());
+            $data = CurrencyService::convertRecord($expense->toArray(), ['amount'], 'transactionDate');
+            return ResponseHelper::success($response, 'Expense fetched successfully', $data);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch expense', 500, $e->getMessage());
         }

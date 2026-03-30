@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\ExpenseSchedule;
 use App\Models\Expense;
 use App\Models\Transaction;
+use App\Services\CurrencyService;
 use Illuminate\Database\Capsule\Manager as DB;
 use Exception;
 use DateTime;
@@ -49,6 +50,7 @@ class ExpenseService
                     'expenseScheduleId' => $schedule->id,
                     'expenseCategoryId' => $schedule->expenseCategoryId,
                     'amount' => $schedule->amount,
+                    'currency' => CurrencyService::getCurrent(),
                     'transactionDate' => $dueDate->format('Y-m-d H:i:s'),
                     'notes' => "Auto-generated from schedule: " . ($schedule->description ?: 'Recurring Expense'),
                     'status' => 'paid', // Assuming automated payment or recording
@@ -60,6 +62,7 @@ class ExpenseService
                     'expenseId' => $expense->id,
                     'transactionType' => 'expense',
                     'amount' => -$schedule->amount, // Outflow
+                    'currency' => CurrencyService::getCurrent(),
                     'status' => 'completed',
                     'paymentMethod' => 'automated',
                     'createdAt' => date('Y-m-d H:i:s')

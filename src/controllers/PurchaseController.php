@@ -35,7 +35,13 @@ class PurchaseController
     {
         try {
             $purchases = Purchase::with(['supplier', 'items.product', 'creator'])->orderBy('createdAt', 'desc')->get();
-            return ResponseHelper::success($response, 'Purchases fetched successfully', $purchases->toArray());
+            $data      = CurrencyService::convertCollection(
+                $purchases->toArray(),
+                ['subtotal', 'tax', 'shippingCost', 'totalAmount'],
+                'createdAt',
+                ['items' => ['costPrice', 'sellingPrice', 'totalPrice']]
+            );
+            return ResponseHelper::success($response, 'Purchases fetched successfully', $data);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch purchases', 500, $e->getMessage());
         }
@@ -51,7 +57,13 @@ class PurchaseController
             if (!$purchase) {
                 return ResponseHelper::error($response, 'Purchase not found', 404);
             }
-            return ResponseHelper::success($response, 'Purchase fetched successfully', $purchase->toArray());
+            $data = CurrencyService::convertRecord(
+                $purchase->toArray(),
+                ['subtotal', 'tax', 'shippingCost', 'totalAmount'],
+                'createdAt',
+                ['items' => ['costPrice', 'sellingPrice', 'totalPrice']]
+            );
+            return ResponseHelper::success($response, 'Purchase fetched successfully', $data);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch purchase', 500, $e->getMessage());
         }

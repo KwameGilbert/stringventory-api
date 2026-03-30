@@ -33,7 +33,8 @@ class RefundController
     {
         try {
             $refunds = Refund::with(['order', 'customer', 'creator'])->orderBy('createdAt', 'desc')->get();
-            return ResponseHelper::success($response, 'Refunds fetched successfully', $refunds->toArray());
+            $data    = CurrencyService::convertCollection($refunds->toArray(), ['refundAmount']);
+            return ResponseHelper::success($response, 'Refunds fetched successfully', $data);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch refunds', 500, $e->getMessage());
         }
@@ -49,7 +50,8 @@ class RefundController
             if (!$refund) {
                 return ResponseHelper::error($response, 'Refund record not found', 404);
             }
-            return ResponseHelper::success($response, 'Refund fetched successfully', $refund->toArray());
+            $data = CurrencyService::convertRecord($refund->toArray(), ['refundAmount']);
+            return ResponseHelper::success($response, 'Refund fetched successfully', $data);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch refund', 500, $e->getMessage());
         }
