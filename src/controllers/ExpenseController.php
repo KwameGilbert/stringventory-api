@@ -62,8 +62,8 @@ class ExpenseController
     public function create(Request $request, Response $response): Response
     {
         try {
-            $data = $request->getParsedBody();
-            
+            $data = (array)($request->getParsedBody() ?? []);
+
             // Required fields: amount, transactionDate, expenseCategoryId
             if (empty($data['amount']) || empty($data['transactionDate']) || empty($data['expenseCategoryId'])) {
                 return ResponseHelper::error($response, 'Amount, transaction date, and expense category ID are required', 400);
@@ -77,6 +77,12 @@ class ExpenseController
             // Default status to 'paid' if not provided
             if (empty($data['status'])) {
                 $data['status'] = 'paid';
+            }
+
+            // Handle evidence file upload
+            $uploadedFiles = $request->getUploadedFiles();
+            if (!empty($uploadedFiles['evidence']) && $uploadedFiles['evidence']->getError() === UPLOAD_ERR_OK) {
+                $data['evidence'] = $this->uploadService->uploadFile($uploadedFiles['evidence'], 'evidence', 'expenses');
             }
 
             // Set createdBy and currency
@@ -133,10 +139,21 @@ class ExpenseController
                 return ResponseHelper::error($response, 'Expense not found', 404);
             }
 
-            $data = $request->getParsedBody();
+            $data = (array)($request->getParsedBody() ?? []);
 
             if (isset($data['expenseCategoryId']) && !ExpenseCategory::where('id', $data['expenseCategoryId'])->exists()) {
                 return ResponseHelper::error($response, 'Provided expense category does not exist', 404);
+            }
+
+            // Handle evidence file replacement
+            $uploadedFiles = $request->getUploadedFiles();
+            if (!empty($uploadedFiles['evidence']) && $uploadedFiles['evidence']->getError() === UPLOAD_ERR_OK) {
+                $data['evidence'] = $this->uploadService->replaceFile(
+                    $uploadedFiles['evidence'],
+                    $expense->evidence,
+                    'evidence',
+                    'expenses'
+                );
             }
 
             $expense->update($data);

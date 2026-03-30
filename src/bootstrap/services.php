@@ -183,7 +183,8 @@ return function ($container) {
 
     $container->set(ExpenseController::class, function ($container) {
         return new ExpenseController(
-            $container->get(\App\Services\NotificationService::class)
+            $container->get(\App\Services\NotificationService::class),
+            $container->get(\App\Services\UploadService::class)
         );
     });
 
