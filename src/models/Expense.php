@@ -38,6 +38,8 @@ class Expense extends Model
         'reference',
     ];
 
+    protected $appends = ['paymentMethod'];
+
     protected $casts = [
         'expenseScheduleId' => 'integer',
         'expenseCategoryId' => 'integer',
@@ -49,6 +51,14 @@ class Expense extends Model
         'evidence' => 'string',
         'reference' => 'string',
     ];
+
+    public function getPaymentMethodAttribute(): ?string
+    {
+        if ($this->relationLoaded('transaction')) {
+            return $this->transaction?->paymentMethod;
+        }
+        return null;
+    }
 
     public function getCreatedByAttribute($value): string|int|null
     {
@@ -71,6 +81,11 @@ class Expense extends Model
     public function schedule()
     {
         return $this->belongsTo(ExpenseSchedule::class, 'expenseScheduleId');
+    }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'expenseId');
     }
 
     public function transactions()

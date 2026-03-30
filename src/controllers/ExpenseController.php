@@ -33,7 +33,7 @@ class ExpenseController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $expenses = Expense::with(['category', 'creator'])->orderBy('transactionDate', 'desc')->get();
+            $expenses = Expense::with(['category', 'creator', 'transaction'])->orderBy('transactionDate', 'desc')->get();
             return ResponseHelper::success($response, 'Expenses fetched successfully', $expenses->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch expenses', 500, $e->getMessage());
@@ -46,7 +46,7 @@ class ExpenseController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $expense = Expense::with(['category', 'creator'])->find($args['id']);
+            $expense = Expense::with(['category', 'creator', 'transaction'])->find($args['id']);
             if (!$expense) {
                 return ResponseHelper::error($response, 'Expense not found', 404);
             }
@@ -121,7 +121,7 @@ class ExpenseController
                 ['expenseId' => $expense->id, 'amount' => $expense->amount]
             );
 
-            return ResponseHelper::success($response, 'Expense created successfully', $expense->load('category')->toArray(), 201);
+            return ResponseHelper::success($response, 'Expense created successfully', $expense->load(['category', 'transaction'])->toArray(), 201);
         } catch (Exception $e) {
             DB::rollBack();
             return ResponseHelper::error($response, 'Failed to create expense', 500, $e->getMessage());
@@ -163,7 +163,7 @@ class ExpenseController
                 'expenseId' => $expense->id,
             ]);
 
-            return ResponseHelper::success($response, 'Expense updated successfully', $expense->load('category')->toArray());
+            return ResponseHelper::success($response, 'Expense updated successfully', $expense->load(['category', 'transaction'])->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update expense', 500, $e->getMessage());
         }
