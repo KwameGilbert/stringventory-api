@@ -150,6 +150,7 @@ class AuthController
                     'lastName' => $user->lastName,
                     'email' => $user->email,
                     'role' => $user->role,
+                    'mustChangePassword' => (bool) $user->mustChangePassword,
                 ],
                 'access_token' => $accessToken,
                 'refresh_token' => $refreshToken,
@@ -262,8 +263,8 @@ class AuthController
                 return ResponseHelper::error($response, 'New password must be at least 8 characters', 400);
             }
 
-            // Update password
-            $user->update(['passwordHash' => $data['new_password']]);
+            // Update password and clear first-login flag
+            $user->update(['passwordHash' => $data['new_password'], 'mustChangePassword' => false]);
 
             // Log event
             $this->authService->logAuditEvent($user->id, 'password_change', $this->getRequestMetadata($request));

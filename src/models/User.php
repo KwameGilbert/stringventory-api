@@ -54,6 +54,7 @@ class User extends Model
         'profileImage',
         'emailVerified',
         'lastLogin',
+        'mustChangePassword',
     ];
 
     protected $hidden = [
@@ -62,6 +63,7 @@ class User extends Model
 
     protected $casts = [
         'emailVerified' => 'boolean',
+        'mustChangePassword' => 'boolean',
         'lastLogin' => 'datetime',
         'createdAt' => 'datetime',
         'updatedAt' => 'datetime',

@@ -100,7 +100,10 @@ class UserController
             } elseif (!empty($data['password'])) {
                 $data['passwordHash'] = $data['password'];
             }
-            
+
+            // Admin-created users must change their password on first login
+            $data['mustChangePassword'] = true;
+
             $user = User::create($data);
 
             // Send verification email
