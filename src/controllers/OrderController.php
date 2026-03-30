@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use App\Models\Discount;
 use App\Models\Customer;
 use App\Models\PurchaseItem;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use App\Services\NotificationService;
 use App\Services\CurrencyService;
@@ -230,6 +231,13 @@ class OrderController
 
             DB::commit();
 
+            AuditLog::log($request, $user ? $user->id : null, 'order_created', [
+                'orderId' => $order->id,
+                'orderNumber' => $order->orderNumber,
+                'total' => $discountedTotalPrice,
+                'currency' => $currency,
+            ]);
+
             // Trigger notification for admins
             $this->notificationService->notifyAdmins(
                 'order',
@@ -287,6 +295,13 @@ class OrderController
             Transaction::where('orderId', $order->id)->update(['status' => 'cancelled']);
 
             DB::commit();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'order_cancelled', [
+                'orderId' => $order->id,
+                'orderNumber' => $order->orderNumber,
+            ]);
+
             return ResponseHelper::success($response, 'Order cancelled and stock returned successfully');
         } catch (Exception $e) {
             DB::rollBack();
@@ -329,6 +344,13 @@ class OrderController
             }
 
             $orderItem->save();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'order_item_fulfilled', [
+                'orderItemId' => $orderItem->id,
+                'orderId' => $orderItem->orderId,
+                'quantity' => $fulfillAmount,
+            ]);
 
             return ResponseHelper::success($response, "Successfully fulfilled $fulfillAmount units", $orderItem->toArray());
         } catch (Exception $e) {
@@ -430,6 +452,14 @@ class OrderController
             }
 
             DB::commit();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'order_fulfilled', [
+                'orderId' => $order->id,
+                'orderNumber' => $order->orderNumber,
+                'status' => $orderStatus,
+            ]);
+
             return ResponseHelper::success($response, 'Order fulfillment updated successfully', $order->load('items')->toArray());
         } catch (Exception $e) {
             DB::rollBack();

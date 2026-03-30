@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Inventory;
 use App\Models\PurchaseItem;
 use App\Models\OrderItem;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use App\Services\UploadService;
 use App\Services\NotificationService;
@@ -120,6 +121,13 @@ class ProductController
                 ['productId' => $product->id, 'sku' => $product->sku]
             );
 
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'product_created', [
+                'productId' => $product->id,
+                'name' => $product->name,
+                'sku' => $product->sku,
+            ]);
+
             return ResponseHelper::success($response, 'Product created successfully', $product->load('inventory')->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create product', 500, $e->getMessage());
@@ -157,6 +165,12 @@ class ProductController
 
             $product->update($data);
 
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'product_updated', [
+                'productId' => $product->id,
+                'name' => $product->name,
+            ]);
+
             return ResponseHelper::success($response, 'Product updated successfully', $product->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update product', 500, $e->getMessage());
@@ -186,7 +200,16 @@ class ProductController
 
             // Inventory will be deleted by CASCADE in DB if configured, 
             // but let's be safe and delete it here if needed or let Eloquent handle it if relation set.
+            $productId = $product->id;
+            $productName = $product->name;
             $product->delete();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'product_deleted', [
+                'productId' => $productId,
+                'name' => $productName,
+            ]);
+
             return ResponseHelper::success($response, 'Product deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete product', 500, $e->getMessage());

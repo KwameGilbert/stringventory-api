@@ -11,6 +11,7 @@ use App\Models\Inventory;
 use App\Models\Supplier;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use App\Services\NotificationService;
 use App\Services\CurrencyService;
@@ -152,6 +153,13 @@ class PurchaseController
 
             DB::commit();
 
+            AuditLog::log($request, $user ? $user->id : null, 'purchase_created', [
+                'purchaseId' => $purchase->id,
+                'purchaseNumber' => $purchase->purchaseNumber,
+                'status' => $purchase->status,
+                'total' => $purchase->totalAmount,
+            ]);
+
             // Notify admins about new purchase
             $this->notificationService->notifyAdmins(
                 'purchase_created',
@@ -209,6 +217,14 @@ class PurchaseController
             }
 
             DB::commit();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'purchase_updated', [
+                'purchaseId' => $purchase->id,
+                'purchaseNumber' => $purchase->purchaseNumber,
+                'status' => $purchase->status,
+            ]);
+
             return ResponseHelper::success($response, 'Purchase updated successfully', $purchase->toArray());
         } catch (Exception $e) {
             DB::rollBack();
@@ -305,6 +321,11 @@ class PurchaseController
 
             DB::commit();
 
+            AuditLog::log($request, $user ? $user->id : null, 'purchase_approved', [
+                'purchaseId' => $purchase->id,
+                'purchaseNumber' => $purchase->purchaseNumber,
+            ]);
+
             // Notify admins about purchase approval
             $this->notificationService->notifyAdmins(
                 'purchase_approved',
@@ -335,7 +356,16 @@ class PurchaseController
                 return ResponseHelper::error($response, 'Cannot delete a received purchase as inventory has already been modified.', 400);
             }
 
+            $purchaseId = $purchase->id;
+            $purchaseNumber = $purchase->purchaseNumber;
             $purchase->delete();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'purchase_deleted', [
+                'purchaseId' => $purchaseId,
+                'purchaseNumber' => $purchaseNumber,
+            ]);
+
             return ResponseHelper::success($response, 'Purchase deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete purchase', 500, $e->getMessage());

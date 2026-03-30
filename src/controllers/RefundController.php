@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\Inventory;
 use App\Models\OrderItem;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -130,6 +131,13 @@ class RefundController
 
             DB::commit();
 
+            AuditLog::log($request, $user ? $user->id : null, 'refund_requested', [
+                'refundId' => $refund->id,
+                'orderId' => $order->id,
+                'amount' => $refundAmount,
+                'currency' => $refund->currency,
+            ]);
+
             // Notify admins about new refund request
             $this->notificationService->notifyAdmins(
                 'refund_request',
@@ -242,7 +250,14 @@ class RefundController
 
             $refund->save();
             DB::commit();
-            
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'refund_status_updated', [
+                'refundId' => $refund->id,
+                'orderId' => $refund->orderId,
+                'status' => $refund->refundStatus,
+            ]);
+
             // Notify admins about refund status update
             $statusText = ucfirst($refund->refundStatus);
             $this->notificationService->notifyAdmins(

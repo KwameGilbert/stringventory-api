@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Models\Supplier;
 use App\Models\Product;
 use App\Models\Purchase;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use App\Services\UploadService;
 use App\Services\NotificationService;
@@ -92,6 +93,12 @@ class SupplierController
                 ['supplierId' => $supplier->id]
             );
 
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'supplier_created', [
+                'supplierId' => $supplier->id,
+                'name' => $supplier->name,
+            ]);
+
             return ResponseHelper::success($response, 'Supplier created successfully', $supplier->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create supplier', 500, $e->getMessage());
@@ -128,6 +135,13 @@ class SupplierController
             }
 
             $supplier->update($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'supplier_updated', [
+                'supplierId' => $supplier->id,
+                'name' => $supplier->name,
+            ]);
+
             return ResponseHelper::success($response, 'Supplier updated successfully', $supplier->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update supplier', 500, $e->getMessage());
@@ -155,7 +169,16 @@ class SupplierController
                 $this->uploadService->deleteFile($supplier->image);
             }
 
+            $supplierId = $supplier->id;
+            $supplierName = $supplier->name;
             $supplier->delete();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'supplier_deleted', [
+                'supplierId' => $supplierId,
+                'name' => $supplierName,
+            ]);
+
             return ResponseHelper::success($response, 'Supplier deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete supplier', 500, $e->getMessage());

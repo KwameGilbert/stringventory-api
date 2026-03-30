@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Transaction;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use App\Services\NotificationService;
 use App\Services\CurrencyService;
@@ -97,6 +98,12 @@ class ExpenseController
 
             DB::commit();
 
+            AuditLog::log($request, $user ? $user->id : null, 'expense_created', [
+                'expenseId' => $expense->id,
+                'amount' => $expense->amount,
+                'currency' => $currency,
+            ]);
+
             // Notify admins about new expense
             $this->notificationService->notifyAdmins(
                 'expense_created',
@@ -130,6 +137,12 @@ class ExpenseController
             }
 
             $expense->update($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'expense_updated', [
+                'expenseId' => $expense->id,
+            ]);
+
             return ResponseHelper::success($response, 'Expense updated successfully', $expense->load('category')->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update expense', 500, $e->getMessage());
@@ -147,7 +160,14 @@ class ExpenseController
                 return ResponseHelper::error($response, 'Expense not found', 404);
             }
 
+            $expenseId = $expense->id;
             $expense->delete();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'expense_deleted', [
+                'expenseId' => $expenseId,
+            ]);
+
             return ResponseHelper::success($response, 'Expense deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete expense', 500, $e->getMessage());

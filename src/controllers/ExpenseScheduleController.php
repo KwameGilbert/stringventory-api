@@ -7,6 +7,7 @@ namespace App\Controllers;
 use App\Models\ExpenseSchedule;
 use App\Models\ExpenseCategory;
 use App\Models\Expense;
+use App\Models\AuditLog;
 use App\Services\ExpenseService;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -75,6 +76,14 @@ class ExpenseScheduleController
             $data['isActive'] = $data['isActive'] ?? true;
 
             $schedule = ExpenseSchedule::create($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'expense_schedule_created', [
+                'scheduleId' => $schedule->id,
+                'frequency' => $schedule->frequency,
+                'amount' => $schedule->amount,
+            ]);
+
             return ResponseHelper::success($response, 'Schedule created successfully', $schedule->load('category')->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create schedule', 500, $e->getMessage());
@@ -99,6 +108,12 @@ class ExpenseScheduleController
             }
 
             $schedule->update($data);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'expense_schedule_updated', [
+                'scheduleId' => $schedule->id,
+            ]);
+
             return ResponseHelper::success($response, 'Schedule updated successfully', $schedule->load('category')->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update schedule', 500, $e->getMessage());
@@ -113,6 +128,12 @@ class ExpenseScheduleController
         try {
             $result = $this->expenseService->processScheduledExpenses();
             $count = count($result['processed']);
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'expense_schedules_processed', [
+                'processedCount' => $count,
+            ]);
+
             return ResponseHelper::success($response, "Successfully processed $count due schedules", $result);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to process schedules', 500, $e->getMessage());
@@ -136,7 +157,14 @@ class ExpenseScheduleController
                 return ResponseHelper::error($response, "Cannot delete schedule as it has $expenseCount generated expenses. Consider deactivating it instead.", 400);
             }
 
+            $scheduleId = $schedule->id;
             $schedule->delete();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'expense_schedule_deleted', [
+                'scheduleId' => $scheduleId,
+            ]);
+
             return ResponseHelper::success($response, 'Schedule deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete schedule', 500, $e->getMessage());

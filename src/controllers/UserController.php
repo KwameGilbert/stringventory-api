@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use App\Services\VerificationService;
 use App\Services\UploadService;
@@ -113,6 +114,13 @@ class UserController
                 ['userId' => $user->id, 'email' => $user->email]
             );
             
+            $requestUser = $request->getAttribute('user');
+            AuditLog::log($request, $requestUser ? $requestUser->id : null, 'user_created', [
+                'userId' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+            ]);
+
             return ResponseHelper::success($response, 'User created successfully and verification email sent', $user->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create user', 500, $e->getMessage());
@@ -170,6 +178,11 @@ class UserController
                 ['userId' => $user->id]
             );
             
+            AuditLog::log($request, $requestUser->id, 'user_updated', [
+                'userId' => $user->id,
+                'email' => $user->email,
+            ]);
+
             return ResponseHelper::success($response, 'User updated successfully', $user->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to update user', 500, $e->getMessage());
@@ -200,8 +213,13 @@ class UserController
                 $this->uploadService->deleteFile($user->profileImage);
             }
             
+            $deletedUserId = $user->id;
             $user->delete();
-            
+
+            AuditLog::log($request, $requestUser->id, 'user_deleted', [
+                'deletedUserId' => $deletedUserId,
+            ]);
+
             return ResponseHelper::success($response, 'User deleted successfully');
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to delete user', 500, $e->getMessage());

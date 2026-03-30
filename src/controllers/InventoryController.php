@@ -8,6 +8,7 @@ use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\PurchaseItem;
+use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -131,6 +132,15 @@ class InventoryController
             ]);
 
             DB::commit();
+
+            $user = $request->getAttribute('user');
+            AuditLog::log($request, $user ? $user->id : null, 'inventory_adjusted', [
+                'productId' => $product->id,
+                'productName' => $product->name,
+                'adjustment' => $adjustment,
+                'newQuantity' => $inventory->quantity,
+                'batchId' => $data['batchId'] ?? null,
+            ]);
 
             // Trigger notification for admins
             $this->notificationService->notifyAdmins(
