@@ -6,7 +6,6 @@ namespace App\Controllers;
 
 use App\Models\Transaction;
 use App\Helper\ResponseHelper;
-use App\Services\CurrencyService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exception;
@@ -16,24 +15,12 @@ class TransactionController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $transactions = Transaction::with(['order', 'expense', 'refund', 'purchase'])
-                ->orderBy('createdAt', 'desc')
-                ->get();
+            $query = Transaction::with(['order', 'expense', 'refund', 'purchase']);
 
-            // Convert each transaction to the current business currency
-            $converted = CurrencyService::convertCollection($transactions->toArray(), ['amount']);
+            $transactions = (clone $query)->orderBy('createdAt', 'desc')->get();
 
-            // Recompute summary from converted amounts so totals reflect the current currency
-            $totalInflow  = 0.0;
-            $totalOutflow = 0.0;
-            foreach ($converted as $t) {
-                $amt = (float) $t['amount'];
-                if ($amt > 0) {
-                    $totalInflow += $amt;
-                } else {
-                    $totalOutflow += $amt;
-                }
-            }
+            $totalInflow   = (float) Transaction::where('amount', '>', 0)->sum('amount');
+            $totalOutflow  = (float) Transaction::where('amount', '<', 0)->sum('amount');
             $netProfitLoss = $totalInflow + $totalOutflow;
 
             $result = [
@@ -42,7 +29,7 @@ class TransactionController
                     'totalOutflow'  => round($totalOutflow, 2),
                     'netProfitLoss' => round($netProfitLoss, 2),
                 ],
-                'transactions' => $converted,
+                'transactions' => $transactions->toArray(),
             ];
 
             return ResponseHelper::success($response, 'Transactions fetched successfully', $result);
@@ -58,8 +45,7 @@ class TransactionController
             if (!$transaction) {
                 return ResponseHelper::error($response, 'Transaction not found', 404);
             }
-            $data = CurrencyService::convertRecord($transaction->toArray(), ['amount']);
-            return ResponseHelper::success($response, 'Transaction fetched successfully', $data);
+            return ResponseHelper::success($response, 'Transaction fetched successfully', $transaction->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch transaction', 500, $e->getMessage());
         }
