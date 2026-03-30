@@ -63,6 +63,7 @@ class ExpenseController
     {
         try {
             $data = (array)($request->getParsedBody() ?? []);
+            $uploadedFiles = $request->getUploadedFiles();
 
             // Required fields: amount, transactionDate, expenseCategoryId
             if (empty($data['amount']) || empty($data['transactionDate']) || empty($data['expenseCategoryId'])) {
@@ -80,9 +81,11 @@ class ExpenseController
             }
 
             // Handle evidence file upload
-            $uploadedFiles = $request->getUploadedFiles();
-            if (!empty($uploadedFiles['evidence']) && $uploadedFiles['evidence']->getError() === UPLOAD_ERR_OK) {
-                $data['evidence'] = $this->uploadService->uploadFile($uploadedFiles['evidence'], 'evidence', 'expenses');
+            if (!empty($uploadedFiles['evidence'])) {
+                $file = $uploadedFiles['evidence'];
+                if ($file->getError() === UPLOAD_ERR_OK) {
+                    $data['evidence'] = $this->uploadService->uploadFile($file, 'evidence', 'expenses');
+                }
             }
 
             // Set createdBy and currency
@@ -140,20 +143,18 @@ class ExpenseController
             }
 
             $data = (array)($request->getParsedBody() ?? []);
+            $uploadedFiles = $request->getUploadedFiles();
 
             if (isset($data['expenseCategoryId']) && !ExpenseCategory::where('id', $data['expenseCategoryId'])->exists()) {
                 return ResponseHelper::error($response, 'Provided expense category does not exist', 404);
             }
 
             // Handle evidence file replacement
-            $uploadedFiles = $request->getUploadedFiles();
-            if (!empty($uploadedFiles['evidence']) && $uploadedFiles['evidence']->getError() === UPLOAD_ERR_OK) {
-                $data['evidence'] = $this->uploadService->replaceFile(
-                    $uploadedFiles['evidence'],
-                    $expense->evidence,
-                    'evidence',
-                    'expenses'
-                );
+            if (!empty($uploadedFiles['evidence'])) {
+                $file = $uploadedFiles['evidence'];
+                if ($file->getError() === UPLOAD_ERR_OK) {
+                    $data['evidence'] = $this->uploadService->replaceFile($file, $expense->evidence, 'evidence', 'expenses');
+                }
             }
 
             $expense->update($data);
@@ -178,6 +179,11 @@ class ExpenseController
             $expense = Expense::find($args['id']);
             if (!$expense) {
                 return ResponseHelper::error($response, 'Expense not found', 404);
+            }
+
+            // Delete associated evidence file if it exists
+            if ($expense->evidence) {
+                $this->uploadService->deleteFile($expense->evidence);
             }
 
             $expenseId = $expense->id;
