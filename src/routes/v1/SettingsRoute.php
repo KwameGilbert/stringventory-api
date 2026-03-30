@@ -23,9 +23,9 @@ return function (App $app) {
         $group->get('/api', SettingsController::class . ':getApiSettings');
         $group->post('/api/regenerate-key', SettingsController::class . ':regenerateApiKey');
 
+        $group->get('/currency/history', SettingsController::class . ':getExchangeRateHistory');
+        $group->post('/currency/fetch-rates', SettingsController::class . ':fetchExchangeRates');
         $group->get('/currency', SettingsController::class . ':getCurrencySettings');
         $group->put('/currency', SettingsController::class . ':updateCurrencySettings');
-        $group->post('/currency/fetch-rates', SettingsController::class . ':fetchExchangeRates');
-        $group->get('/currency/history', SettingsController::class . ':getExchangeRateHistory');
     })->add(AuthMiddleware::class);
 };
