@@ -11,6 +11,7 @@ use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use App\Services\NotificationService;
 use App\Services\CurrencyService;
+use App\Services\UploadService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -19,10 +20,12 @@ use Exception;
 class ExpenseController
 {
     private NotificationService $notificationService;
+    private UploadService $uploadService;
 
-    public function __construct(NotificationService $notificationService)
+    public function __construct(NotificationService $notificationService, UploadService $uploadService)
     {
         $this->notificationService = $notificationService;
+        $this->uploadService = $uploadService;
     }
     /**
      * Get all expenses

@@ -66,6 +66,17 @@ class UploadService
             'max_size' => 2 * 1024 * 1024, // 2MB
             'directory' => 'tickets',
         ],
+        'evidence' => [
+            'mimes' => [
+                'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg',
+                'application/pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            ],
+            'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx'],
+            'max_size' => 10 * 1024 * 1024, // 10MB
+            'directory' => 'evidence',
+        ],
     ];
 
     public function __construct()
