@@ -27,7 +27,7 @@ class CategoryController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $categories = Category::all();
+            $categories = Category::withCount('products')->get();
             return ResponseHelper::success($response, 'Categories fetched successfully', $categories->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch categories', 500, $e->getMessage());
@@ -40,7 +40,7 @@ class CategoryController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $category = Category::find($args['id']);
+            $category = Category::withCount('products')->find($args['id']);
             if (!$category) {
                 return ResponseHelper::error($response, 'Category not found', 404);
             }
@@ -79,6 +79,8 @@ class CategoryController
                 'name' => $category->name,
             ]);
 
+            $category->loadCount('products');
+
             return ResponseHelper::success($response, 'Category created successfully', $category->toArray(), 201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create category', 500, $e->getMessage());
@@ -114,6 +116,8 @@ class CategoryController
                 'categoryId' => $category->id,
                 'name' => $category->name,
             ]);
+
+            $category->loadCount('products');
 
             return ResponseHelper::success($response, 'Category updated successfully', $category->toArray());
         } catch (Exception $e) {

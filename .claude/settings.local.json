@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep \"\\\\.php$\")"
+      "Bash(grep \"\\\\.php$\")",
+      "Bash(composer phinx:migrate)",
+      "Bash(composer phinx:status)"
     ]
   }
 }
