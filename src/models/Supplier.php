@@ -18,13 +18,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $image
  * @property int|null $rating
  * @property \Illuminate\Support\Carbon|null $createdAt
+ * @property \Illuminate\Support\Carbon|null $updatedAt
  */
 class Supplier extends Model
 {
     protected $table = 'suppliers';
-    public $timestamps = false;
-
+    public $timestamps = true;
     const CREATED_AT = 'createdAt';
+    const UPDATED_AT = 'updatedAt';
 
     protected $fillable = [
         'name',
