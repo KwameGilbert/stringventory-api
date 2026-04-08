@@ -5,6 +5,7 @@ FROM php:8.4-apache
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     libgmp-dev \
+  curl \
     unzip \
     git \
     cron \
@@ -84,6 +85,10 @@ RUN printf '#!/bin/sh\nchown -R www-data:www-data /var/www/html/public/uploads\n
 
 # Expose port 80 for Apache
 EXPOSE 80
+
+# Health check to confirm the API responds
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -fsS http://localhost/ > /dev/null || exit 1
 
 # Start with permission fix + cron + Apache
 CMD ["/start.sh"]

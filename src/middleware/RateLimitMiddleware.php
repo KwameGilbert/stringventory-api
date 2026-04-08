@@ -182,7 +182,7 @@ class RateLimitMiddleware
     /**
      * Cleanup old rate limit files (should be run via cron)
      */
-    public static function cleanup(string $storageDir = null): void
+    public static function cleanup(?string $storageDir = null): void
     {
         $dir = $storageDir ?? (sys_get_temp_dir() . '/rate_limits');
 
