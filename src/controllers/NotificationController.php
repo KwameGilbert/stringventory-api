@@ -129,6 +129,22 @@ class NotificationController
     }
 
     /**
+     * Delete all notifications for the current user
+     */
+    public function deleteAll(Request $request, Response $response): Response
+    {
+        try {
+            $user = $request->getAttribute('user');
+
+            Notification::where('userId', $user->id)->delete();
+
+            return ResponseHelper::success($response, 'All notifications deleted successfully');
+        } catch (Exception $e) {
+            return ResponseHelper::error($response, 'Failed to delete notifications', 500, $e->getMessage());
+        }
+    }
+
+    /**
      * Save a browser push subscription for the authenticated user
      *
      * Expected body: { endpoint, expirationTime, keys: { p256dh, auth } }

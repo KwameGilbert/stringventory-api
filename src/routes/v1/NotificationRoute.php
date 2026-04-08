@@ -21,5 +21,6 @@ return function (App $app): void {
         $group->post('/{id}/read', [$notificationController, 'markAsRead']);
         $group->post('/read-all', [$notificationController, 'markAllAsRead']);
         $group->delete('/{id}', [$notificationController, 'delete']);
+        $group->delete('/delete-all', [$notificationController, 'deleteAll']);
     })->add($authMiddleware);
 };
