@@ -1,13 +1,14 @@
-# Use an official PHP Apache image with PHP 8.1
+# Use an official PHP Apache image with PHP 8.4
 FROM php:8.4-apache
 
 # Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     libzip-dev \
+    libgmp-dev \
     unzip \
     git \
     cron \
-  && docker-php-ext-install pdo pdo_mysql zip \
+  && docker-php-ext-install pdo pdo_mysql zip gmp bcmath \
   && apt-get clean
 
 # Enable Apache mod_rewrite for URL routing
