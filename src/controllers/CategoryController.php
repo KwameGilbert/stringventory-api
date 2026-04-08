@@ -40,7 +40,7 @@ class CategoryController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $category = Category::with(['products'])->withCount('products')->find($args['id']);
+            $category = Category::with(['products'])->find($args['id']);
             if (!$category) {
                 return ResponseHelper::error($response, 'Category not found', 404);
             }
