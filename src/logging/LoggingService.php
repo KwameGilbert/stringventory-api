@@ -149,7 +149,7 @@ class LoggingService
      * @param string $dateTo End date (Y-m-d format)
      * @return array
      */
-    public function getLogStats(string $dateFrom = null, string $dateTo = null): array
+    public function getLogStats(?string $dateFrom = null, ?string $dateTo = null): array
     {
         $params = [];
         $where = '';
