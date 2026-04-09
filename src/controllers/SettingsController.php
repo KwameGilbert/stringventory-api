@@ -322,13 +322,6 @@ class SettingsController
                 }
             }
 
-            $this->notificationService->notifyAdmins(
-                'settings_update',
-                'Currency Settings Updated',
-                'Business currency configuration has been updated.',
-                ['currency' => $current['currency']]
-            );
-
             return ResponseHelper::jsonResponse($response, [
                 'status'  => 'success',
                 'message' => 'Currency settings updated successfully',
