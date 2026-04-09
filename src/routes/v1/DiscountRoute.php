@@ -23,3 +23,4 @@ return function (App $app): void {
         $group->delete('/{id}', [$controller, 'delete'])->add(new RoleMiddleware($managementRoles));
     })->add($auth);
 };
+
