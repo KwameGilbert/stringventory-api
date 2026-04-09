@@ -7,6 +7,9 @@
 @templateId = 1
 @campaignId = 1
 @customerId = 1
+@firstName = John
+@businessName = Stringventory
+@name = John Doe
 
 ### 1. Get Templates
 GET {{baseUrl}}/messaging/templates
