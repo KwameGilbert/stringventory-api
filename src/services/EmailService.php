@@ -27,8 +27,8 @@ class EmailService
         // Configure SMTP
         $this->configureSMTP();
         
-        $this->fromEmail = $_ENV['MAIL_FROM_ADDRESS'] ?? 'noreply@stringventory.com';
-        $this->fromName = $_ENV['MAIL_FROM_NAME'] ?? 'Stringventory';
+        $this->fromEmail = $_ENV['EMAIL_FROM_ADDRESS'] ?? ($_ENV['MAIL_FROM_ADDRESS'] ?? 'noreply@stringventory.com');
+        $this->fromName = $_ENV['EMAIL_FROM_NAME'] ?? ($_ENV['MAIL_FROM_NAME'] ?? 'Stringventory');
         $this->templatePath = dirname(__DIR__, 2) . '/templates/email/';
     }
 
@@ -39,12 +39,12 @@ class EmailService
     {
         try {
             $this->mailer->isSMTP();
-            $this->mailer->Host = $_ENV['MAIL_HOST'] ?? 'smtp.gmail.com';
+            $this->mailer->Host = $_ENV['EMAIL_HOST'] ?? ($_ENV['MAIL_HOST'] ?? 'smtp.gmail.com');
             $this->mailer->SMTPAuth = true;
-            $this->mailer->Username = $_ENV['MAIL_USERNAME'] ?? 'eventic@gmail.com';
-            $this->mailer->Password = $_ENV['MAIL_PASSWORD'] ?? 'eventic123';
-            $this->mailer->SMTPSecure = $_ENV['MAIL_ENCRYPTION'] ?? 'tls';
-            $this->mailer->Port = (int)($_ENV['MAIL_PORT'] ?? 587);
+            $this->mailer->Username = $_ENV['EMAIL_USER'] ?? ($_ENV['MAIL_USERNAME'] ?? 'eventic@gmail.com');
+            $this->mailer->Password = $_ENV['EMAIL_PASSWORD'] ?? ($_ENV['MAIL_PASSWORD'] ?? 'eventic123');
+            $this->mailer->SMTPSecure = ($_ENV['EMAIL_ENCRYPTION'] ?? ($_ENV['MAIL_ENCRYPTION'] ?? 'tls'));
+            $this->mailer->Port = (int)($_ENV['EMAIL_PORT'] ?? ($_ENV['MAIL_PORT'] ?? 587));
             $this->mailer->CharSet = 'UTF-8';
         } catch (Exception $e) {
             error_log('SMTP configuration error: ' . $e->getMessage());
@@ -126,7 +126,7 @@ class EmailService
     {
         return [
             'app_url' => $_ENV['FRONTEND_URL'] ?? 'https://stringventory.com',
-            'support_email' => $_ENV['MAIL_FROM_ADDRESS'] ?? 'support@stringventory.com',
+            'support_email' => $_ENV['EMAIL_FROM_ADDRESS'] ?? ($_ENV['MAIL_FROM_ADDRESS'] ?? 'support@stringventory.com'),
             'year' => date('Y'),
             'social_facebook' => $_ENV['SOCIAL_FACEBOOK'] ?? '#',
             'social_twitter' => $_ENV['SOCIAL_TWITTER'] ?? '#',

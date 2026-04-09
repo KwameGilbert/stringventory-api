@@ -1,0 +1,129 @@
+### Messaging API Requests
+# This file contains HTTP requests for testing Messaging and Template endpoints.
+# Use VS Code REST Client extension to run these requests.
+
+@baseUrl = http://localhost:8000/api/v1
+@authToken = YOUR_BEARER_TOKEN_HERE
+@templateId = 1
+@campaignId = 1
+@customerId = 1
+
+### 1. Get Templates
+GET {{baseUrl}}/messaging/templates
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### 2. Create Template
+POST {{baseUrl}}/messaging/templates
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Promotional SMS",
+  "channel": "sms",
+  "subject": null,
+  "body": "Hello {{firstName}}, enjoy 10% off this week at {{businessName}}.",
+  "isActive": true
+}   
+
+### 3. Update Template
+PUT {{baseUrl}}/messaging/templates/{{templateId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Promotional Message",
+  "channel": "multi",
+  "subject": "Special Offer for {{firstName}}",
+  "body": "Hi {{name}}, we have a special offer for you this week.",
+  "isActive": true
+}
+
+### 4. Delete Template
+DELETE {{baseUrl}}/messaging/templates/{{templateId}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### 5. Send Bulk Message (Using Template)
+POST {{baseUrl}}/messaging/bulk-messages
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "recipientIds": [1, 2, 3],
+  "templateId": {{templateId}},
+  "channels": ["email", "sms"]
+}
+
+### 6. Send Bulk Message (Custom Body)
+POST {{baseUrl}}/messaging/bulk-messages
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "recipientIds": [1, 2],
+  "subject": "Stock Arrival Notice",
+  "body": "Hello {{name}}, your requested items are now available.",
+  "channels": ["email"]
+}
+
+### 7. Send Individual Message (Using Template)
+POST {{baseUrl}}/messaging/messages
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "recipientId": {{customerId}},
+  "templateId": {{templateId}},
+  "channels": ["sms"]
+}
+
+### 8. Send Individual Message (Custom Body)
+POST {{baseUrl}}/messaging/messages
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "recipientId": {{customerId}},
+  "subject": "Order Update",
+  "body": "Hi {{firstName}}, your order is ready for pickup.",
+  "channels": ["email", "sms"]
+}
+
+### 9. Get Messages History (All)
+GET {{baseUrl}}/messaging/messages?page=1&limit=10
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### 10. Get Messages History (Filter by Recipient)
+GET {{baseUrl}}/messaging/messages?page=1&limit=10&recipientId={{customerId}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### 11. Get Message Details
+GET {{baseUrl}}/messaging/messages/{{campaignId}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### Notes
+# Available placeholders in message/template body and subject:
+# - {{name}}
+# - {{firstName}}
+# - {{lastName}}
+# - {{businessName}}
+# - {{email}}
+# - {{phone}}
+#
+# Implemented channels:
+# - email
+# - sms
+#
+# Current role access for messaging routes:
+# - ceo
+# - manager

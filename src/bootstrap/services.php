@@ -43,6 +43,7 @@ use App\Controllers\TransactionController;
 use App\Controllers\AuditLogController;
 use App\Controllers\AnalyticsController;
 use App\Controllers\NotificationController;
+use App\Controllers\MessagingController;
 use App\Controllers\UnitOfMeasureController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RoleMiddleware;
@@ -53,6 +54,7 @@ use App\Services\WebPushService;
 use App\Services\TemplateEngine;
 use App\Services\CurrencyService;
 use App\Services\UploadService;
+use App\Services\MessagingService;
 use App\Logging\LoggingService;
 use App\Services\NotificationQueue;
 use App\Logging\LoggerFactory;
@@ -120,6 +122,13 @@ return function ($container) {
 
     $container->set(CurrencyService::class, function () {
         return new CurrencyService();
+    });
+
+    $container->set(MessagingService::class, function ($container) {
+        return new MessagingService(
+            $container->get(EmailService::class),
+            $container->get(SMSService::class)
+        );
     });
 
     // ==================== LOGGING SERVICES ====================
@@ -264,6 +273,12 @@ return function ($container) {
     $container->set(LoggingController::class, function ($container) {
         return new LoggingController(
             $container->get(LoggingService::class)
+        );
+    });
+
+    $container->set(MessagingController::class, function ($container) {
+        return new MessagingController(
+            $container->get(MessagingService::class)
         );
     });
     
