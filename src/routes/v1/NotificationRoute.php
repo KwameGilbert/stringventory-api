@@ -18,9 +18,9 @@ return function (App $app): void {
         $group->get('', [$notificationController, 'index']);
         $group->post('/subscribe', [$notificationController, 'subscribe']);
         $group->delete('/unsubscribe', [$notificationController, 'unsubscribe']);
-        $group->post('/{id}/read', [$notificationController, 'markAsRead']);
         $group->post('/read-all', [$notificationController, 'markAllAsRead']);
-        $group->delete('/{id}', [$notificationController, 'delete']);
         $group->delete('/delete-all', [$notificationController, 'deleteAll']);
+        $group->post('/{id}/read', [$notificationController, 'markAsRead']);
+        $group->delete('/{id}', [$notificationController, 'delete']);
     })->add($authMiddleware);
 };
