@@ -9,33 +9,41 @@ use Monolog\Processor\UidProcessor;
 use Monolog\Processor\WebProcessor;
 use Monolog\Formatter\LineFormatter;
 use Monolog\LogRecord;
+use PDO;
 
 /**
  * Logger Factory Class
- * 
+ *
  * Creates and configures Monolog loggers for the application.
+ * Supports both file and database logging.
  */
 class LoggerFactory
 {
     private string $name;
     private string $logPath;
     private $level;
+    private bool $useDatabase;
+    private ?PDO $pdo;
 
     /**
      * Constructor
-     * 
+     *
      * @param string $name Logger channel name
+     * @param bool $useDatabase Whether to enable database logging
+     * @param PDO|null $pdo Database connection for logging
      */
-    public function __construct(string $name = 'app')
+    public function __construct(string $name = 'app', bool $useDatabase = false, ?PDO $pdo = null)
     {
         $this->name = $name;
+        $this->useDatabase = $useDatabase;
+        $this->pdo = $pdo;
         $this->logPath = __DIR__ . '/../../src/logs';
 
         // Create main logs directory if it doesn't exist
         if (!file_exists($this->logPath)) {
             mkdir($this->logPath, 0777, true);
         }
-        
+
         // Create subdirectories for different log types
         $this->createLogDirectories();
 
@@ -117,6 +125,17 @@ class LoggerFactory
         // Add handlers to logger
         $logger->pushHandler($fileHandler);
         $logger->pushHandler($errorHandler);
+
+        // Add database handler if enabled
+        if ($this->useDatabase && $this->pdo) {
+            $databaseHandler = new \App\Logging\DatabaseHandler(
+                $this->pdo,
+                'logs',
+                ['request_id', 'user_id', 'ip_address', 'user_agent'],
+                $this->level
+            );
+            $logger->pushHandler($databaseHandler);
+        }
 
         return $logger;
     }

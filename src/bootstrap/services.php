@@ -48,6 +48,16 @@ use App\Middleware\AuthMiddleware;
 use App\Middleware\RoleMiddleware;
 use App\Middleware\RateLimitMiddleware;
 use App\Middleware\JsonBodyParserMiddleware;
+use App\Services\NotificationService;
+use App\Services\WebPushService;
+use App\Services\TemplateEngine;
+use App\Services\CurrencyService;
+use App\Services\UploadService;
+use App\Logging\LoggingService;
+use App\Services\NotificationQueue;
+use App\Logging\LoggerFactory;
+use App\Controllers\LoggingController;
+use App\Controllers\SettingsController;
 
 return function ($container) {
     
@@ -74,29 +84,29 @@ return function ($container) {
     });
 
     // Notification System Services
-    $container->set(\App\Services\NotificationQueue::class, function () {
-        return new \App\Services\NotificationQueue();
+    $container->set(NotificationQueue::class, function () {
+        return new NotificationQueue();
     });
 
-    $container->set(\App\Services\WebPushService::class, function () {
-        return new \App\Services\WebPushService();
+    $container->set(WebPushService::class, function () {
+        return new WebPushService();
     });
 
-    $container->set(\App\Services\TemplateEngine::class, function () {
-        return new \App\Services\TemplateEngine();
+    $container->set(TemplateEngine::class, function () {
+        return new TemplateEngine();
     });
 
-    $container->set(\App\Services\UploadService::class, function () {
-        return new \App\Services\UploadService();
+    $container->set(UploadService::class, function () {
+        return new UploadService();
     });
 
-    $container->set(\App\Services\NotificationService::class, function ($container) {
-        return new \App\Services\NotificationService(
+    $container->set(NotificationService::class, function ($container) {
+        return new NotificationService(
             $container->get(EmailService::class),
             $container->get(SMSService::class),
-            $container->get(\App\Services\NotificationQueue::class),
-            $container->get(\App\Services\TemplateEngine::class),
-            $container->get(\App\Services\WebPushService::class)
+            $container->get(NotificationQueue::class),
+            $container->get(TemplateEngine::class),
+            $container->get(WebPushService::class)
         );
     });
 
@@ -108,10 +118,23 @@ return function ($container) {
         return new ExpenseService();
     });
 
-    $container->set(\App\Services\CurrencyService::class, function () {
-        return new \App\Services\CurrencyService();
+    $container->set(CurrencyService::class, function () {
+        return new CurrencyService();
     });
-    
+
+    // ==================== LOGGING SERVICES ====================
+
+    $container->set(LoggingService::class, function ($container) {
+        $pdo = $container->get('pdo');
+        $config = [
+            'table' => 'logs',
+            'level' => \Monolog\Logger::DEBUG,
+            'file_path' => $_ENV['LOG_FILE_PATH'] ?? null,
+            'additional_fields' => ['request_id', 'user_id', 'ip_address', 'user_agent'],
+        ];
+        return new LoggingService($pdo, $config);
+    });
+
     // ==================== CONTROLLERS ====================
     
     $container->set(AuthController::class, function ($container) {
@@ -125,8 +148,8 @@ return function ($container) {
     $container->set(UserController::class, function ($container) {
         return new UserController(
             $container->get(VerificationService::class),
-            $container->get(\App\Services\UploadService::class),
-            $container->get(\App\Services\NotificationService::class)
+            $container->get(UploadService::class),
+            $container->get(NotificationService::class)
         );
     });
 
@@ -143,20 +166,20 @@ return function ($container) {
 
     $container->set(OrderController::class, function ($container) {
         return new OrderController(
-            $container->get(\App\Services\NotificationService::class)
+            $container->get(NotificationService::class)
         );
     });
 
     $container->set(CategoryController::class, function ($container) {
         return new CategoryController(
-            $container->get(\App\Services\UploadService::class)
+            $container->get(UploadService::class)
         );
     });
 
     $container->set(SupplierController::class, function ($container) {
         return new SupplierController(
-            $container->get(\App\Services\UploadService::class),
-            $container->get(\App\Services\NotificationService::class)
+            $container->get(UploadService::class),
+            $container->get(NotificationService::class)
         );
     });
 
@@ -166,14 +189,14 @@ return function ($container) {
 
     $container->set(DiscountController::class, function ($container) {
         return new DiscountController(
-            $container->get(\App\Services\NotificationService::class)
+            $container->get(NotificationService::class)
         );
     });
 
     $container->set(ProductController::class, function ($container) {
         return new ProductController(
-            $container->get(\App\Services\UploadService::class),
-            $container->get(\App\Services\NotificationService::class)
+            $container->get(UploadService::class),
+            $container->get(NotificationService::class)
         );
     });
 
@@ -183,26 +206,26 @@ return function ($container) {
 
     $container->set(ExpenseController::class, function ($container) {
         return new ExpenseController(
-            $container->get(\App\Services\NotificationService::class),
-            $container->get(\App\Services\UploadService::class)
+            $container->get(NotificationService::class),
+            $container->get(UploadService::class)
         );
     });
 
     $container->set(InventoryController::class, function ($container) {
         return new InventoryController(
-            $container->get(\App\Services\NotificationService::class)
+            $container->get(NotificationService::class)
         );
     });
 
     $container->set(RefundController::class, function ($container) {
         return new RefundController(
-            $container->get(\App\Services\NotificationService::class)
+            $container->get(NotificationService::class)
         );
     });
 
     $container->set(PurchaseController::class, function ($container) {
         return new PurchaseController(
-            $container->get(\App\Services\NotificationService::class)
+            $container->get(NotificationService::class)
         );
     });
 
@@ -222,20 +245,26 @@ return function ($container) {
         return new AnalyticsController();
     });
     
-    $container->set(\App\Controllers\SettingsController::class, function ($container) {
-        return new \App\Controllers\SettingsController(
-            $container->get(\App\Services\NotificationService::class)
+    $container->set(SettingsController::class, function ($container) {
+        return new SettingsController(
+            $container->get(NotificationService::class)
         );
     });
 
     $container->set(NotificationController::class, function ($container) {
         return new NotificationController(
-            $container->get(\App\Services\WebPushService::class)
+            $container->get(WebPushService::class)
         );
     });
 
     $container->set(UnitOfMeasureController::class, function () {
         return new UnitOfMeasureController();
+    });
+
+    $container->set(LoggingController::class, function ($container) {
+        return new LoggingController(
+            $container->get(LoggingService::class)
+        );
     });
     
     // ==================== MIDDLEWARES ====================

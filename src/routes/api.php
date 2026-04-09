@@ -40,6 +40,7 @@ return function ($app): void {
         '/v1/transactions' => ROUTE . 'v1/TransactionRoute.php',
         '/v1/audit-logs' => ROUTE . 'v1/AuditLogRoute.php',
         '/v1/notifications' => ROUTE . 'v1/NotificationRoute.php',
+        '/v1/logs' => ROUTE . 'v1/LoggingRoute.php',
         '/v1/utils' => ROUTE . 'v1/UtilsRoute.php',
     ];
 

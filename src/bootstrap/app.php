@@ -31,7 +31,9 @@ $container->set('db', $capsule);
 
 // Setup Loggers
 if (class_exists(LoggerFactory::class)) {
-    $loggerFactory = new LoggerFactory($config['name']);
+    $useDatabaseLogging = $_ENV['LOG_TO_DATABASE'] ?? false;
+    $pdo = $useDatabaseLogging ? $capsule->getConnection()->getPdo() : null;
+    $loggerFactory = new LoggerFactory($config['name'], $useDatabaseLogging, $pdo);
     $container->set('logger', $loggerFactory->getLogger());
     $container->set('httpLogger', $loggerFactory->getHttpLogger());
 }
