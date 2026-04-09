@@ -15,13 +15,15 @@ return function (App $app): void {
     $managementRoles = [User::ROLE_CEO, User::ROLE_MANAGER];
 
     $app->group('/v1/categories', function ($group) use ($controller, $managementRoles) {
-        // Public (Auth required)
-        $group->get('', [$controller, 'index']);
-        $group->get('/{id}', [$controller, 'show']);
-
         // Management only
         $group->post('', [$controller, 'create'])->add(new RoleMiddleware($managementRoles));
         $group->put('/{id}', [$controller, 'update'])->add(new RoleMiddleware($managementRoles));
         $group->delete('/{id}', [$controller, 'delete'])->add(new RoleMiddleware($managementRoles));
     })->add($auth);
+
+    // Public routes
+    $app->group('/v1/categories', function ($group) use ($controller) {
+        $group->get('', [$controller, 'index']);
+        $group->get('/{id}', [$controller, 'show']);
+    });
 };

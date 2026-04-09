@@ -87,8 +87,8 @@ RUN printf '#!/bin/sh\nchown -R www-data:www-data /var/www/html/public/uploads\n
 EXPOSE 80
 
 # Health check to confirm the API responds
-# HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-#   CMD curl -fsS http://localhost/ > /dev/null || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -fsS http://localhost/ > /dev/null || exit 1
 
 # Start with permission fix + cron + Apache
 CMD ["/start.sh"]
