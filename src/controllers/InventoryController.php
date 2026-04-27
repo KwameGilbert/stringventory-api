@@ -113,7 +113,7 @@ class InventoryController
             } elseif ($adjustment > 0) {
                 // If no batchId but it's an increase, add to the latest batch
                 $latestBatch = PurchaseItem::where('productId', $data['productId'])
-                    ->orderBy('createdAt', 'desc')
+                    ->orderBy('id', 'desc')
                     ->first();
                 if ($latestBatch) {
                     $latestBatch->remainingQuantity += $adjustment;
