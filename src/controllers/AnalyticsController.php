@@ -524,8 +524,19 @@ class AnalyticsController
                 ->get();
 
             $logs = $logsRaw->map(function ($log) {
+                $metadata = $log->metadata ?? [];
+                
+                // Transform metadata for inventory adjustments to match user example
+                if ($log->action === 'inventory_adjusted' && isset($metadata['adjustment'], $metadata['newQuantity'])) {
+                    $metadata['previousValue'] = $metadata['newQuantity'] - $metadata['adjustment'];
+                    $metadata['newValue'] = $metadata['newQuantity'];
+                    $metadata['reason'] = $metadata['reason'] ?? 'Manual adjustment';
+                    // Clean up internal fields
+                    unset($metadata['adjustment'], $metadata['newQuantity']);
+                }
+
                 return [
-                    'id' => 'log_' . strtoupper(substr(md5((string)$log->id), 0, 6)),
+                    'id' => 'log_' . str_pad((string)$log->id, 5, '0', STR_PAD_LEFT) . strtoupper(substr(md5((string)$log->id), 0, 1)),
                     'time' => $log->createdAt ? $log->createdAt->toIso8601String() : null,
                     'user' => [
                         'id' => $log->user ? 'usr_' . $log->user->id : 'usr_system',
@@ -536,7 +547,7 @@ class AnalyticsController
                     'action' => $log->getFormattedAction(),
                     'details' => $log->getDetails(),
                     'severity' => $log->getSeverity(),
-                    'metadata' => $log->metadata ?? new \stdClass()
+                    'metadata' => !empty($metadata) ? $metadata : new \stdClass()
                 ];
             });
 
@@ -554,7 +565,10 @@ class AnalyticsController
                 ]
             ];
 
-            return ResponseHelper::success($response, 'Activity logs retrieved successfully', $data);
+            return ResponseHelper::jsonResponse($response, [
+                'status' => 'success',
+                'data' => $data
+            ]);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to retrieve activity logs', 500, $e->getMessage());
         }
