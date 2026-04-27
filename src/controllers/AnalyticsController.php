@@ -12,6 +12,8 @@ use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Purchase;
+use App\Models\AuditLog;
+use App\Models\User;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -460,6 +462,101 @@ class AnalyticsController
             return ResponseHelper::success($response, 'Expense report retrieved successfully', $data);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to retrieve expense report', 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * Get Activity Logs with Summary and Pagination
+     */
+    public function getActivityLogs(Request $request, Response $response): Response
+    {
+        try {
+            $queryParams = $request->getQueryParams();
+            $page = (int)($queryParams['page'] ?? 1);
+            $limit = (int)($queryParams['limit'] ?? 10);
+            $offset = ($page - 1) * $limit;
+
+            // 1. Summary Statistics
+            $totalActions = AuditLog::count();
+            
+            // Active users in the last 30 days
+            $activeUsersCount = AuditLog::where('createdAt', '>=', Carbon::now()->subDays(30))
+                ->distinct('userId')
+                ->count('userId');
+
+            // Most active user
+            $mostActiveUserRaw = AuditLog::select('userId', DB::raw('COUNT(*) as actionCount'))
+                ->whereNotNull('userId')
+                ->groupBy('userId')
+                ->orderBy('actionCount', 'desc')
+                ->first();
+
+            $mostActiveUser = null;
+            if ($mostActiveUserRaw) {
+                $user = User::find($mostActiveUserRaw->userId);
+                if ($user) {
+                    // Find their primary module (the one they have the most logs in)
+                    $primaryModuleRaw = AuditLog::where('userId', $user->id)
+                        ->select('action', DB::raw('COUNT(*) as moduleCount'))
+                        ->groupBy('action')
+                        ->orderBy('moduleCount', 'desc')
+                        ->first();
+                    
+                    $primaryModule = 'System';
+                    if ($primaryModuleRaw) {
+                        $tempLog = new AuditLog(['action' => $primaryModuleRaw->action]);
+                        $primaryModule = $tempLog->getModule();
+                    }
+                    
+                    $mostActiveUser = [
+                        'name' => $user->firstName . ' ' . $user->lastName,
+                        'actionCount' => (int)$mostActiveUserRaw->actionCount,
+                        'primaryModule' => $primaryModule
+                    ];
+                }
+            }
+
+            // 2. Fetch Logs
+            $logsRaw = AuditLog::with('user')
+                ->orderBy('createdAt', 'desc')
+                ->offset($offset)
+                ->limit($limit)
+                ->get();
+
+            $logs = $logsRaw->map(function ($log) {
+                return [
+                    'id' => 'log_' . strtoupper(substr(md5((string)$log->id), 0, 6)),
+                    'time' => $log->createdAt ? $log->createdAt->toIso8601String() : null,
+                    'user' => [
+                        'id' => $log->user ? 'usr_' . $log->user->id : 'usr_system',
+                        'name' => $log->user ? $log->user->firstName . ' ' . $log->user->lastName : 'System',
+                        'role' => $log->user ? ucfirst($log->user->role) : 'Automated'
+                    ],
+                    'module' => $log->getModule(),
+                    'action' => $log->getFormattedAction(),
+                    'details' => $log->getDetails(),
+                    'severity' => $log->getSeverity(),
+                    'metadata' => $log->metadata ?? new \stdClass()
+                ];
+            });
+
+            $data = [
+                'summary' => [
+                    'activeUsers' => $activeUsersCount,
+                    'totalActions' => $totalActions,
+                    'mostActiveUser' => $mostActiveUser
+                ],
+                'logs' => $logs,
+                'pagination' => [
+                    'total' => $totalActions,
+                    'page' => $page,
+                    'limit' => $limit
+                ]
+            ];
+
+            return ResponseHelper::success($response, 'Activity logs retrieved successfully', $data);
+        } catch (Exception $e) {
+            return ResponseHelper::error($response, 'Failed to retrieve activity logs', 500, $e->getMessage());
         }
     }
 
