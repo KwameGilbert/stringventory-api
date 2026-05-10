@@ -5,6 +5,10 @@ Source: `src/routes/v1/SettingsRoute.php`
 Base path(s): `/v1/settings`
 Controller(s): `App\Controllers\SettingsController`
 
+## Definition
+
+Settings routes manage business, notification, payment, API, and currency settings. They are related to application configuration, exchange rates, integrations, and operational preferences.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -26,4 +30,5 @@ Controller(s): `App\Controllers\SettingsController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
