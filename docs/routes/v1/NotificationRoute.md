@@ -5,6 +5,10 @@ Source: `src/routes/v1/NotificationRoute.php`
 Base path(s): `/v1/notifications`
 Controller(s): `App\Controllers\NotificationController`
 
+## Definition
+
+Notification routes manage user notifications and push subscription actions. They are related to in-app alerts, read status, notification cleanup, and browser/device subscriptions.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -21,4 +25,5 @@ Controller(s): `App\Controllers\NotificationController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
