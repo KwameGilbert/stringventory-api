@@ -5,6 +5,10 @@ Source: `src/routes/v1/MessagingRoute.php`
 Base path(s): `/v1/messaging`
 Controller(s): `App\Controllers\MessagingController`
 
+## Definition
+
+Messaging routes handle direct and bulk messages plus messaging templates. They are related to communication workflows, message history, reusable templates, and outbound notifications.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -22,4 +26,5 @@ Controller(s): `App\Controllers\MessagingController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
