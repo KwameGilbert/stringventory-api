@@ -5,6 +5,10 @@ Source: `src/routes/v1/UserSettingRoute.php`
 Base path(s): `/v1/user-settings`
 Controller(s): `App\Controllers\UserSettingController`
 
+## Definition
+
+User setting routes manage per-user preference records. They are related to user-specific configuration, personalization, and account-level settings.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -19,4 +23,5 @@ Controller(s): `App\Controllers\UserSettingController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
