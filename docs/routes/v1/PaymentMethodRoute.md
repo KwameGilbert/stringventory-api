@@ -5,6 +5,10 @@ Source: `src/routes/v1/PaymentMethodRoute.php`
 Base path(s): `/v1/payment-methods`
 Controller(s): `App\Controllers\PaymentMethodController`
 
+## Definition
+
+Payment method routes manage stored payment method records. They are related to customer or business payment setup, transactions, subscriptions, and checkout configuration.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -19,4 +23,5 @@ Controller(s): `App\Controllers\PaymentMethodController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
