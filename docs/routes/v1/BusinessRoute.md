@@ -5,6 +5,10 @@ Source: `src/routes/v1/BusinessRoute.php`
 Base path(s): `/v1/businesses`
 Controller(s): `App\Controllers\BusinessController`
 
+## Definition
+
+Business routes manage business records in the system. They are related to tenant or company-level setup data used by users, subscriptions, settings, and operational configuration.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -19,4 +23,5 @@ Controller(s): `App\Controllers\BusinessController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
