@@ -5,6 +5,10 @@ Source: `src/routes/v1/ExpenseCategoryRoute.php`
 Base path(s): `/v1/expense-categories`
 Controller(s): `App\Controllers\ExpenseCategoryController`
 
+## Definition
+
+Expense category routes manage categories used to classify business expenses. They are related to expense tracking, accounting summaries, and financial reports.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -19,4 +23,5 @@ Controller(s): `App\Controllers\ExpenseCategoryController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
