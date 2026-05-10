@@ -5,6 +5,10 @@ Source: `src/routes/v1/OrderItemRoute.php`
 Base path(s): `/v1/order-items`
 Controller(s): `App\Controllers\OrderItemController`
 
+## Definition
+
+Order item routes manage individual line items on orders. They are related to products sold, quantities, pricing details, fulfillment, and order composition.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -19,4 +23,5 @@ Controller(s): `App\Controllers\OrderItemController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
