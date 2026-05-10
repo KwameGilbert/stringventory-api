@@ -5,6 +5,10 @@ Source: `src/routes/v1/OrderRoute.php`
 Base path(s): `/v1/orders`
 Controller(s): `App\Controllers\OrderController`
 
+## Definition
+
+Order routes manage customer orders and fulfillment lifecycle actions. They are related to sales, customers, inventory deduction, order cancellation, item fulfillment, and complete order fulfillment.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -20,4 +24,5 @@ Controller(s): `App\Controllers\OrderController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
