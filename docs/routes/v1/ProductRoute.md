@@ -5,6 +5,10 @@ Source: `src/routes/v1/ProductRoute.php`
 Base path(s): `/v1/products`
 Controller(s): `App\Controllers\ProductController`
 
+## Definition
+
+Product routes manage product catalog records. They are related to categories, suppliers, units of measure, inventory levels, low-stock checks, expiry checks, purchases, and orders.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -21,4 +25,5 @@ Controller(s): `App\Controllers\ProductController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
