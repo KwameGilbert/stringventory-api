@@ -5,6 +5,10 @@ Source: `src/routes/v1/ExchangeRateHistoryRoute.php`
 Base path(s): `/v1/exchange-rate-histories`
 Controller(s): `App\Controllers\ExchangeRateHistoryController`
 
+## Definition
+
+Exchange rate history routes manage stored currency conversion history. They are related to currency settings, financial reporting, and exchange-rate audit trails.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -19,4 +23,5 @@ Controller(s): `App\Controllers\ExchangeRateHistoryController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
