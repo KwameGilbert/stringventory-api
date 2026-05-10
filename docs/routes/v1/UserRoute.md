@@ -5,6 +5,10 @@ Source: `src/routes/v1/UserRoute.php`
 Base path(s): `/v1/users`
 Controller(s): `App\Controllers\UserController`
 
+## Definition
+
+User routes manage application user accounts. They are related to staff access, roles, profiles, account status, and user administration.
+
 ## Endpoints
 
 | Method | Path | Controller action | Access | Description |
@@ -19,4 +23,5 @@ Controller(s): `App\Controllers\UserController`
 
 - Authentication and role requirements are derived from route middleware declarations in the route file.
 - Request and response payloads should be verified against the controller implementation and model validation rules before publishing as an external API contract.
+
 
