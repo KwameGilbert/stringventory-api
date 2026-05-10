@@ -4,6 +4,10 @@ Source: ``src/routes/api.php``
 
 This file maps request prefixes to versioned route files. More specific prefixes should be listed before broader prefixes.
 
+## Definition
+
+The API route registry maps incoming request prefixes to their versioned route files. It is related to API bootstrapping and determines which route definitions are loaded for each request path.
+
 | Prefix | Route file |
 | --- | --- |
 | `/v1/auth` | `src/routes/v1/AuthRoute.php` |
@@ -44,4 +48,5 @@ This file maps request prefixes to versioned route files. More specific prefixes
 | `/v1/messaging-templates` | `src/routes/v1/MessagingTemplateRoute.php` |
 | `/v1/messaging` | `src/routes/v1/MessagingRoute.php` |
 | `/v1/user-settings` | `src/routes/v1/UserSettingRoute.php` |
+
 
