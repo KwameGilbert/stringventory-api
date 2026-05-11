@@ -41,6 +41,8 @@ use App\Controllers\ExpenseScheduleController;
 use App\Controllers\TransactionController;
 use App\Controllers\AuditLogController;
 use App\Controllers\AnalyticsController;
+use App\Controllers\AdminController;
+use App\Controllers\UtilsController;
 use App\Controllers\NotificationController;
 use App\Controllers\MessagingController;
 use App\Controllers\UnitOfMeasureController;
@@ -261,6 +263,14 @@ return function ($container) {
 
     $container->set(AnalyticsController::class, function () {
         return new AnalyticsController();
+    });
+
+    $container->set(AdminController::class, function () {
+        return new AdminController();
+    });
+
+    $container->set(UtilsController::class, function () {
+        return new UtilsController();
     });
     
     $container->set(SettingsController::class, function ($container) {
