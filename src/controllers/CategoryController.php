@@ -69,6 +69,8 @@ class CategoryController
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $data['image'] = $this->uploadService->uploadFile($file, 'image', 'categories');
                 }
+            } elseif (UploadService::isBase64DataUri($data['image'] ?? null)) {
+                $data['image'] = $this->uploadService->uploadBase64File($data['image'], 'image', 'categories');
             }
 
             $category = Category::create($data);
@@ -107,6 +109,8 @@ class CategoryController
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $data['image'] = $this->uploadService->replaceFile($file, $category->image, 'image', 'categories');
                 }
+            } elseif (UploadService::isBase64DataUri($data['image'] ?? null)) {
+                $data['image'] = $this->uploadService->replaceBase64File($data['image'], $category->image, 'image', 'categories');
             }
 
             $category->update($data);

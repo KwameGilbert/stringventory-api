@@ -6,7 +6,9 @@
       "Bash(composer phinx:status)",
       "Bash(git check-ignore *)",
       "Bash(php -l \"src/bootstrap/middleware.php\")",
-      "Bash(php -l \"src/helpers/ErrorHandler.php\")"
+      "Bash(php -l \"src/helpers/ErrorHandler.php\")",
+      "Bash(php -l \"src/services/UploadService.php\")",
+      "Bash(php \"C:\\\\Users\\\\kwame\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-kwame-code-stringventory-api\\\\06452f57-0358-422d-ba5d-a7a6d3bd9571\\\\scratchpad\\\\base64_upload_test.php\")"
     ]
   }
 }

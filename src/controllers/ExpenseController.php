@@ -86,6 +86,8 @@ class ExpenseController
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $data['evidence'] = $this->uploadService->uploadFile($file, 'evidence', 'expenses');
                 }
+            } elseif (UploadService::isBase64DataUri($data['evidence'] ?? null)) {
+                $data['evidence'] = $this->uploadService->uploadBase64File($data['evidence'], 'evidence', 'expenses');
             }
 
             // Set createdBy and currency
@@ -155,6 +157,8 @@ class ExpenseController
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $data['evidence'] = $this->uploadService->replaceFile($file, $expense->evidence, 'evidence', 'expenses');
                 }
+            } elseif (UploadService::isBase64DataUri($data['evidence'] ?? null)) {
+                $data['evidence'] = $this->uploadService->replaceBase64File($data['evidence'], $expense->evidence, 'evidence', 'expenses');
             }
 
             $expense->update($data);

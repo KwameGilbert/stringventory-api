@@ -91,6 +91,8 @@ class ProductController
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $data['image'] = $this->uploadService->uploadFile($file, 'image', 'products');
                 }
+            } elseif (UploadService::isBase64DataUri($data['image'] ?? null)) {
+                $data['image'] = $this->uploadService->uploadBase64File($data['image'], 'image', 'products');
             }
 
             // Create product
@@ -161,6 +163,8 @@ class ProductController
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $data['image'] = $this->uploadService->replaceFile($file, $product->image, 'image', 'products');
                 }
+            } elseif (UploadService::isBase64DataUri($data['image'] ?? null)) {
+                $data['image'] = $this->uploadService->replaceBase64File($data['image'], $product->image, 'image', 'products');
             }
 
             $product->update($data);

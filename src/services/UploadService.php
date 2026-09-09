@@ -30,12 +30,6 @@ class UploadService
             'max_size' => 5 * 1024 * 1024, // 5MB
             'directory' => 'images',
         ],
-        'banner' => [
-            'mimes' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'],
-            'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-            'max_size' => 10 * 1024 * 1024, // 10MB
-            'directory' => 'banners',
-        ],
         'document' => [
             'mimes' => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
             'extensions' => ['pdf', 'doc', 'docx'],
@@ -54,18 +48,6 @@ class UploadService
             'max_size' => 2 * 1024 * 1024, // 2MB
             'directory' => 'avatars',
         ],
-        'nominee' => [
-            'mimes' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'],
-            'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-            'max_size' => 2 * 1024 * 1024, // 2MB
-            'directory' => 'nominees',
-        ],
-        'ticket' => [
-            'mimes' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'],
-            'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'webp'],
-            'max_size' => 2 * 1024 * 1024, // 2MB
-            'directory' => 'tickets',
-        ],
         'evidence' => [
             'mimes' => [
                 'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg',
@@ -77,6 +59,25 @@ class UploadService
             'max_size' => 10 * 1024 * 1024, // 10MB
             'directory' => 'evidence',
         ],
+    ];
+
+    /**
+     * MIME type to file extension map, used for base64 uploads where
+     * there's no client-supplied filename to derive an extension from
+     */
+    private const BASE64_MIME_EXTENSIONS = [
+        'image/jpeg' => 'jpg',
+        'image/jpg' => 'jpg',
+        'image/png' => 'png',
+        'image/gif' => 'gif',
+        'image/webp' => 'webp',
+        'application/pdf' => 'pdf',
+        'application/msword' => 'doc',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+        'video/mp4' => 'mp4',
+        'video/mpeg' => 'mpeg',
+        'video/quicktime' => 'mov',
+        'video/x-msvideo' => 'avi',
     ];
 
     public function __construct()
@@ -122,7 +123,137 @@ class UploadService
             throw new Exception("File size must be less than {$maxSizeMB}MB");
         }
 
-        // Create upload directory
+        // Generate unique filename
+        $extension = $this->getFileExtension($file->getClientFilename());
+        if (!in_array($extension, $config['extensions'])) {
+            throw new Exception("Invalid file extension. Allowed: " . implode(', ', $config['extensions']));
+        }
+
+        $uploadDir = $this->resolveUploadDirectory($config, $subDirectory);
+        $filename = $this->generateUniqueFilename($type, $extension);
+        $filepath = $uploadDir . '/' . $filename;
+
+        // Move uploaded file
+        try {
+            $file->moveTo($filepath);
+        } catch (Exception $e) {
+            throw new Exception("Failed to save file: " . $e->getMessage());
+        }
+
+        return $this->buildFileUrl($config, $subDirectory, $filename);
+    }
+
+    /**
+     * Upload a file supplied as a base64 data URI
+     * (e.g. "data:image/png;base64,iVBORw0KGgo...")
+     *
+     * @param string $base64String
+     * @param string $type Type of file (image, document, video, avatar, evidence)
+     * @param string|null $subDirectory Optional subdirectory (e.g., 'categories', 'products')
+     * @return string Full URL to uploaded file
+     * @throws Exception
+     */
+    public function uploadBase64File(
+        string $base64String,
+        string $type = 'image',
+        ?string $subDirectory = null
+    ): string {
+        [$mimeType, $binaryData] = $this->decodeBase64DataUri($base64String);
+
+        // Validate file type
+        if (!isset($this->fileTypes[$type])) {
+            throw new Exception("Invalid file type: {$type}");
+        }
+
+        $config = $this->fileTypes[$type];
+
+        // Validate MIME type
+        if (!in_array($mimeType, $config['mimes'])) {
+            throw new Exception("Invalid file format. Allowed: " . implode(', ', $config['extensions']));
+        }
+
+        // Validate file size
+        if (strlen($binaryData) > $config['max_size']) {
+            $maxSizeMB = $config['max_size'] / (1024 * 1024);
+            throw new Exception("File size must be less than {$maxSizeMB}MB");
+        }
+
+        // Derive extension from the declared MIME type (no client filename to go on)
+        $extension = self::BASE64_MIME_EXTENSIONS[$mimeType] ?? null;
+        if ($extension === null || !in_array($extension, $config['extensions'])) {
+            throw new Exception("Invalid file extension. Allowed: " . implode(', ', $config['extensions']));
+        }
+
+        $uploadDir = $this->resolveUploadDirectory($config, $subDirectory);
+        $filename = $this->generateUniqueFilename($type, $extension);
+        $filepath = $uploadDir . '/' . $filename;
+
+        if (file_put_contents($filepath, $binaryData) === false) {
+            throw new Exception("Failed to save file");
+        }
+
+        return $this->buildFileUrl($config, $subDirectory, $filename);
+    }
+
+    /**
+     * Replace an old file with a new one supplied as a base64 data URI
+     *
+     * @param string $newBase64String
+     * @param string|null $oldFilePath
+     * @param string $type
+     * @param string|null $subDirectory
+     * @return string New file URL
+     */
+    public function replaceBase64File(
+        string $newBase64String,
+        ?string $oldFilePath,
+        string $type = 'image',
+        ?string $subDirectory = null
+    ): string {
+        $newFilePath = $this->uploadBase64File($newBase64String, $type, $subDirectory);
+
+        if ($oldFilePath) {
+            $this->deleteFile($oldFilePath);
+        }
+
+        return $newFilePath;
+    }
+
+    /**
+     * Whether a value looks like a base64 data URI (e.g. "data:image/png;base64,...")
+     *
+     * @param mixed $value
+     */
+    public static function isBase64DataUri($value): bool
+    {
+        return is_string($value) && preg_match('#^data:[-\w.]+/[-\w.+]+;base64,#', $value) === 1;
+    }
+
+    /**
+     * Parse and decode a base64 data URI
+     *
+     * @return array{0: string, 1: string} [mimeType, decoded binary data]
+     * @throws Exception
+     */
+    private function decodeBase64DataUri(string $dataUri): array
+    {
+        if (!preg_match('#^data:([-\w.]+/[-\w.+]+);base64,(.+)$#s', $dataUri, $matches)) {
+            throw new Exception('Invalid base64 file data');
+        }
+
+        $binaryData = base64_decode($matches[2], true);
+        if ($binaryData === false) {
+            throw new Exception('Invalid base64 file data');
+        }
+
+        return [$matches[1], $binaryData];
+    }
+
+    /**
+     * Resolve (and create if needed) the upload directory for a file type + subdirectory
+     */
+    private function resolveUploadDirectory(array $config, ?string $subDirectory): string
+    {
         $uploadDir = $this->uploadBaseDir . '/' . $config['directory'];
         if ($subDirectory) {
             $uploadDir .= '/' . $subDirectory;
@@ -134,33 +265,22 @@ class UploadService
             }
         }
 
-        // Generate unique filename
-        $extension = $this->getFileExtension($file->getClientFilename());
-        if (!in_array($extension, $config['extensions'])) {
-            throw new Exception("Invalid file extension. Allowed: " . implode(', ', $config['extensions']));
-        }
+        return $uploadDir;
+    }
 
-        $filename = $this->generateUniqueFilename($type, $extension);
-        $filepath = $uploadDir . '/' . $filename;
-
-        // Move uploaded file
-        try {
-            $file->moveTo($filepath);
-        } catch (Exception $e) {
-            throw new Exception("Failed to save file: " . $e->getMessage());
-        }
-
-        // Build relative path
+    /**
+     * Build the full public URL for an uploaded file
+     */
+    private function buildFileUrl(array $config, ?string $subDirectory, string $filename): string
+    {
         $relativePath = '/uploads/' . $config['directory'];
         if ($subDirectory) {
             $relativePath .= '/' . $subDirectory;
         }
         $relativePath .= '/' . $filename;
 
-        // Get base URL from environment
         $baseUrl = rtrim($_ENV['APP_URL'] ?? getenv('APP_URL') ?: 'http://localhost:8000', '/');
-        
-        // Return full URL
+
         return $baseUrl . $relativePath;
     }
 

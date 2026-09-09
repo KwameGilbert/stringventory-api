@@ -1,0 +1,1399 @@
+[09-Sep-2026 12:42:23 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:42:23 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:42:25 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:42:25 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:48:38 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:48:38 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:51:23 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:51:23 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:51:23 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:51:23 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:52:51 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:52:51 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:52:52 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:52:52 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:54:13 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:54:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 12:57:34 UTC] PHP Fatal error:  Uncaught DI\Definition\Exception\InvalidDefinition: Entry "pdo" cannot be resolved: Parameter $dsn of __construct() has no value defined or guessable
+Full definition:
+Object (
+    class = pdo
+    lazy = false
+    __construct(
+        $dsn = #UNDEFINED#
+        $username = (default value) NULL
+        $password = (default value) NULL
+        $options = (default value) NULL
+    )
+) in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php:19
+Stack trace:
+#0 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(135): DI\Definition\Exception\InvalidDefinition::create()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(55): DI\Definition\Resolver\ObjectCreator->createInstance()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\ObjectCreator->resolve()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#5 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(137): DI\Container->get()
+#6 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:136}()
+#7 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#12 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(275): DI\Container->get()
+#13 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:273}()
+#14 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#15 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#16 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#17 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#18 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#19 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#20 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#21 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#22 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#23 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#24 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php on line 19
+[09-Sep-2026 12:57:36 UTC] PHP Fatal error:  Uncaught DI\Definition\Exception\InvalidDefinition: Entry "pdo" cannot be resolved: Parameter $dsn of __construct() has no value defined or guessable
+Full definition:
+Object (
+    class = pdo
+    lazy = false
+    __construct(
+        $dsn = #UNDEFINED#
+        $username = (default value) NULL
+        $password = (default value) NULL
+        $options = (default value) NULL
+    )
+) in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php:19
+Stack trace:
+#0 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(135): DI\Definition\Exception\InvalidDefinition::create()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(55): DI\Definition\Resolver\ObjectCreator->createInstance()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\ObjectCreator->resolve()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#5 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(137): DI\Container->get()
+#6 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:136}()
+#7 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#12 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(275): DI\Container->get()
+#13 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:273}()
+#14 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#15 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#16 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#17 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#18 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#19 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#20 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#21 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#22 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#23 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#24 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php on line 19
+[09-Sep-2026 13:02:25 UTC] PHP Fatal error:  Uncaught DI\Definition\Exception\InvalidDefinition: Entry "pdo" cannot be resolved: Parameter $dsn of __construct() has no value defined or guessable
+Full definition:
+Object (
+    class = pdo
+    lazy = false
+    __construct(
+        $dsn = #UNDEFINED#
+        $username = (default value) NULL
+        $password = (default value) NULL
+        $options = (default value) NULL
+    )
+) in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php:19
+Stack trace:
+#0 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(135): DI\Definition\Exception\InvalidDefinition::create()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(55): DI\Definition\Resolver\ObjectCreator->createInstance()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\ObjectCreator->resolve()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#5 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(137): DI\Container->get()
+#6 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:136}()
+#7 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#12 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(275): DI\Container->get()
+#13 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:273}()
+#14 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#15 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#16 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#17 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#18 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#19 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#20 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#21 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#22 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#23 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#24 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php on line 19
+[09-Sep-2026 13:15:37 UTC] PHP Fatal error:  Uncaught DI\Definition\Exception\InvalidDefinition: Entry "pdo" cannot be resolved: Parameter $dsn of __construct() has no value defined or guessable
+Full definition:
+Object (
+    class = pdo
+    lazy = false
+    __construct(
+        $dsn = #UNDEFINED#
+        $username = (default value) NULL
+        $password = (default value) NULL
+        $options = (default value) NULL
+    )
+) in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php:19
+Stack trace:
+#0 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(135): DI\Definition\Exception\InvalidDefinition::create()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(55): DI\Definition\Resolver\ObjectCreator->createInstance()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\ObjectCreator->resolve()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#5 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(137): DI\Container->get()
+#6 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:136}()
+#7 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#12 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(275): DI\Container->get()
+#13 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:273}()
+#14 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#15 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#16 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#17 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#18 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#19 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#20 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#21 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#22 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#23 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#24 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php on line 19
+[09-Sep-2026 13:39:28 UTC] PHP Fatal error:  Uncaught DI\Definition\Exception\InvalidDefinition: Entry "pdo" cannot be resolved: Parameter $dsn of __construct() has no value defined or guessable
+Full definition:
+Object (
+    class = pdo
+    lazy = false
+    __construct(
+        $dsn = #UNDEFINED#
+        $username = (default value) NULL
+        $password = (default value) NULL
+        $options = (default value) NULL
+    )
+) in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php:19
+Stack trace:
+#0 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(135): DI\Definition\Exception\InvalidDefinition::create()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(55): DI\Definition\Resolver\ObjectCreator->createInstance()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\ObjectCreator->resolve()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#5 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(137): DI\Container->get()
+#6 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:136}()
+#7 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#12 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(275): DI\Container->get()
+#13 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:273}()
+#14 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#15 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#16 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#17 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#18 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#19 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#20 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#21 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#22 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#23 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#24 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php on line 19
+[09-Sep-2026 13:39:32 UTC] PHP Fatal error:  Uncaught DI\Definition\Exception\InvalidDefinition: Entry "pdo" cannot be resolved: Parameter $dsn of __construct() has no value defined or guessable
+Full definition:
+Object (
+    class = pdo
+    lazy = false
+    __construct(
+        $dsn = #UNDEFINED#
+        $username = (default value) NULL
+        $password = (default value) NULL
+        $options = (default value) NULL
+    )
+) in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php:19
+Stack trace:
+#0 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(135): DI\Definition\Exception\InvalidDefinition::create()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(55): DI\Definition\Resolver\ObjectCreator->createInstance()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\ObjectCreator->resolve()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#5 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(137): DI\Container->get()
+#6 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:136}()
+#7 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#12 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(275): DI\Container->get()
+#13 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:273}()
+#14 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#15 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#16 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#17 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#18 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#19 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#20 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#21 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#22 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#23 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#24 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php on line 19
+[09-Sep-2026 13:39:35 UTC] PHP Fatal error:  Uncaught DI\Definition\Exception\InvalidDefinition: Entry "pdo" cannot be resolved: Parameter $dsn of __construct() has no value defined or guessable
+Full definition:
+Object (
+    class = pdo
+    lazy = false
+    __construct(
+        $dsn = #UNDEFINED#
+        $username = (default value) NULL
+        $password = (default value) NULL
+        $options = (default value) NULL
+    )
+) in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php:19
+Stack trace:
+#0 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(135): DI\Definition\Exception\InvalidDefinition::create()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(55): DI\Definition\Resolver\ObjectCreator->createInstance()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\ObjectCreator->resolve()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#5 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(137): DI\Container->get()
+#6 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:136}()
+#7 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#12 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(275): DI\Container->get()
+#13 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:273}()
+#14 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#15 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#16 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#17 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#18 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#19 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#20 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#21 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#22 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#23 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#24 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php on line 19
+[09-Sep-2026 13:42:27 UTC] PHP Fatal error:  Uncaught DI\Definition\Exception\InvalidDefinition: Entry "pdo" cannot be resolved: Parameter $dsn of __construct() has no value defined or guessable
+Full definition:
+Object (
+    class = pdo
+    lazy = false
+    __construct(
+        $dsn = #UNDEFINED#
+        $username = (default value) NULL
+        $password = (default value) NULL
+        $options = (default value) NULL
+    )
+) in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php:19
+Stack trace:
+#0 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(135): DI\Definition\Exception\InvalidDefinition::create()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ObjectCreator.php(55): DI\Definition\Resolver\ObjectCreator->createInstance()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\ObjectCreator->resolve()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#5 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(137): DI\Container->get()
+#6 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:136}()
+#7 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#12 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(275): DI\Container->get()
+#13 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:64}:273}()
+#14 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#15 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#16 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#17 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#18 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#19 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#20 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#21 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#22 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#23 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#24 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Exception/InvalidDefinition.php on line 19
+[09-Sep-2026 13:47:28 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 13:47:28 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 13:47:30 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 13:47:30 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 13:49:53 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 13:49:53 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 13:50:02 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 13:50:02 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 14:14:00 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 14:14:00 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 14:14:44 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 14:14:44 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 14:14:46 UTC] PHP Warning:  require_once(/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 14:14:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/strizrjm/api.pinnexventures.com/src/config/../../vendor/autoload.php' (include_path='.:/opt/alt/php85/usr/share/pear:/opt/alt/php85/usr/share/php:/usr/share/pear:/usr/share/php') in /home/strizrjm/api.pinnexventures.com/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/public/index.php on line 13
+[09-Sep-2026 14:16:07 UTC] PHP Fatal error:  Uncaught Error: Class "App\Helper\ErrorHandler" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/middleware.php:31
+Stack trace:
+#0 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(59): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/middleware.php:14}()
+#1 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#2 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/middleware.php on line 31
+[09-Sep-2026 14:16:09 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 14:19:53 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 14:21:10 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 14:21:25 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 14:43:07 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 14:58:31 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 14:58:31 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 14:58:31 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 15:01:54 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 15:04:30 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 15:06:03 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:06:03 UTC] Request URI: /v1/settings/notifications
+[09-Sep-2026 15:06:03 UTC] Auth Header Present: No
+[09-Sep-2026 15:06:03 UTC] Auth Error: No Authorization header
+[09-Sep-2026 15:08:43 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:151
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:143}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(282): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:280}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 151
+[09-Sep-2026 15:13:08 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:13:08 UTC] Request URI: /v1/settings/notifications
+[09-Sep-2026 15:13:08 UTC] Auth Header Present: No
+[09-Sep-2026 15:13:08 UTC] Auth Error: No Authorization header
+[09-Sep-2026 15:39:01 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:39:05 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:39:08 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:39:32 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:43:43 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:43:46 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:43:48 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:43:48 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:43:49 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:43:49 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:43:50 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:43:50 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:43:50 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:43:59 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:46:52 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:47:09 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:47:09 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:09 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:09 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:09 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:09 UTC] Decoded type: object
+[09-Sep-2026 15:47:09 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:09 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:09 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:09 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:09 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:09 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:09 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:47:09 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:09 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:09 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:09 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:09 UTC] Decoded type: object
+[09-Sep-2026 15:47:09 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:09 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:09 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:09 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:09 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:09 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:09 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] Request URI: /v1/products/low-stock
+[09-Sep-2026 15:47:09 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:09 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:09 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:09 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:09 UTC] Decoded type: object
+[09-Sep-2026 15:47:09 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:09 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:09 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:09 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:09 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:09 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:09 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] Request URI: /v1/products/expiring
+[09-Sep-2026 15:47:09 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:09 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:09 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:09 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:09 UTC] Decoded type: object
+[09-Sep-2026 15:47:09 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:09 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:09 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:09 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:09 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:09 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:09 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] Request URI: /v1/analytics/dashboard
+[09-Sep-2026 15:47:09 UTC] Request URI: /v1/orders
+[09-Sep-2026 15:47:09 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:09 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:09 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:09 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:09 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:09 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:09 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:09 UTC] Decoded type: object
+[09-Sep-2026 15:47:09 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:09 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:09 UTC] Decoded type: object
+[09-Sep-2026 15:47:09 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:09 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:09 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:09 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:09 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:09 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:09 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:09 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:09 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:09 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:09 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:09 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] Request URI: /v1/products/expiring
+[09-Sep-2026 15:47:09 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:09 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:09 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:09 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:09 UTC] Decoded type: object
+[09-Sep-2026 15:47:09 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:09 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:09 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:09 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:09 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:09 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:09 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] Request URI: /v1/analytics/customer-report
+[09-Sep-2026 15:47:09 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:09 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:09 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:09 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:09 UTC] Decoded type: object
+[09-Sep-2026 15:47:09 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:09 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:09 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:09 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:09 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:09 UTC] Request URI: /v1/analytics/sales-report
+[09-Sep-2026 15:47:09 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:09 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:09 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:09 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:09 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:09 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:09 UTC] Decoded type: object
+[09-Sep-2026 15:47:09 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:09 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:09 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:09 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:09 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:09 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:09 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:21 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:21 UTC] Request URI: /v1/suppliers
+[09-Sep-2026 15:47:21 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:21 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:21 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:21 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:21 UTC] Decoded type: object
+[09-Sep-2026 15:47:21 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:21 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:21 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:21 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:21 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:21 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:21 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:21 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:21 UTC] Request URI: /v1/inventory
+[09-Sep-2026 15:47:21 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:21 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:21 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:21 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:21 UTC] Decoded type: object
+[09-Sep-2026 15:47:21 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:21 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:21 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:21 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:21 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:21 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:21 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:24 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:24 UTC] Request URI: /v1/suppliers
+[09-Sep-2026 15:47:24 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:24 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:24 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:24 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:24 UTC] Decoded type: object
+[09-Sep-2026 15:47:24 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:24 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:24 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:24 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:24 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:24 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:24 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:24 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:24 UTC] Request URI: /v1/products
+[09-Sep-2026 15:47:24 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:24 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:24 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:24 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:24 UTC] Decoded type: object
+[09-Sep-2026 15:47:24 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:24 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:24 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:24 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:24 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:24 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:24 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:47:29 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:47:29 UTC] Request URI: /v1/users
+[09-Sep-2026 15:47:29 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:47:29 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:47:29 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:47:29 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:47:29 UTC] Decoded type: object
+[09-Sep-2026 15:47:29 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:47:29 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:47:29 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:47:29 UTC] decoded->data->id: 1
+[09-Sep-2026 15:47:29 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:47:29 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:47:29 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:48:09 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:48:09 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:48:09 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:48:09 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:48:09 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:48:09 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:48:09 UTC] Decoded type: object
+[09-Sep-2026 15:48:09 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:48:09 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:48:09 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:48:09 UTC] decoded->data->id: 1
+[09-Sep-2026 15:48:09 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:48:09 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:48:09 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:48:19 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:48:19 UTC] Request URI: /v1/suppliers
+[09-Sep-2026 15:48:19 UTC] Auth Header Present: No
+[09-Sep-2026 15:48:19 UTC] Auth Error: No Authorization header
+[09-Sep-2026 15:48:25 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:49:10 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:49:10 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:49:10 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:49:10 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:49:10 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:49:10 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:49:10 UTC] Decoded type: object
+[09-Sep-2026 15:49:10 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:49:10 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:49:10 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:49:10 UTC] decoded->data->id: 1
+[09-Sep-2026 15:49:10 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:49:10 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:49:10 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:50:10 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:50:10 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:50:10 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:50:10 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:50:10 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:50:10 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:50:10 UTC] Decoded type: object
+[09-Sep-2026 15:50:10 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:50:10 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:50:10 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:50:10 UTC] decoded->data->id: 1
+[09-Sep-2026 15:50:10 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:50:10 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:50:10 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:51:10 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:51:10 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:51:10 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:51:10 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:51:10 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:51:10 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:51:10 UTC] Decoded type: object
+[09-Sep-2026 15:51:10 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:51:10 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:51:10 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:51:10 UTC] decoded->data->id: 1
+[09-Sep-2026 15:51:10 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:51:10 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:51:10 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:51:40 UTC] PHP Fatal error:  Uncaught Error: Class "App\Logging\LoggingService" not found in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:150
+Stack trace:
+#0 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:142}()
+#1 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#2 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#3 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#4 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#5 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#6 /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php(281): DI\Container->get()
+#7 [internal function]: {closure:{closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php:65}:279}()
+#8 /home/strizrjm/api.pinnexventures.com/vendor/php-di/invoker/src/Invoker.php(74): call_user_func_array()
+#9 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/FactoryResolver.php(69): Invoker\Invoker->call()
+#10 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Definition/Resolver/ResolverDispatcher.php(62): DI\Definition\Resolver\FactoryResolver->resolve()
+#11 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(360): DI\Definition\Resolver\ResolverDispatcher->resolve()
+#12 /home/strizrjm/api.pinnexventures.com/vendor/php-di/php-di/src/Container.php(142): DI\Container->resolveDefinition()
+#13 /home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php(13): DI\Container->get()
+#14 /home/strizrjm/api.pinnexventures.com/src/routes/api.php(72): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/v1/LoggingRoute.php:11}()
+#15 /home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php(45): {closure:/home/strizrjm/api.pinnexventures.com/src/routes/api.php:2}()
+#16 /home/strizrjm/api.pinnexventures.com/src/bootstrap/app.php(64): {closure:/home/strizrjm/api.pinnexventures.com/src/bootstrap/routes.php:9}()
+#17 /home/strizrjm/api.pinnexventures.com/public/index.php(16): require_once('/home/strizrjm/...')
+#18 {main}
+  thrown in /home/strizrjm/api.pinnexventures.com/src/bootstrap/services.php on line 150
+[09-Sep-2026 15:52:10 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:52:10 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:52:10 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:52:10 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:52:10 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:52:10 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:52:10 UTC] Decoded type: object
+[09-Sep-2026 15:52:10 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:52:10 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:52:10 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:52:10 UTC] decoded->data->id: 1
+[09-Sep-2026 15:52:10 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:52:10 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:52:10 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:53:10 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:53:10 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:53:10 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:53:10 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:53:10 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:53:10 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:53:10 UTC] Decoded type: object
+[09-Sep-2026 15:53:10 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:53:10 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:53:10 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:53:10 UTC] decoded->data->id: 1
+[09-Sep-2026 15:53:10 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:53:10 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:53:10 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:54:50 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:54:50 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:54:50 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:54:50 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:54:50 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:54:50 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:54:50 UTC] Decoded type: object
+[09-Sep-2026 15:54:50 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:54:50 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:54:50 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:54:50 UTC] decoded->data->id: 1
+[09-Sep-2026 15:54:50 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:54:50 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:54:50 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:55:50 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:55:50 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:55:50 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:55:50 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:55:50 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:55:50 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:55:50 UTC] Decoded type: object
+[09-Sep-2026 15:55:50 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:55:50 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:55:50 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:55:50 UTC] decoded->data->id: 1
+[09-Sep-2026 15:55:50 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:55:50 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:55:50 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:56:50 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:56:50 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:56:50 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:56:50 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:56:50 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:56:50 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:56:50 UTC] Decoded type: object
+[09-Sep-2026 15:56:50 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:56:50 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:56:50 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:56:50 UTC] decoded->data->id: 1
+[09-Sep-2026 15:56:50 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:56:50 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:56:50 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:57:50 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:57:50 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:57:50 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:57:50 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:57:50 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:57:50 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:57:50 UTC] Decoded type: object
+[09-Sep-2026 15:57:50 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:57:50 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:57:50 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:57:50 UTC] decoded->data->id: 1
+[09-Sep-2026 15:57:50 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:57:50 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:57:50 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:58:50 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:58:50 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:58:50 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:58:50 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:58:50 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:58:50 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:58:50 UTC] Decoded type: object
+[09-Sep-2026 15:58:50 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:58:50 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:58:50 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:58:50 UTC] decoded->data->id: 1
+[09-Sep-2026 15:58:50 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:58:50 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:58:50 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 15:59:50 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 15:59:50 UTC] Request URI: /v1/notifications
+[09-Sep-2026 15:59:50 UTC] Auth Header Present: Yes
+[09-Sep-2026 15:59:50 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 15:59:50 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 15:59:50 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 15:59:50 UTC] Decoded type: object
+[09-Sep-2026 15:59:50 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 15:59:50 UTC] decoded->data exists, type: object
+[09-Sep-2026 15:59:50 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 15:59:50 UTC] decoded->data->id: 1
+[09-Sep-2026 15:59:50 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 15:59:50 UTC] decoded->data->role: ceo
+[09-Sep-2026 15:59:50 UTC] === End Auth Middleware Debug ===
+[09-Sep-2026 16:00:50 UTC] === Auth Middleware Debug ===
+[09-Sep-2026 16:00:50 UTC] Request URI: /v1/notifications
+[09-Sep-2026 16:00:50 UTC] Auth Header Present: Yes
+[09-Sep-2026 16:00:50 UTC] Auth Header (first 50 chars): Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3...
+[09-Sep-2026 16:00:50 UTC] Token extracted: Yes (length: 325)
+[09-Sep-2026 16:00:50 UTC] === Decoded JWT Structure ===
+[09-Sep-2026 16:00:50 UTC] Decoded type: object
+[09-Sep-2026 16:00:50 UTC] Decoded JSON: {"iss":"eventic-api","iat":1788968828,"exp":100000001788968827,"data":{"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}}
+[09-Sep-2026 16:00:50 UTC] decoded->data exists, type: object
+[09-Sep-2026 16:00:50 UTC] decoded->data JSON: {"id":1,"email":"admin@pinnexventures.com","role":"ceo","status":"active","firstName":"Admin","lastName":"Base"}
+[09-Sep-2026 16:00:50 UTC] decoded->data->id: 1
+[09-Sep-2026 16:00:50 UTC] decoded->data->email: admin@pinnexventures.com
+[09-Sep-2026 16:00:50 UTC] decoded->data->role: ceo
+[09-Sep-2026 16:00:50 UTC] === End Auth Middleware Debug ===

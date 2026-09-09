@@ -81,6 +81,8 @@ class SupplierController
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $data['image'] = $this->uploadService->uploadFile($file, 'image', 'suppliers');
                 }
+            } elseif (UploadService::isBase64DataUri($data['image'] ?? null)) {
+                $data['image'] = $this->uploadService->uploadBase64File($data['image'], 'image', 'suppliers');
             }
 
             $supplier = Supplier::create($data);
@@ -132,6 +134,8 @@ class SupplierController
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $data['image'] = $this->uploadService->replaceFile($file, $supplier->image, 'image', 'suppliers');
                 }
+            } elseif (UploadService::isBase64DataUri($data['image'] ?? null)) {
+                $data['image'] = $this->uploadService->replaceBase64File($data['image'], $supplier->image, 'image', 'suppliers');
             }
 
             $supplier->update($data);

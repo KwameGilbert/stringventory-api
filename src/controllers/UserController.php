@@ -92,8 +92,10 @@ class UserController
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $data['profileImage'] = $this->uploadService->uploadFile($file, 'avatar', 'users');
                 }
+            } elseif (UploadService::isBase64DataUri($data['profileImage'] ?? null)) {
+                $data['profileImage'] = $this->uploadService->uploadBase64File($data['profileImage'], 'avatar', 'users');
             }
-            
+
             // If no password is provided, generate a random one
             if (empty($data['passwordHash']) && empty($data['password'])) {
                 $data['passwordHash'] = bin2hex(random_bytes(8));
@@ -163,6 +165,8 @@ class UserController
                 if ($file->getError() === UPLOAD_ERR_OK) {
                     $data['profileImage'] = $this->uploadService->replaceFile($file, $user->profileImage, 'avatar', 'users');
                 }
+            } elseif (UploadService::isBase64DataUri($data['profileImage'] ?? null)) {
+                $data['profileImage'] = $this->uploadService->replaceBase64File($data['profileImage'], $user->profileImage, 'avatar', 'users');
             }
             
             $oldEmail = $user->email;
