@@ -2,13 +2,13 @@
 
 /**
  * Application Bootstrap
- * 
+ *
  * Main application bootstrap file that orchestrates all initialization
  */
 
 use DI\Container;
-use Slim\Factory\AppFactory;
 use Dotenv\Dotenv;
+use Slim\Factory\AppFactory;
 use App\Helper\LoggerFactory;
 use App\Config\EloquentBootstrap;
 

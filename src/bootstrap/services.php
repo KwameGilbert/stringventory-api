@@ -2,69 +2,75 @@
 
 /**
  * Service Container Registration
- * 
+ *
  * Registers all services, controllers, and middleware with the DI container
  */
 
-use App\Services\EmailService;
 use App\Services\SMSService;
 use App\Services\AuthService;
-use App\Services\PasswordResetService;
-use App\Services\VerificationService;
+use App\Logging\LoggerFactory;
+use App\Services\EmailService;
+use App\Logging\LoggingService;
+use App\Services\UploadService;
 use App\Services\ExpenseService;
-use App\Controllers\AuthController;
-use App\Controllers\UserController;
-use App\Controllers\OrganizerController;
-use App\Controllers\PasswordResetController;
-use App\Controllers\AttendeeController;
-use App\Controllers\EventController;
-use App\Controllers\EventImageController;
-use App\Controllers\TicketTypeController;
-use App\Controllers\OrderController;
-use App\Controllers\TicketController;
-use App\Controllers\ScannerController;
+use App\Services\TemplateEngine;
+use App\Services\WebPushService;
+use App\Services\CurrencyService;
 use App\Controllers\PosController;
-use App\Controllers\AwardController;
-use App\Controllers\AwardCategoryController;
-use App\Controllers\AwardNomineeController;
-use App\Controllers\AwardVoteController;
-use App\Controllers\CategoryController;
-use App\Controllers\SupplierController;
-use App\Controllers\ExpenseCategoryController;
-use App\Controllers\DiscountController;
-use App\Controllers\ProductController;
-use App\Controllers\CustomerController;
-use App\Controllers\ExpenseController;
-use App\Controllers\InventoryController;
-use App\Controllers\RefundController;
-use App\Controllers\PurchaseController;
-use App\Controllers\ExpenseScheduleController;
-use App\Controllers\TransactionController;
-use App\Controllers\AuditLogController;
-use App\Controllers\AnalyticsController;
-use App\Controllers\NotificationController;
-use App\Controllers\MessagingController;
-use App\Controllers\UnitOfMeasureController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RoleMiddleware;
-use App\Middleware\RateLimitMiddleware;
-use App\Middleware\JsonBodyParserMiddleware;
-use App\Services\NotificationService;
-use App\Services\WebPushService;
-use App\Services\TemplateEngine;
-use App\Services\CurrencyService;
-use App\Services\UploadService;
 use App\Services\MessagingService;
-use App\Logging\LoggingService;
+use App\Controllers\AuthController;
+use App\Controllers\UserController;
 use App\Services\NotificationQueue;
-use App\Logging\LoggerFactory;
+use App\Controllers\AwardController;
+use App\Controllers\EventController;
+use App\Controllers\OrderController;
+use App\Controllers\RefundController;
+use App\Controllers\TicketController;
+use App\Services\NotificationService;
+use App\Services\VerificationService;
+use App\Controllers\ExpenseController;
 use App\Controllers\LoggingController;
+use App\Controllers\ProductController;
+use App\Controllers\ScannerController;
+use App\Services\PasswordResetService;
+use App\Controllers\AttendeeController;
+use App\Controllers\AuditLogController;
+use App\Controllers\CategoryController;
+use App\Controllers\CustomerController;
+use App\Controllers\DiscountController;
+use App\Controllers\PurchaseController;
 use App\Controllers\SettingsController;
+use App\Controllers\SupplierController;
+use App\Middleware\RateLimitMiddleware;
+use App\Controllers\AnalyticsController;
+use App\Controllers\AwardVoteController;
+use App\Controllers\InventoryController;
+use App\Controllers\MessagingController;
+use App\Controllers\OrganizerController;
+use App\Controllers\EventImageController;
+use App\Controllers\TicketTypeController;
+use App\Controllers\TransactionController;
+use App\Controllers\AwardNomineeController;
+use App\Controllers\NotificationController;
+use App\Controllers\AwardCategoryController;
+use App\Controllers\PasswordResetController;
+use App\Controllers\UnitOfMeasureController;
+use App\Middleware\JsonBodyParserMiddleware;
+use App\Controllers\ExpenseCategoryController;
+use App\Controllers\ExpenseScheduleController;
+use Psr\Http\Message\ResponseFactoryInterface;
 
 return function ($container) {
-    
+
     // ==================== SERVICES ====================
     
+    $container->set('pdo', function ($container) {
+        return $container->get('db')->getConnection()->getPdo();
+    });
+
+
     $container->set(EmailService::class, function () {
         return new EmailService();
     });
@@ -72,15 +78,15 @@ return function ($container) {
     $container->set(SMSService::class, function () {
         return new SMSService();
     });
-    
+
     $container->set(AuthService::class, function () {
         return new AuthService();
     });
-    
+
     $container->set(PasswordResetService::class, function ($container) {
         return new PasswordResetService($container->get(EmailService::class));
     });
-    
+
     $container->set(VerificationService::class, function ($container) {
         return new VerificationService($container->get(EmailService::class));
     });
@@ -112,7 +118,7 @@ return function ($container) {
         );
     });
 
-    $container->set(\Psr\Http\Message\ResponseFactoryInterface::class, function () {
+    $container->set(ResponseFactoryInterface::class, function () {
         return new \Slim\Psr7\Factory\ResponseFactory();
     });
 
@@ -145,7 +151,7 @@ return function ($container) {
     });
 
     // ==================== CONTROLLERS ====================
-    
+
     $container->set(AuthController::class, function ($container) {
         return new AuthController(
             $container->get(AuthService::class),
@@ -153,7 +159,7 @@ return function ($container) {
             $container->get(EmailService::class)
         );
     });
-    
+
     $container->set(UserController::class, function ($container) {
         return new UserController(
             $container->get(VerificationService::class),
@@ -165,7 +171,7 @@ return function ($container) {
     $container->set(OrganizerController::class, function () {
         return new OrganizerController();
     });
-    
+
     $container->set(PasswordResetController::class, function ($container) {
         return new PasswordResetController(
             $container->get(AuthService::class),
@@ -253,7 +259,7 @@ return function ($container) {
     $container->set(AnalyticsController::class, function () {
         return new AnalyticsController();
     });
-    
+
     $container->set(SettingsController::class, function ($container) {
         return new SettingsController(
             $container->get(NotificationService::class)
@@ -281,21 +287,21 @@ return function ($container) {
             $container->get(MessagingService::class)
         );
     });
-    
+
     // ==================== MIDDLEWARES ====================
-    
+
     $container->set(AuthMiddleware::class, function ($container) {
         return new AuthMiddleware($container->get(AuthService::class));
     });
-    
+
     $container->set(RateLimitMiddleware::class, function () {
         return new RateLimitMiddleware();
     });
-    
+
     $container->set(JsonBodyParserMiddleware::class, function () {
         return new JsonBodyParserMiddleware();
     });
 
-    
+
     return $container;
 };
