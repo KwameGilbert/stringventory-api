@@ -23,20 +23,20 @@ class ErrorHandler implements ErrorHandlerInterface
     private LoggerInterface $logger;
 
     /**
-     * Environment setting to control error detail exposure
+     * Whether error details are allowed to be exposed
      */
-    private string $environment;
+    private bool $debug;
 
     /**
      * Constructor
      *
      * @param LoggerInterface $logger The logger instance
-     * @param string $environment Current environment (development/production)
+     * @param bool $debug Whether to expose error details (from APP_ENV + APP_DEBUG)
      */
-    public function __construct(LoggerInterface $logger, string $environment = 'production')
+    public function __construct(LoggerInterface $logger, bool $debug = false)
     {
         $this->logger = $logger;
-        $this->environment = $environment;
+        $this->debug = $debug;
     }
 
     /**
@@ -82,7 +82,7 @@ class ErrorHandler implements ErrorHandlerInterface
             ];
 
             // Add trace in development mode or if logErrorDetails is true
-            if ($logErrorDetails || $this->environment === 'development') {
+            if ($logErrorDetails || $this->debug) {
                 $logContext['trace'] = $exception->getTraceAsString();
             }
 
@@ -103,7 +103,7 @@ class ErrorHandler implements ErrorHandlerInterface
         ];
 
         // Add exception details if in development mode or displayErrorDetails is true
-        if ($displayErrorDetails || $this->environment === 'development') {
+        if ($displayErrorDetails || $this->debug) {
             $errorData['exception'] = [
                 'type' => get_class($exception),
                 'message' => $exception->getMessage(),
@@ -129,7 +129,7 @@ class ErrorHandler implements ErrorHandlerInterface
      */
     private function getExceptionMessage(Throwable $exception, bool $displayErrorDetails): string
     {
-        if ($displayErrorDetails || $this->environment === 'development') {
+        if ($displayErrorDetails || $this->debug) {
             return $exception->getMessage();
         }
 

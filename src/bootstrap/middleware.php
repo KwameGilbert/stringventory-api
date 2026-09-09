@@ -12,28 +12,16 @@ use App\Middleware\JsonBodyParserMiddleware as JsonBodyParserMiddleware;
 use App\Middleware\RateLimitMiddleware as RateLimitMiddleware;
 
 return function ($app, $container, $config) {
-    
+
     // Get configurations
     $environment = $config['env'];
+    // Only ever expose error details in development, and only when APP_DEBUG
+    // is also on - so a stray APP_DEBUG=true left in a non-development .env
+    // can't leak stack traces.
+    $debug = $environment === 'development'
+        && filter_var($_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOLEAN);
     $corsConfig = require CONFIG . '/Cors.php';
-    
-    // ==================== ERROR HANDLING ====================
-    
-    // Configure error middleware with custom handler
-    $errorMiddleware = $app->addErrorMiddleware(
-        displayErrorDetails: $environment === 'development',
-        logErrors: true,
-        logErrorDetails: $environment === 'development',
-        logger: $container->get('logger')
-    );
-    
-    // Set custom error handler
-    $errorHandler = new ErrorHandler(
-        $container->get('logger'),
-        $environment
-    );
-    $errorMiddleware->setDefaultErrorHandler($errorHandler);
-    
+
     // ==================== HTTP LOGGING ====================
     
     // Add HTTP logger middleware
@@ -84,12 +72,30 @@ return function ($app, $container, $config) {
     });
     
     // ==================== JSON BODY PARSING ====================
-    
+
     $app->add($container->get(JsonBodyParserMiddleware::class));
-    
+
     // ==================== CONTENT LENGTH ====================
-    
+
     // $app->add(new ContentLengthMiddleware());
-    
+
+    // ==================== ERROR HANDLING ====================
+    // Added last so it's the outermost middleware and can catch exceptions
+    // thrown by any of the middleware above (CORS, rate limiting, JSON body
+    // parsing, HTTP logging), not just ones thrown by routes/controllers.
+
+    $errorMiddleware = $app->addErrorMiddleware(
+        displayErrorDetails: $debug,
+        logErrors: true,
+        logErrorDetails: $debug,
+        logger: $container->get('logger')
+    );
+
+    $errorHandler = new ErrorHandler(
+        $container->get('logger'),
+        $debug
+    );
+    $errorMiddleware->setDefaultErrorHandler($errorHandler);
+
     return $app;
 };

@@ -3,7 +3,10 @@
     "allow": [
       "Bash(grep \"\\\\.php$\")",
       "Bash(composer phinx:migrate)",
-      "Bash(composer phinx:status)"
+      "Bash(composer phinx:status)",
+      "Bash(git check-ignore *)",
+      "Bash(php -l \"src/bootstrap/middleware.php\")",
+      "Bash(php -l \"src/helpers/ErrorHandler.php\")"
     ]
   }
 }
