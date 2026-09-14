@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use Exception;
 use App\Models\Product;
-use App\Models\Inventory;
-use App\Models\PurchaseItem;
-use App\Models\OrderItem;
 use App\Models\AuditLog;
+use App\Models\Inventory;
+use App\Models\OrderItem;
+use App\Models\PurchaseItem;
 use App\Helper\ResponseHelper;
 use App\Services\UploadService;
 use App\Services\NotificationService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Exception;
 
 class ProductController
 {
@@ -33,7 +33,9 @@ class ProductController
     public function index(Request $request, Response $response): Response
     {
         try {
-            $products = Product::with(['category', 'supplier', 'inventory', 'unitOfMeasure', 'batches.purchase'])->orderBy('name', 'asc')->get();
+            $products = Product::with([
+                'category', 'supplier', 'inventory', 'unitOfMeasure', 'batches.purchase'
+                ])->orderBy('name', 'asc')->get();
             return ResponseHelper::success($response, 'Products fetched successfully', $products->toArray());
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch products', 500, $e->getMessage());
@@ -46,7 +48,9 @@ class ProductController
     public function show(Request $request, Response $response, array $args): Response
     {
         try {
-            $product = Product::with(['category', 'supplier', 'inventory', 'batches.purchase', 'orderItems', 'unitOfMeasure'])->find($args['id']);
+            $product = Product::with([
+                'category', 'supplier', 'inventory', 'batches.purchase', 'orderItems', 'unitOfMeasure'
+                ])->find($args['id']);
             if (!$product) {
                 return ResponseHelper::error($response, 'Product not found', 404);
             }
@@ -111,7 +115,7 @@ class ProductController
                     'productId' => $product->id,
                     'quantity' => 0,
                     'status' => 'out_of_stock',
-                    'lastUpdated' => date('Y-m-d H:i:s')
+                    'lastUpdated' => date('Y-m-d H:i:s'),
                 ]);
             }
 
@@ -130,7 +134,11 @@ class ProductController
                 'sku' => $product->sku,
             ]);
 
-            return ResponseHelper::success($response, 'Product created successfully', $product->load('inventory')->toArray(), 201);
+            return ResponseHelper::success(
+                $response,
+                'Product created successfully',
+                $product->load('inventory')->toArray(),
+                201);
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to create product', 500, $e->getMessage());
         }
@@ -187,13 +195,13 @@ class ProductController
     public function delete(Request $request, Response $response, array $args): Response
     {
         try {
-            $product = Product::withCount(['purchaseItems', 'orderItems'])->find($args['id']);
+            $product = Product::withCount(['batches', 'orderItems'])->find($args['id']);
             if (!$product) {
                 return ResponseHelper::error($response, 'Product not found', 404);
             }
 
             // Dependency validation: Prevents deleting products tied to sales/intake
-            if ($product->purchase_items_count > 0 || $product->order_items_count > 0) {
+            if ($product->batches_count > 0 || $product->order_items_count > 0) {
                  return ResponseHelper::error($response, 'Cannot delete product with associated sales history or purchase logs.', 400);
             }
 
@@ -202,7 +210,7 @@ class ProductController
                 $this->uploadService->deleteFile($product->image);
             }
 
-            // Inventory will be deleted by CASCADE in DB if configured, 
+            // Inventory will be deleted by CASCADE in DB if configured,
             // but let's be safe and delete it here if needed or let Eloquent handle it if relation set.
             $productId = $product->id;
             $productName = $product->name;
@@ -227,7 +235,7 @@ class ProductController
     {
         try {
             $limit = (int)($request->getQueryParams()['limit'] ?? 5);
-            
+
             $products = PurchaseItem::join('products', 'purchaseItems.productId', '=', 'products.id')
                 ->join('purchases', 'purchaseItems.purchaseId', '=', 'purchases.id')
                 ->where('purchaseItems.expiryDate', '>=', date('Y-m-d'))
@@ -253,7 +261,7 @@ class ProductController
     {
         try {
             $limit = (int)($request->getQueryParams()['limit'] ?? 5);
-            
+
             $products = Product::join('inventory', 'products.id', '=', 'inventory.productId')
                 ->whereRaw('inventory.quantity <= products.reorderLevel')
                 ->orWhere(function($query) {
