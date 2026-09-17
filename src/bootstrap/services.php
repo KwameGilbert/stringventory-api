@@ -8,7 +8,6 @@
 
 use App\Services\SMSService;
 use App\Services\AuthService;
-use App\Logging\LoggerFactory;
 use App\Services\EmailService;
 use App\Logging\LoggingService;
 use App\Services\UploadService;

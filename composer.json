@@ -22,7 +22,8 @@
       "App\\Helper\\": "src/helpers/",
       "App\\Middleware\\": "src/middleware/",
       "App\\Routes\\": "src/routes/",
-      "App\\Config\\": "src/config"
+      "App\\Config\\": "src/config",
+      "App\\Logging\\": "src/logging/"
     }
   },
   "require": {
