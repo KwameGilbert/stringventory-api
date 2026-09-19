@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use Exception;
+use App\Models\Order;
+use App\Models\Refund;
+use App\Models\Expense;
+use App\Models\Purchase;
+use App\Models\Inventory;
 use App\Models\OrderItem;
 use App\Models\Transaction;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Exception;
 
 class TransactionController
 {
@@ -63,6 +68,7 @@ class TransactionController
             }
 
             $data = $transaction->toArray();
+            $data['adjustment'] = $this->adjustment($transaction);
             $data['refundItems'] = $this->refundItems($transaction);
             $data['relatedTransactions'] = $this->relatedTransactions($transaction);
 
@@ -70,6 +76,19 @@ class TransactionController
         } catch (Exception $e) {
             return ResponseHelper::error($response, 'Failed to fetch transaction', 500, $e->getMessage());
         }
+    }
+
+    /**
+     * The stock record a manual adjustment changed (adjustmentId holds the inventory id), with
+     * its product. Null for every other kind of entry.
+     */
+    private function adjustment(Transaction $transaction): ?array
+    {
+        if ($transaction->adjustmentId === null) {
+            return null;
+        }
+
+        return Inventory::with('product')->find($transaction->adjustmentId)?->toArray();
     }
 
     /**

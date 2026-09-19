@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Transaction Model
- * 
+ *
  * @property int $id
  * @property int|null $orderId
  * @property int|null $expenseId
