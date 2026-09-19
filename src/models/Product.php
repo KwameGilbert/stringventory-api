@@ -33,6 +33,9 @@ class Product extends Model
     const CREATED_AT = 'createdAt';
     const UPDATED_AT = 'updatedAt';
 
+    /** Low-stock threshold used only when a product has no reorderLevel of its own. */
+    const DEFAULT_REORDER_LEVEL = 10;
+
     protected $fillable = [
         'name',
         'sku',

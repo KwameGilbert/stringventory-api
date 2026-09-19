@@ -15,9 +15,11 @@ use App\Models\Purchase;
 use App\Models\AuditLog;
 use App\Models\User;
 use App\Helper\ResponseHelper;
+use App\Services\RevenueMetrics;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use Exception;
 
@@ -25,6 +27,9 @@ class AnalyticsController
 {
     /**
      * Get Dashboard Overview Metrics and Charts
+     *
+     * Revenue figures come from RevenueMetrics: Net Revenue = Gross Sales - Discounts - Refunds,
+     * and Net Profit also deducts net cost of goods and paid expenses.
      */
     public function getDashboardOverview(Request $request, Response $response): Response
     {
@@ -33,43 +38,19 @@ class AnalyticsController
             $dateFrom = $queryParams['dateFrom'] ?? Carbon::now()->startOfMonth()->toDateString();
             $dateTo = $queryParams['dateTo'] ?? Carbon::now()->toDateString();
 
-            $grossRevenue = (float) Order::where('status', 'completed')
-                ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->sum('discountedTotalPrice');
-
-            $totalOrders = Order::where('status', 'completed')
-                ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->count();
-
-            $totalExpenses = (float) Expense::where('status', 'paid')
-                ->whereBetween('transactionDate', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->sum('amount');
-
-            $netProfit = $grossRevenue - $totalExpenses;
+            $refundedItems = RevenueMetrics::refundedItems($dateFrom, $dateTo);
+            $summary = RevenueMetrics::summary($dateFrom, $dateTo, $refundedItems);
 
             $totalCustomers = Customer::whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                 ->count();
 
-            $inventoryValue = (float) DB::table('inventory')
-                ->join('purchaseItems', 'inventory.productId', '=', 'purchaseItems.productId')
-                ->sum(DB::raw('inventory.quantity * purchaseItems.costPrice'));
+            $inventoryValue = Inventory::totalValue();
 
-            if ($inventoryValue == 0) {
-                $inventoryValue = (float) DB::table('inventory')
-                    ->join('products', 'inventory.productId', '=', 'products.id')
-                    ->sum(DB::raw('inventory.quantity * products.costPrice'));
-            }
-
-            $lowStockItems = Inventory::where('quantity', '<=', 10)->count();
+            $lowStockItems = Inventory::lowStock()->count();
             $pendingOrders = Order::where('status', 'pending')->count();
 
-            $revenueData = Order::where('status', 'completed')
-                ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->select(DB::raw('DATE(createdAt) as date'), DB::raw('SUM(discountedTotalPrice) as revenue'))
-                ->groupBy('date')
-                ->get()
-                ->keyBy('date')
-                ->toArray();
+            $salesByDate = RevenueMetrics::salesByDate($dateFrom, $dateTo);
+            $refundsByDate = RevenueMetrics::refundsByDate($dateFrom, $dateTo);
 
             $expenseData = Expense::where('status', 'paid')
                 ->whereBetween('transactionDate', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
@@ -79,67 +60,60 @@ class AnalyticsController
                 ->keyBy('date')
                 ->toArray();
 
-            $allDates = array_unique(array_merge(array_keys($revenueData), array_keys($expenseData)));
+            $allDates = array_unique(array_merge(
+                array_keys($salesByDate),
+                array_keys($refundsByDate),
+                array_keys($expenseData)
+            ));
             sort($allDates);
 
+            // `revenue` is NET (gross sales - discounts - refunds) so the trend charts reflect refunds.
             $revenueByDate = [];
             foreach ($allDates as $date) {
+                $grossSales = $salesByDate[$date]['grossSales'] ?? 0.0;
+                $discounts = $salesByDate[$date]['discounts'] ?? 0.0;
+                $refunds = $refundsByDate[$date] ?? 0.0;
+
                 $revenueByDate[] = [
-                    'date'     => $date,
-                    'revenue'  => (float) ($revenueData[$date]['revenue'] ?? 0),
-                    'expenses' => (float) ($expenseData[$date]['expenses'] ?? 0),
+                    'date'       => $date,
+                    'revenue'    => round($grossSales - $discounts - $refunds, 2),
+                    'grossSales' => $grossSales,
+                    'discounts'  => $discounts,
+                    'refunds'    => $refunds,
+                    'expenses'   => (float) ($expenseData[$date]['expenses'] ?? 0),
                 ];
             }
 
-            $topProducts = OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
-                ->join('products', 'orderItems.productId', '=', 'products.id')
-                ->where('orders.status', 'completed')
-                ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->select(
-                    'orderItems.productId',
-                    'products.name as productName',
-                    DB::raw('SUM(orderItems.quantity) as sales'),
-                    DB::raw('SUM(orderItems.totalPrice) as revenue')
-                )
-                ->groupBy('orderItems.productId', 'productName')
-                ->orderBy('sales', 'desc')
-                ->limit(5)
-                ->get();
+            $topProducts = $this->netProductSales($dateFrom, $dateTo, $refundedItems['byProduct'])
+                ->sortByDesc('quantity')
+                ->take(5)
+                ->map(fn (array $row) => [
+                    'productId'   => $row['productId'],
+                    'productName' => $row['productName'],
+                    'sales'       => $row['quantity'],
+                    'revenue'     => $row['revenue'],
+                ])
+                ->values();
 
-            $topCustomers = Order::join('customers', 'orders.customerId', '=', 'customers.id')
-                ->where('orders.status', 'completed')
-                ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->select(
-                    'orders.customerId',
-                    DB::raw("TRIM(CONCAT_WS(' ', customers.firstName, customers.lastName)) as customerName"),
-                    DB::raw('COUNT(orders.id) as orders'),
-                    DB::raw('SUM(orders.discountedTotalPrice) as spent')
-                )
-                ->groupBy('orders.customerId', 'customerName')
-                ->orderBy('spent', 'desc')
-                ->limit(5)
-                ->get();
+            $topCustomers = $this->netCustomerSales($dateFrom, $dateTo)
+                ->sortByDesc('spent')
+                ->take(5)
+                ->values();
 
-            $revenueByPaymentMethod = Transaction::where('status', 'completed')
-                ->whereNotNull('paymentMethod')
-                ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->select(
-                    'paymentMethod',
-                    DB::raw('SUM(amount) as revenue'),
-                    DB::raw('COUNT(id) as transactionCount')
-                )
-                ->groupBy('paymentMethod')
-                ->orderBy('revenue', 'desc')
-                ->get();
+            $revenueByPaymentMethod = RevenueMetrics::revenueByPaymentMethod($dateFrom, $dateTo);
 
             $data = [
                 'metrics' => [
-                    'grossRevenue'   => ['value' => $grossRevenue,   'change' => 0, 'trend' => 'stable'],
-                    'totalOrders'    => ['value' => $totalOrders,    'change' => 0, 'trend' => 'stable'],
-                    'totalExpenses'  => ['value' => $totalExpenses,  'change' => 0, 'trend' => 'stable'],
-                    'netProfit'      => ['value' => $netProfit,      'change' => 0, 'trend' => 'stable'],
-                    'totalCustomers' => ['value' => $totalCustomers, 'change' => 0, 'trend' => 'stable'],
-                    'inventoryValue' => ['value' => $inventoryValue, 'change' => 0, 'trend' => 'stable'],
+                    'grossSales'     => ['value' => $summary['grossSales'],   'change' => 0, 'trend' => 'stable'],
+                    'discounts'      => ['value' => $summary['discounts'],    'change' => 0, 'trend' => 'stable'],
+                    'totalRefunds'   => ['value' => $summary['refunds'],      'change' => 0, 'trend' => 'stable'],
+                    'netRevenue'     => ['value' => $summary['netRevenue'],   'change' => 0, 'trend' => 'stable'],
+                    'totalOrders'    => ['value' => $summary['orderCount'],   'change' => 0, 'trend' => 'stable'],
+                    'totalExpenses'  => ['value' => $summary['expenses'],     'change' => 0, 'trend' => 'stable'],
+                    'netProfit'      => ['value' => $summary['netProfit'],    'change' => 0, 'trend' => 'stable'],
+                    'stockLoss'      => ['value' => $summary['stockLoss'],    'change' => 0, 'trend' => 'stable'],
+                    'totalCustomers' => ['value' => $totalCustomers,          'change' => 0, 'trend' => 'stable'],
+                    'inventoryValue' => ['value' => $inventoryValue,          'change' => 0, 'trend' => 'stable'],
                     'lowStockItems'  => $lowStockItems,
                     'pendingOrders'  => $pendingOrders,
                 ],
@@ -159,6 +133,8 @@ class AnalyticsController
 
     /**
      * Get Sales Report
+     *
+     * `totalSales` / `netSales` are net of discounts and refunds; `grossSales` is before both.
      */
     public function getSalesReport(Request $request, Response $response): Response
     {
@@ -167,55 +143,49 @@ class AnalyticsController
             $dateFrom = $queryParams['dateFrom'] ?? Carbon::now()->startOfMonth()->toDateString();
             $dateTo = $queryParams['dateTo'] ?? Carbon::now()->toDateString();
 
-            $totalSales = (float) Order::where('status', 'completed')
-                ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->sum('discountedTotalPrice');
+            $revenue = RevenueMetrics::revenue($dateFrom, $dateTo);
+            $refundedItems = RevenueMetrics::refundedItems($dateFrom, $dateTo);
 
-            $totalOrders = Order::where('status', 'completed')
-                ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->count();
+            $totalSales = $revenue['netRevenue'];
+            $totalOrders = $revenue['orderCount'];
+
+            $unitsSold = (int) OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
+                ->where('orders.status', 'completed')
+                ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
+                ->sum('orderItems.quantity');
+            $unitsRefunded = (int) array_sum(array_column($refundedItems['byProduct'], 'units'));
 
             $data = [
                 'summary' => [
                     'totalSales'        => $totalSales,
+                    'grossSales'        => $revenue['grossSales'],
+                    'discounts'         => $revenue['discounts'],
+                    'totalRefunds'      => $revenue['refunds'],
+                    'netSales'          => $totalSales,
                     'totalOrders'       => $totalOrders,
-                    'averageOrderValue' => $totalOrders > 0 ? $totalSales / $totalOrders : 0,
-                    'totalItems'        => (int) OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
-                        ->where('orders.status', 'completed')
-                        ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                        ->sum('orderItems.quantity'),
+                    'averageOrderValue' => $totalOrders > 0 ? round($totalSales / $totalOrders, 2) : 0,
+                    'totalItems'        => $unitsSold - $unitsRefunded,
                     'topPaymentMethod'  => DB::table('transactions')
                         ->join('orders', 'transactions.orderId', '=', 'orders.id')
                         ->where('orders.status', 'completed')
+                        ->where('transactions.transactionType', 'order')
                         ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
                         ->select('transactions.paymentMethod', DB::raw('COUNT(*) as count'))
                         ->groupBy('transactions.paymentMethod')
                         ->orderBy('count', 'desc')
                         ->first()->paymentMethod ?? 'N/A',
                 ],
-                'byPaymentMethod' => DB::table('transactions')
-                    ->join('orders', 'transactions.orderId', '=', 'orders.id')
-                    ->where('orders.status', 'completed')
-                    ->whereNotNull('transactions.paymentMethod')
-                    ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                    ->select(
-                        'transactions.paymentMethod',
-                        DB::raw('SUM(transactions.amount) as revenue'),
-                        DB::raw('COUNT(transactions.id) as orders')
-                    )
-                    ->groupBy('transactions.paymentMethod')
-                    ->get(),
-                'byDate' => (function () use ($dateFrom, $dateTo) {
-                    $byDateSales = Order::where('status', 'completed')
-                        ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                        ->select(
-                            DB::raw('DATE(createdAt) as date'),
-                            DB::raw('SUM(discountedTotalPrice) as sales'),
-                            DB::raw('COUNT(*) as orders')
-                        )
-                        ->groupBy('date')
-                        ->get()
-                        ->keyBy('date');
+                'byPaymentMethod' => array_map(
+                    fn (array $row) => [
+                        'paymentMethod' => $row['paymentMethod'],
+                        'revenue'       => $row['revenue'],
+                        'orders'        => $row['transactionCount'],
+                    ],
+                    RevenueMetrics::revenueByPaymentMethod($dateFrom, $dateTo)
+                ),
+                'byDate' => (function () use ($dateFrom, $dateTo, $refundedItems) {
+                    $salesByDate = RevenueMetrics::salesByDate($dateFrom, $dateTo);
+                    $refundsByDate = RevenueMetrics::refundsByDate($dateFrom, $dateTo);
 
                     $byDateItems = OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
                         ->where('orders.status', 'completed')
@@ -228,40 +198,39 @@ class AnalyticsController
                         ->get()
                         ->keyBy('date');
 
-                    return $byDateSales->map(function ($row, $date) use ($byDateItems) {
+                    $dates = array_unique(array_merge(
+                        array_keys($salesByDate),
+                        array_keys($refundsByDate),
+                        array_keys($refundedItems['byDate'])
+                    ));
+                    sort($dates);
+
+                    $rowFor = function ($date) use ($salesByDate, $refundsByDate, $byDateItems, $refundedItems) {
+                        $grossSales = $salesByDate[$date]['grossSales'] ?? 0.0;
+                        $discounts = $salesByDate[$date]['discounts'] ?? 0.0;
+                        $refunds = $refundsByDate[$date] ?? 0.0;
+                        $itemsSold = (int) ($byDateItems[$date]->items ?? 0);
+                        $itemsRefunded = $refundedItems['byDate'][$date] ?? 0;
+
                         return [
-                            'date'   => $row->date,
-                            'sales'  => (float) $row->sales,
-                            'orders' => (int) $row->orders,
-                            'items'  => (int) ($byDateItems[$date]->items ?? 0),
+                            'date'       => $date,
+                            'sales'      => round($grossSales - $discounts - $refunds, 2),
+                            'grossSales' => $grossSales,
+                            'discounts'  => $discounts,
+                            'refunds'    => $refunds,
+                            'orders'     => (int) ($salesByDate[$date]['orders'] ?? 0),
+                            'items'      => $itemsSold - $itemsRefunded,
                         ];
-                    })->values();
+                    };
+
+                    return Collection::make($dates)->map($rowFor)->values();
                 })(),
-                'byProduct' => OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
-                    ->join('products', 'orderItems.productId', '=', 'products.id')
-                    ->where('orders.status', 'completed')
-                    ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                    ->select(
-                        'orderItems.productId',
-                        'products.name as productName',
-                        DB::raw('SUM(orderItems.quantity) as quantity'),
-                        DB::raw('SUM(orderItems.totalPrice) as revenue')
-                    )
-                    ->groupBy('orderItems.productId', 'productName')
-                    ->orderBy('revenue', 'desc')
-                    ->get(),
-                'byCustomer' => Order::join('customers', 'orders.customerId', '=', 'customers.id')
-                    ->where('orders.status', 'completed')
-                    ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                    ->select(
-                        'orders.customerId',
-                        DB::raw("TRIM(CONCAT_WS(' ', customers.firstName, customers.lastName)) as customerName"),
-                        DB::raw('COUNT(orders.id) as orders'),
-                        DB::raw('SUM(orders.discountedTotalPrice) as spent')
-                    )
-                    ->groupBy('orders.customerId', 'customerName')
-                    ->orderBy('spent', 'desc')
-                    ->get(),
+                'byProduct' => $this->netProductSales($dateFrom, $dateTo, $refundedItems['byProduct'])
+                    ->sortByDesc('revenue')
+                    ->values(),
+                'byCustomer' => $this->netCustomerSales($dateFrom, $dateTo)
+                    ->sortByDesc('spent')
+                    ->values(),
             ];
 
             return ResponseHelper::success($response, 'Sales report retrieved successfully', $data);
@@ -279,16 +248,14 @@ class AnalyticsController
             $totalProducts = Product::count();
             $totalQuantity = Inventory::sum('quantity');
 
-            $inventoryValue = (float) DB::table('inventory')
-                ->join('products', 'inventory.productId', '=', 'products.id')
-                ->sum(DB::raw('inventory.quantity * products.costPrice'));
+            $inventoryValue = Inventory::totalValue();
 
             $data = [
                 'summary' => [
                     'totalProducts'   => $totalProducts,
                     'totalQuantity'   => (int) $totalQuantity,
                     'totalValue'      => $inventoryValue,
-                    'lowStockItems'   => Inventory::where('quantity', '<=', 10)->count(),
+                    'lowStockItems'   => Inventory::lowStock()->count(),
                     'outOfStockItems' => Inventory::where('quantity', '<=', 0)->count(),
                 ],
                 'byCategory' => DB::table('categories')
@@ -304,13 +271,13 @@ class AnalyticsController
                     ->groupBy('categories.id', 'categories.name')
                     ->get(),
                 'lowStockItems' => Inventory::join('products', 'inventory.productId', '=', 'products.id')
-                    ->where('inventory.quantity', '<=', 10)
+                    ->lowStock()
                     ->select(
                         'inventory.productId',
                         'products.name as productName',
                         'products.sku',
                         'inventory.quantity',
-                        DB::raw('10 as reorderLevel')
+                        DB::raw('COALESCE(products.reorderLevel, ' . Product::DEFAULT_REORDER_LEVEL . ') as reorderLevel')
                     )
                     ->get(),
             ];
@@ -323,6 +290,11 @@ class AnalyticsController
 
     /**
      * Get Financial Report
+     *
+     * Income statement: Net Revenue = Gross Sales - Discounts - Refunds; Gross Profit = Net Revenue -
+     * net cost of goods (COGS less the cost of refunded units that were restocked); Net Profit =
+     * Gross Profit - paid expenses. `stockLoss` is a memo (refunded units that were not restocked)
+     * and is already inside `costOfGoods`, so it is not deducted again.
      */
     public function getFinancialReport(Request $request, Response $response): Response
     {
@@ -331,41 +303,32 @@ class AnalyticsController
             $dateFrom = $queryParams['dateFrom'] ?? Carbon::now()->startOfMonth()->toDateString();
             $dateTo = $queryParams['dateTo'] ?? Carbon::now()->toDateString();
 
-            $salesIncome = (float) Order::where('status', 'completed')
-                ->whereBetween('createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->sum('discountedTotalPrice');
-
-            $costOfGoods = (float) OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
-                ->join('products', 'orderItems.productId', '=', 'products.id')
-                ->where('orders.status', 'completed')
-                ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->sum(DB::raw('orderItems.quantity * products.costPrice'));
-
-            $expenses = (float) Expense::where('status', 'paid')
-                ->whereBetween('transactionDate', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
-                ->sum('amount');
+            $summary = RevenueMetrics::summary($dateFrom, $dateTo);
+            $totalCosts = $summary['costOfGoods'] + $summary['expenses'];
 
             $data = [
                 'income' => [
-                    'sales' => $salesIncome,
-                    'other' => 0,
-                    'total' => $salesIncome,
+                    'grossSales' => $summary['grossSales'],
+                    'discounts'  => $summary['discounts'],
+                    'refunds'    => $summary['refunds'],
+                    'other'      => 0,
+                    'total'      => $summary['netRevenue'],
                 ],
                 'expenses' => [
-                    'costOfGoods'         => $costOfGoods,
-                    'operationalExpenses' => $expenses,
+                    'costOfGoods'         => $summary['costOfGoods'],
+                    'costOfGoodsGross'    => $summary['costOfGoodsGross'],
+                    'costRecovered'       => $summary['costRecovered'],
+                    'operationalExpenses' => $summary['expenses'],
                     'other'               => 0,
-                    'total'               => $costOfGoods + $expenses,
+                    'total'               => round($totalCosts, 2),
                 ],
                 'summary' => [
-                    'grossProfit'  => $salesIncome - $costOfGoods,
-                    'netProfit'    => $salesIncome - ($costOfGoods + $expenses),
-                    'profitMargin' => $salesIncome > 0
-                        ? (($salesIncome - ($costOfGoods + $expenses)) / $salesIncome) * 100
-                        : 0,
-                    'roi' => ($costOfGoods + $expenses) > 0
-                        ? (($salesIncome - ($costOfGoods + $expenses)) / ($costOfGoods + $expenses)) * 100
-                        : 0,
+                    'grossProfit'  => $summary['grossProfit'],
+                    'netProfit'    => $summary['netProfit'],
+                    'grossMargin'  => $summary['grossMargin'],
+                    'profitMargin' => $summary['netMargin'],
+                    'roi'          => $totalCosts > 0 ? round($summary['netProfit'] / $totalCosts * 100, 2) : 0,
+                    'stockLoss'    => $summary['stockLoss'],
                 ],
             ];
 
@@ -377,6 +340,8 @@ class AnalyticsController
 
     /**
      * Get Customer Report
+     *
+     * Order values are net of refunds (see RevenueMetrics).
      */
     public function getCustomerReport(Request $request, Response $response): Response
     {
@@ -389,30 +354,25 @@ class AnalyticsController
                 ->distinct('customerId')
                 ->count('customerId');
 
+            $revenue = RevenueMetrics::revenue(null, null);
+
             $data = [
                 'summary' => [
                     'totalCustomers'        => $totalCustomers,
                     'newCustomers'          => $newCustomers,
                     'activeCustomers'       => $activeCustomersCount,
                     'inactiveCustomers'     => $totalCustomers - $activeCustomersCount,
-                    'averageOrderValue'     => (float) Order::where('status', 'completed')->avg('discountedTotalPrice'),
+                    'averageOrderValue'     => $revenue['orderCount'] > 0
+                        ? round($revenue['netRevenue'] / $revenue['orderCount'], 2)
+                        : 0.0,
                     'customerRetentionRate' => $totalCustomers > 0
                         ? ($activeCustomersCount / $totalCustomers) * 100
                         : 0,
                 ],
-                'topCustomers' => Order::join('customers', 'orders.customerId', '=', 'customers.id')
-                    ->where('orders.status', 'completed')
-                    ->select(
-                        'orders.customerId',
-                        DB::raw("TRIM(CONCAT_WS(' ', customers.firstName, customers.lastName)) as customerName"),
-                        DB::raw('COUNT(orders.id) as orders'),
-                        DB::raw('SUM(orders.discountedTotalPrice) as spent'),
-                        DB::raw('MAX(orders.createdAt) as lastOrderDate')
-                    )
-                    ->groupBy('orders.customerId', 'customerName')
-                    ->orderBy('spent', 'desc')
-                    ->limit(10)
-                    ->get(),
+                'topCustomers' => $this->netCustomerSales(null, null)
+                    ->sortByDesc('spent')
+                    ->take(10)
+                    ->values(),
             ];
 
             return ResponseHelper::success($response, 'Customer report retrieved successfully', $data);
@@ -583,5 +543,124 @@ class AnalyticsController
             'reportType' => $args['reportType'] ?? 'general',
             'format'     => $request->getQueryParams()['format'] ?? 'pdf',
         ]);
+    }
+
+    /**
+     * Per-product sales for completed orders in the period, net of refunds: units kept and revenue
+     * after refunded units are taken off (units x selling price, the same pre-order-discount basis
+     * as orderItems.totalPrice). Products refunded in the period but not sold in it appear with
+     * negative figures, because refunds are counted when they were completed.
+     *
+     * @param array<int, array{units: int, value: float}> $refundedByProduct RevenueMetrics::refundedItems()['byProduct']
+     * @return Collection<int, array{productId: int, productName: string, quantity: int, revenue: float}>
+     */
+    private function netProductSales(string $dateFrom, string $dateTo, array $refundedByProduct): Collection
+    {
+        $sold = OrderItem::join('orders', 'orderItems.orderId', '=', 'orders.id')
+            ->join('products', 'orderItems.productId', '=', 'products.id')
+            ->where('orders.status', 'completed')
+            ->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59'])
+            ->select(
+                'orderItems.productId',
+                'products.name as productName',
+                DB::raw('SUM(orderItems.quantity) as quantity'),
+                DB::raw('SUM(orderItems.totalPrice) as revenue')
+            )
+            ->groupBy('orderItems.productId', 'productName')
+            ->get();
+
+        $rows = [];
+        foreach ($sold as $row) {
+            $rows[(int) $row->productId] = [
+                'productId'   => (int) $row->productId,
+                'productName' => $row->productName,
+                'quantity'    => (int) $row->quantity,
+                'revenue'     => (float) $row->revenue,
+            ];
+        }
+
+        $missing = array_diff(array_keys($refundedByProduct), array_keys($rows));
+        if ($missing) {
+            $names = DB::table('products')->whereIn('id', $missing)->pluck('name', 'id');
+            foreach ($missing as $productId) {
+                $rows[$productId] = [
+                    'productId'   => $productId,
+                    'productName' => $names[$productId] ?? 'Unknown',
+                    'quantity'    => 0,
+                    'revenue'     => 0.0,
+                ];
+            }
+        }
+
+        return Collection::make($rows)->map(function (array $row) use ($refundedByProduct) {
+            $refunded = $refundedByProduct[$row['productId']] ?? ['units' => 0, 'value' => 0.0];
+            $row['quantity'] -= $refunded['units'];
+            $row['revenue'] = round($row['revenue'] - $refunded['value'], 2);
+
+            return $row;
+        })->values();
+    }
+
+    /**
+     * Per-customer completed-order spend, net of refunds, for orders in the period (null = all
+     * time). Refunds are counted when they were completed, so a customer refunded in the period for
+     * an earlier order appears with a negative figure.
+     *
+     * @return Collection<int, array{customerId: int, customerName: string, orders: int, spent: float, lastOrderDate: ?string}>
+     */
+    private function netCustomerSales(?string $dateFrom, ?string $dateTo): Collection
+    {
+        $query = Order::join('customers', 'orders.customerId', '=', 'customers.id')
+            ->where('orders.status', 'completed');
+
+        if ($dateFrom !== null && $dateTo !== null) {
+            $query->whereBetween('orders.createdAt', [$dateFrom . ' 00:00:00', $dateTo . ' 23:59:59']);
+        }
+
+        $sales = $query->select(
+            'orders.customerId',
+            DB::raw("TRIM(CONCAT_WS(' ', customers.firstName, customers.lastName)) as customerName"),
+            DB::raw('COUNT(orders.id) as orders'),
+            DB::raw('SUM(orders.discountedTotalPrice) as spent'),
+            DB::raw('MAX(orders.createdAt) as lastOrderDate')
+        )
+            ->groupBy('orders.customerId', 'customerName')
+            ->get();
+
+        $rows = [];
+        foreach ($sales as $row) {
+            $rows[(int) $row->customerId] = [
+                'customerId'    => (int) $row->customerId,
+                'customerName'  => $row->customerName,
+                'orders'        => (int) $row->orders,
+                'spent'         => (float) $row->spent,
+                'lastOrderDate' => $row->lastOrderDate,
+            ];
+        }
+
+        $refunds = RevenueMetrics::refundsByCustomer($dateFrom, $dateTo);
+
+        $missing = array_diff(array_keys($refunds), array_keys($rows));
+        if ($missing) {
+            $names = DB::table('customers')
+                ->whereIn('id', $missing)
+                ->selectRaw("id, TRIM(CONCAT_WS(' ', firstName, lastName)) AS customerName")
+                ->pluck('customerName', 'id');
+            foreach ($missing as $customerId) {
+                $rows[$customerId] = [
+                    'customerId'    => $customerId,
+                    'customerName'  => $names[$customerId] ?? '',
+                    'orders'        => 0,
+                    'spent'         => 0.0,
+                    'lastOrderDate' => null,
+                ];
+            }
+        }
+
+        return Collection::make($rows)->map(function (array $row) use ($refunds) {
+            $row['spent'] = round($row['spent'] - ($refunds[$row['customerId']] ?? 0.0), 2);
+
+            return $row;
+        })->values();
     }
 }

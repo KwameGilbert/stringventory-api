@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
+use App\Services\RevenueMetrics;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Exception;
@@ -15,20 +16,33 @@ use Exception;
 class CustomerController
 {
     /**
+     * What a customer has spent: completed-order totals minus completed refunds.
+     */
+    private function netSpent(Customer $customer, float $refunded): float
+    {
+        return round((float) ($customer->completed_orders_sum ?? 0) - $refunded, 2);
+    }
+
+    /**
      * Get all customers
      */
     public function index(Request $request, Response $response): Response
     {
         try {
+            $refundsByCustomer = RevenueMetrics::refundsByCustomer(null, null);
+
             $customers = Customer::with(['orders', 'refunds'])
                 ->withCount('orders')
-                ->withSum('orders', 'discountedTotalPrice')
+                ->withSum([
+                    'orders as completed_orders_sum' => fn ($orders) => $orders->where('status', 'completed'),
+                ], 'discountedTotalPrice')
                 ->orderBy('createdAt', 'desc')
                 ->get()
-                ->map(function ($customer) {
+                ->map(function ($customer) use ($refundsByCustomer) {
                     $data = $customer->toArray();
                     $data['totalOrders'] = $customer->orders_count ?? 0;
-                    $data['totalAmountSpent'] = (float)($customer->orders_sum_discounted_total_price ?? 0);
+                    $data['totalRefunded'] = $refundsByCustomer[$customer->id] ?? 0.0;
+                    $data['totalAmountSpent'] = $this->netSpent($customer, $data['totalRefunded']);
                     return $data;
                 });
 
@@ -46,16 +60,19 @@ class CustomerController
         try {
             $customer = Customer::with(['orders', 'refunds'])
                 ->withCount('orders')
-                ->withSum('orders', 'discountedTotalPrice')
+                ->withSum([
+                    'orders as completed_orders_sum' => fn ($orders) => $orders->where('status', 'completed'),
+                ], 'discountedTotalPrice')
                 ->find($args['id']);
-                
+
             if (!$customer) {
                 return ResponseHelper::error($response, 'Customer not found', 404);
             }
 
             $responseData = $customer->toArray();
             $responseData['totalOrders'] = $customer->orders_count ?? 0;
-            $responseData['totalAmountSpent'] = (float)($customer->orders_sum_discounted_total_price ?? 0);
+            $responseData['totalRefunded'] = RevenueMetrics::refundsByCustomer(null, null, (int) $customer->id)[$customer->id] ?? 0.0;
+            $responseData['totalAmountSpent'] = $this->netSpent($customer, $responseData['totalRefunded']);
 
             return ResponseHelper::success($response, 'Customer fetched successfully', $responseData);
         } catch (Exception $e) {

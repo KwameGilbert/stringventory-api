@@ -238,6 +238,9 @@ Accept: application/json
 
 ### 5. Cancel Order
 # Reverses inventory and cancels transactions.
+# Units already refunded are not returned to stock a second time (only quantity - refundedQuantity
+# comes back), returned units are put back into their batches, and any pending refunds on the
+# order are cancelled. Refunds can no longer be requested or completed for a cancelled order.
 # Only allowed for CEO/Manager roles.
 POST {{baseUrl}}/orders/{{orderId}}/cancel
 Authorization: Bearer {{authToken}}

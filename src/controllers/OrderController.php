@@ -12,6 +12,7 @@ use App\Models\Transaction;
 use App\Models\Discount;
 use App\Models\Customer;
 use App\Models\PurchaseItem;
+use App\Models\Refund;
 use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use App\Services\NotificationService;
@@ -284,12 +285,26 @@ class OrderController
                 return ResponseHelper::error($response, 'Order is already cancelled', 400);
             }
 
-            // Return items to inventory
+            // Return items to inventory. Units that were already refunded are not returned again:
+            // a restocked refund put them back on the shelf, and a refund with no restock wrote
+            // them off, so only the units still with the customer come back.
             foreach ($order->items as $item) {
-                Inventory::where('productId', $item->productId)->increment('quantity', $item->quantity);
+                $returning = max(0, $item->quantity - $item->refundedQuantity);
+                if ($returning > 0 && $item->productId !== null) {
+                    $restocked = Inventory::where('productId', $item->productId)->increment('quantity', $returning);
+                    if ($restocked) {
+                        PurchaseItem::restoreStock((int) $item->productId, $returning);
+                    }
+                }
             }
 
             $order->update(['status' => 'cancelled']);
+
+            // A cancelled order has nothing left to refund, and approving one of its pending
+            // refunds later would put the same units back on the shelf a second time.
+            Refund::where('orderId', $order->id)
+                ->where('refundStatus', 'pending')
+                ->update(['refundStatus' => 'cancelled']);
 
             // Update transaction status
             Transaction::where('orderId', $order->id)->update(['status' => 'cancelled']);

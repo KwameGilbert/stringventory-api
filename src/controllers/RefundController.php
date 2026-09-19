@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\Inventory;
 use App\Models\OrderItem;
+use App\Models\PurchaseItem;
 use App\Models\AuditLog;
 use App\Helper\ResponseHelper;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -73,6 +74,11 @@ class RefundController
             $order = Order::with('items.product')->find((int)$data['orderId']);
             if (!$order) {
                 return ResponseHelper::error($response, 'Order not found', 404);
+            }
+
+            // A cancelled order was already reversed in full (stock returned, payment voided).
+            if ($order->status === 'cancelled') {
+                return ResponseHelper::error($response, 'Cannot request a refund for a cancelled order', 400);
             }
 
             // Validate refund amount (cannot exceed order total)
@@ -180,6 +186,14 @@ class RefundController
 
             // If approved, record a transaction and handle restocking
             if ($status === 'completed' && $oldStatus !== 'completed') {
+                // Cancelling an order already returned all its units to stock and voided its
+                // payment, so completing a refund now would restock and pay out a second time.
+                $refundedOrder = Order::find($refund->orderId);
+                if ($refundedOrder && $refundedOrder->status === 'cancelled') {
+                    DB::rollBack();
+                    return ResponseHelper::error($response, 'Cannot complete a refund for a cancelled order', 400);
+                }
+
                 // Allow optional paymentMethod update during approval
                 if (!empty($data['paymentMethod'])) {
                     $refund->paymentMethod = $data['paymentMethod'];
@@ -220,6 +234,7 @@ class RefundController
                                         $inventory->quantity += $quantity;
                                         $inventory->lastUpdated = date('Y-m-d H:i:s');
                                         $inventory->save();
+                                        PurchaseItem::restoreStock((int) $orderItem->productId, $quantity);
                                     }
                                 } else {
                                     // Calculate loss if not restocked

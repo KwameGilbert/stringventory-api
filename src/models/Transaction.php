@@ -85,4 +85,12 @@ class Transaction extends Model
     {
         return $this->belongsTo(Purchase::class, 'purchaseId');
     }
+
+    /**
+     * The stock record a manual adjustment changed (adjustmentId holds the inventory id).
+     */
+    public function adjustment()
+    {
+        return $this->belongsTo(Inventory::class, 'adjustmentId');
+    }
 }
