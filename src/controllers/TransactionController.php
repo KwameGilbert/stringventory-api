@@ -71,4 +71,79 @@ class TransactionController
             return ResponseHelper::error($response, 'Failed to fetch transaction', 500, $e->getMessage());
         }
     }
+
+    /**
+     * The items a linked refund covers, with product names. A unit counts as restocked only
+     * when the refund put it back on the shelf (restock true and the product still exists);
+     * anything else was lost stock.
+     */
+    private function refundItems(Transaction $transaction): array
+    {
+        $items = $transaction->refund?->items;
+        if (empty($items) || !is_array($items)) {
+            return [];
+        }
+
+        $orderItems = OrderItem::with('product:id,name,sku')
+            ->whereIn('id', array_column($items, 'orderItemId'))
+            ->get()
+            ->keyBy('id');
+
+        $details = [];
+        foreach ($items as $item) {
+            $orderItem = $orderItems->get($item['orderItemId'] ?? 0);
+            if (!$orderItem) {
+                continue;
+            }
+
+            $quantity = (int) ($item['quantity'] ?? 0);
+            $details[] = [
+                'orderItemId' => $orderItem->id,
+                'productId'   => $orderItem->productId,
+                'productName' => $orderItem->product?->name ?? 'Deleted product',
+                'sku'         => $orderItem->product?->sku,
+                'quantity'    => $quantity,
+                'restocked'   => (bool) ($item['restock'] ?? true) && $orderItem->productId !== null,
+                'unitPrice'   => (float) $orderItem->sellingPrice,
+                'amount'      => round($quantity * (float) $orderItem->sellingPrice, 2),
+            ];
+        }
+
+        return $details;
+    }
+
+    /**
+     * Other ledger entries tied to the same order, refund, purchase, expense or stock record,
+     * newest first. Empty when the transaction links to nothing, so it never returns the
+     * whole ledger.
+     */
+    private function relatedTransactions(Transaction $transaction): array
+    {
+        $links = array_filter([
+            'orderId'      => $transaction->orderId,
+            'refundId'     => $transaction->refundId,
+            'purchaseId'   => $transaction->purchaseId,
+            'expenseId'    => $transaction->expenseId,
+            'adjustmentId' => $transaction->adjustmentId,
+        ], fn ($id) => $id !== null);
+
+        if (!$links) {
+            return [];
+        }
+
+        return Transaction::where('id', '!=', $transaction->id)
+            ->where(function ($query) use ($links) {
+                foreach ($links as $column => $id) {
+                    $query->orWhere($column, $id);
+                }
+            })
+            ->orderBy('createdAt', 'desc')
+            ->orderBy('id', 'desc')
+            ->limit(25)
+            ->get([
+                'id', 'orderId', 'refundId', 'purchaseId', 'expenseId', 'adjustmentId',
+                'transactionType', 'paymentMethod', 'amount', 'status', 'currency', 'createdAt',
+            ])
+            ->toArray();
+    }
 }
