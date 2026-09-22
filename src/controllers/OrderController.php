@@ -150,7 +150,13 @@ class OrderController
                         $discountAmount = (float)$discount->discountAmount;
                     }
                 }
+            } elseif (!empty($data['discountAmount']) || !empty($data['discount'])) {
+                // Manual discount entered at checkout (not tied to a discount code)
+                $discountAmount = (float)($data['discountAmount'] ?? $data['discount'] ?? 0);
             }
+
+            // Discount can never exceed the subtotal
+            $discountAmount = max(0, min($discountAmount, $subtotal));
 
             $discountedTotalPrice = $subtotal - $discountAmount;
 
