@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $expenseId
  * @property int|null $purchaseId
  * @property int|null $adjustmentId
+ * @property int|null $adjustmentQuantity Signed units a manual adjustment changed (negative = decrease)
+ * @property string|null $reason
+ * @property string|null $notes
  * @property int|null $refundId
  * @property string $transactionType
  * @property string|null $paymentMethod
@@ -47,6 +50,9 @@ class Transaction extends Model
         'expenseId',
         'purchaseId',
         'adjustmentId',
+        'adjustmentQuantity',
+        'reason',
+        'notes',
         'refundId',
         'transactionType',
         'paymentMethod',
@@ -60,6 +66,7 @@ class Transaction extends Model
         'expenseId' => 'integer',
         'purchaseId' => 'integer',
         'adjustmentId' => 'integer',
+        'adjustmentQuantity' => 'integer',
         'refundId' => 'integer',
         'amount' => 'float',
         'createdAt' => 'datetime',

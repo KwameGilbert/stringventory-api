@@ -65,6 +65,14 @@ class InventoryController
                 return ResponseHelper::error($response, 'Product ID and adjustment value are required', 400);
             }
 
+            $reason = trim((string) ($data['reason'] ?? ''));
+            $notes = trim((string) ($data['notes'] ?? ''));
+            if (mb_strlen($reason) > 255) {
+                return ResponseHelper::error($response, 'Reason must be 255 characters or fewer', 400);
+            }
+            $reason = $reason !== '' ? $reason : null;
+            $notes = $notes !== '' ? $notes : null;
+
             // Ensure product exists
             $product = Product::find($data['productId']);
             if (!$product) {
@@ -124,6 +132,9 @@ class InventoryController
             // Record transaction for the adjustment
             Transaction::create([
                 'adjustmentId' => $inventory->id, // We use the inventory ID as the adjustment reference for now
+                'adjustmentQuantity' => $adjustment,
+                'reason' => $reason,
+                'notes' => $notes,
                 'transactionType' => 'adjustment',
                 'amount' => 0, // Adjustments don't necessarily have a financial impact shown in amount
                 'paymentMethod' => 'internal',
@@ -140,6 +151,7 @@ class InventoryController
                 'adjustment' => $adjustment,
                 'newQuantity' => $inventory->quantity,
                 'batchId' => $data['batchId'] ?? null,
+                'reason' => $reason,
             ]);
 
             // Trigger notification for admins

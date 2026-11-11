@@ -161,7 +161,7 @@ class TransactionController
             ->limit(25)
             ->get([
                 'id', 'orderId', 'refundId', 'purchaseId', 'expenseId', 'adjustmentId',
-                'transactionType', 'paymentMethod', 'amount', 'status', 'currency', 'createdAt',
+                'adjustmentQuantity', 'reason', 'notes', 'transactionType', 'paymentMethod', 'amount', 'status', 'currency', 'createdAt',
             ])
             ->toArray();
     }
