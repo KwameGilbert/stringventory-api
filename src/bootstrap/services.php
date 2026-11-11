@@ -30,6 +30,7 @@ use App\Controllers\LoggingController;
 use App\Controllers\ProductController;
 use App\Services\PasswordResetService;
 use App\Controllers\AuditLogController;
+use App\Controllers\RoleController;
 use App\Controllers\CategoryController;
 use App\Controllers\CustomerController;
 use App\Controllers\DiscountController;
@@ -238,6 +239,10 @@ return function ($container) {
 
     $container->set(TransactionController::class, function () {
         return new TransactionController();
+    });
+
+    $container->set(RoleController::class, function () {
+        return new RoleController();
     });
 
     $container->set(AuditLogController::class, function () {

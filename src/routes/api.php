@@ -11,6 +11,7 @@ return function ($app): void {
         // Auth & Users
         '/v1/auth' => ROUTE . 'v1/AuthRoute.php',
         '/v1/users' => ROUTE . 'v1/UserRoute.php',
+        '/v1/roles' => ROUTE . 'v1/RoleRoute.php',
         '/v1/admin' => ROUTE . 'v1/AdminRoute.php',
         '/v1/analytics' => ROUTE . 'v1/AnalyticsRoute.php',
         '/v1/settings' => ROUTE . 'v1/SettingsRoute.php',
