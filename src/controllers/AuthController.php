@@ -243,7 +243,11 @@ class AuthController
     {
         try {
             $userData = $request->getAttribute('user');
-            $data = $request->getParsedBody();
+            $data = $request->getParsedBody() ?? [];
+
+            // Accept camelCase field names as well as snake_case
+            $data['current_password'] = $data['current_password'] ?? $data['currentPassword'] ?? null;
+            $data['new_password'] = $data['new_password'] ?? $data['newPassword'] ?? null;
 
             if (empty($data['current_password']) || empty($data['new_password'])) {
                 return ResponseHelper::error($response, 'Current and new password are required', 400);

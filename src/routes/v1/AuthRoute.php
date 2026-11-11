@@ -37,5 +37,7 @@ return function (App $app) {
         $group->get('/me', [$authController, 'me']);
         $group->post('/logout', [$authController, 'logout']);
         $group->post('/password/change', [$authController, 'changePassword']);
+        // Alias used by the frontend
+        $group->post('/change-password', [$authController, 'changePassword']);
     })->add($app->getContainer()->get(AuthMiddleware::class));
 };
