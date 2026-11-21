@@ -139,19 +139,50 @@ class UserController
     {
         try {
             $id = $args['id'];
-            $data = $request->getParsedBody();
+            $body = $request->getParsedBody() ?? [];
             $uploadedFiles = $request->getUploadedFiles();
-            
+
             $user = User::find($id);
-            
+
             if (!$user) {
                 return ResponseHelper::error($response, 'User not found', 404);
             }
 
             // Authorization: Check if user is admin or the account owner
             $requestUser = $request->getAttribute('user');
-            if ($requestUser->role !== User::ROLE_CEO && (int)$id !== (int)$requestUser->id) {
+            $isCeo = $requestUser->role === User::ROLE_CEO;
+            if (!$isCeo && (int)$id !== (int)$requestUser->id) {
                 return ResponseHelper::error($response, 'Unauthorized: You can only update your own profile', 403);
+            }
+
+            // Whitelist editable fields. Passwords go through /auth/change-password
+            // or /users/{id}/reset-password; verification/login fields are system-managed.
+            $allowed = ['firstName', 'lastName', 'email', 'phone', 'profileImage'];
+            if ($isCeo) {
+                $allowed = array_merge($allowed, ['role', 'status']);
+            } elseif ((isset($body['role']) && $body['role'] !== $user->role)
+                || (isset($body['status']) && $body['status'] !== $user->status)) {
+                return ResponseHelper::error($response, 'Unauthorized: You cannot change role or status', 403);
+            }
+            $data = array_intersect_key($body, array_flip($allowed));
+
+            // Prevent a CEO from locking themselves (and possibly the business) out
+            if ($isCeo && (int)$id === (int)$requestUser->id) {
+                if (isset($data['role']) && $data['role'] !== User::ROLE_CEO) {
+                    return ResponseHelper::error($response, 'You cannot change your own role', 403);
+                }
+                if (isset($data['status']) && $data['status'] !== User::STATUS_ACTIVE) {
+                    return ResponseHelper::error($response, 'You cannot deactivate your own account', 403);
+                }
+            }
+
+            $validRoles = [User::ROLE_CEO, User::ROLE_MANAGER, User::ROLE_SALESPERSON];
+            if (isset($data['role']) && !in_array($data['role'], $validRoles, true)) {
+                return ResponseHelper::error($response, 'Invalid role', 400);
+            }
+            $validStatuses = [User::STATUS_ACTIVE, User::STATUS_INACTIVE, User::STATUS_SUSPENDED];
+            if (isset($data['status']) && !in_array($data['status'], $validStatuses, true)) {
+                return ResponseHelper::error($response, 'Invalid status', 400);
             }
             
             // Check email uniqueness if email is being updated
@@ -260,6 +291,11 @@ class UserController
             $requestUser = $request->getAttribute('user');
             if ($requestUser->role !== User::ROLE_CEO && (int)$id !== (int)$requestUser->id) {
                 return ResponseHelper::error($response, 'Unauthorized: You can only delete your own profile', 403);
+            }
+
+            // Nobody may delete their own account
+            if ((int)$id === (int)$requestUser->id) {
+                return ResponseHelper::error($response, 'You cannot delete your own account', 403);
             }
 
             // Delete associated image
