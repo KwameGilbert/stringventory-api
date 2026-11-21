@@ -197,6 +197,53 @@ class UserController
     }
 
     /**
+     * Admin reset of another user's password (no current password required).
+     * Route is restricted to CEO via RoleMiddleware.
+     */
+    public function adminResetPassword(Request $request, Response $response, array $args): Response
+    {
+        try {
+            $data = $request->getParsedBody() ?? [];
+            $password = $data['password'] ?? $data['newPassword'] ?? $data['new_password'] ?? null;
+
+            if (empty($password) || strlen((string)$password) < 8) {
+                return ResponseHelper::error($response, 'Password must be at least 8 characters', 400);
+            }
+
+            $user = User::find($args['id']);
+            if (!$user) {
+                return ResponseHelper::error($response, 'User not found', 404);
+            }
+
+            $requestUser = $request->getAttribute('user');
+            $isSelf = (int)$user->id === (int)$requestUser->id;
+
+            // Hashed by User::setPasswordHashAttribute. Others must change it on next login.
+            $user->update([
+                'passwordHash' => (string)$password,
+                'mustChangePassword' => !$isSelf,
+            ]);
+
+            $this->notificationService->notifyUser(
+                $user->id,
+                'password_reset',
+                'Password Reset',
+                'Your password was reset by an administrator.',
+                ['userId' => $user->id]
+            );
+
+            AuditLog::log($request, $requestUser->id, 'user_password_reset', [
+                'userId' => $user->id,
+                'email' => $user->email,
+            ]);
+
+            return ResponseHelper::success($response, 'Password reset successfully');
+        } catch (Exception $e) {
+            return ResponseHelper::error($response, 'Failed to reset password', 500, $e->getMessage());
+        }
+    }
+
+    /**
      * Delete user
      */
     public function delete(Request $request, Response $response, array $args): Response

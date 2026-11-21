@@ -32,6 +32,9 @@ return function (App $app): void {
         // Updating/Deleting has internal checks for self or CEO in the controller, 
         // but we can add an initial layer here.
         $group->put('/{id}', [$userController, 'update']);
+
+        // CEO can set a new password for any user without knowing the current one
+        $group->post('/{id}/reset-password', [$userController, 'adminResetPassword'])->add(new RoleMiddleware($ceoOnly));
         $group->delete('/{id}', [$userController, 'delete']);
     })->add($authMiddleware);
 };
